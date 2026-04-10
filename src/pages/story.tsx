@@ -1,44 +1,131 @@
-import SectionHeader from '../components/sectionHeader';
-import CardHoverEffect from '../hook/cardHoverEffect';
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/all';
+
+gsap.registerPlugin(ScrollTrigger);
+
+const quoteLines = [
+  'Power resides where people believe it does',
+  'no more, no less.',
+  "So, don't let your message get lost in translation.",
+  'Let us craft the public perception',
+  'your technology truly deserves.',
+];
+
 const Story = () => {
-  const handleMouseMove = CardHoverEffect();
+  const sectionRef = useRef<HTMLElement>(null);
+  const maskRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useGSAP(() => {
+    if (!sectionRef.current || !maskRef.current || !contentRef.current) return;
+
+    const words = contentRef.current.querySelectorAll('.animated-word');
+
+    const timeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: 'top top',
+        end: '+=160%',
+        scrub: 1,
+        pin: true,
+      },
+    });
+
+    timeline
+      .fromTo(
+        maskRef.current,
+        {
+          clipPath: 'polygon(10% 0%, 88% 12%, 78% 100%, 8% 88%)',
+          scale: 0.82,
+        },
+        {
+          clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
+          scale: 1,
+          ease: 'power2.inOut',
+        },
+      )
+      .fromTo(
+        videoRef.current,
+        {
+          scale: 1.25,
+        },
+        {
+          scale: 1,
+          ease: 'power2.out',
+        },
+        0,
+      )
+      .to(
+        words,
+        {
+          opacity: 1,
+          y: 0,
+          rotateX: 0,
+          rotateY: 0,
+          stagger: 0.08,
+          ease: 'power3.out',
+        },
+        0.15,
+      );
+  }, []);
+
   return (
-    <section id="story" className="overflow-hidden bg-black py-20">
-      <SectionHeader
-        H1={<>the open ip universe</>}
-        H2={
-          <>
-            the st<span>o</span>ry of
-            <br />a hidden real<span>m</span>
-          </>
-        }
-        color="blue"
-      />
-      <div className="lg:full-height relative h-[55vh] md:h-[85vh]">
-        <div
-          className="group absolute -top-24 left-1/2 h-64 w-[26rem] opacity-90 [transform:rotateY(30deg)_rotateZ(5deg)_translateX(-50%)] md:h-96 md:w-[32rem] lg:h-[40rem] lg:w-[65rem]"
-          onMouseMove={handleMouseMove}
-        >
-          <img
-            src="img/entrance.webp"
-            className="size-full object-cover transition-transform ease-linear will-change-transform [perspective:1000px] group-hover:[transform:rotateX(var(--rotate-x))_rotateY(var(--rotate-y))]"
-            alt="entrance img"
-            style={{
-              clipPath: 'polygon(4% 0, 83% 21%, 100% 73%, 0% 100%)',
-            }}
-            loading="lazy"
+    <section
+      ref={sectionRef}
+      id="story"
+      className="relative min-h-screen overflow-hidden bg-black px-4 text-white sm:px-10"
+    >
+      <svg className="absolute h-0 w-0" aria-hidden="true">
+        <filter id="flt_tag">
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.012 0.02"
+            numOctaves="2"
+            seed="7"
+            result="noise"
           />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="noise"
+            scale="26"
+            xChannelSelector="R"
+            yChannelSelector="B"
+          />
+        </filter>
+      </svg>
+
+      <div className="story-img-container">
+        <div
+          ref={maskRef}
+          className="story-img-mask absolute left-[4%] top-[14%] h-[72vh] w-[92vw] overflow-hidden rounded-[1.5rem] border border-white/10 md:left-[10%] md:top-[10%] md:h-[78vh] md:w-[80vw] lg:left-[14%] lg:top-[8%] lg:h-[82vh] lg:w-[72vw]"
+        >
+          <video
+            ref={videoRef}
+            className="story-img-content object-cover"
+            src="/story-background.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
+          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-gradient-to-br from-black/55 via-black/10 to-[#8c1731]/25" />
         </div>
-        <div className="absolute bottom-3 right-3 w-1/3 pe-2 max-md:w-2/3 md:pe-5 lg:pe-10">
-          <p className="text-blue-75">
-            Where realms converge, lies Zentry and the boundless pillar.
-            Discover its secrets and shape your fate amidst infinite
-            opportunities.
-          </p>
-          <button className="btn relative mt-5 h-8 w-48 overflow-hidden rounded-full bg-blue-75 text-sm font-semibold">
-            <span className="btn-text-one">DISCOVER PROLOGUE</span>
-            <span className="btn-text-two">DISCOVER PROLOGUE</span>
-          </button>
+
+        <div className="absolute inset-0 z-20 flex items-center justify-center px-4 sm:px-8 md:px-12">
+          <div
+            ref={contentRef}
+            className="animated-title max-w-6xl text-center text-3xl sm:text-5xl lg:text-[5rem]"
+          >
+            {quoteLines.map((line) => (
+              <span key={line} className="animated-word block">
+                {line}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </section>

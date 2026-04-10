@@ -1,8 +1,16 @@
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { debounce } from 'lodash';
-import { AlignJustify, Send } from 'lucide-react';
 import { useCallback, useRef } from 'react';
+import { Link } from 'react-router-dom';
+
+const navItems = [
+  { label: 'Home', to: '/' },
+  { label: 'Services', to: '/services' },
+  { label: 'About Us', to: '/about' },
+  { label: 'Blogs', to: '/blogs' },
+  { label: 'Videos', to: '/videos' },
+] as const;
 
 const Navbar = () => {
   const navbarRef = useRef<HTMLElement>(null);
@@ -46,57 +54,52 @@ const Navbar = () => {
     <nav
       id="navbar"
       ref={navbarRef}
-      className="fixed top-0 z-50 mx-3 mt-2 flex w-[calc(100%-1.5rem)] items-center justify-between rounded-lg px-8 py-3 text-[0.62rem] uppercase max-lg:px-4 max-md:px-2"
+      className="fixed top-0 z-50 mx-3 mt-3 flex w-[calc(100%-1.5rem)] items-center justify-between rounded-2xl border border-white/10 bg-black/45 px-5 py-3 text-[0.62rem] uppercase backdrop-blur-xl max-lg:px-4 max-md:px-3"
     >
-      <div className="center h-12 gap-4 max-lg:h-8">
-        <a href="/">
+      <div className="center h-12 gap-3 max-lg:h-8">
+        <Link
+          to="/"
+          className="flex items-center gap-3 rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-2"
+        >
           <img
-            src="favicon.ico"
-            width={42}
-            height={42}
-            className="max-lg:size-8"
-            alt="logo"
-            loading="lazy"
+            src="/kwerky-logo.avif"
+            alt="Kwerky Media logo"
+            className="h-10 w-10 rounded-full object-cover max-lg:size-8"
+            loading="eager"
           />
-        </a>
-        <button className="btn relative h-8 w-28 overflow-hidden rounded-full bg-blue-75 font-semibold max-lg:h-6 max-lg:w-20">
-          <span className="btn-text-one center gap-1">
-            Products <Send size={12} className="black-arrow max-lg:size-3" />
+          <span className="hidden min-[480px]:block">
+            <strong className="block font-general text-[0.74rem] tracking-[0.24em] text-white">
+              KWERKY MEDIA
+            </strong>
+            <span className="block text-[0.56rem] tracking-[0.28em] text-white/42">
+              CREATIVE STORYTELLING ENGINE
+            </span>
           </span>
-          <span className="btn-text-two center gap-1">
-            Products <Send size={12} className="black-arrow max-lg:size-3" />
-          </span>
-        </button>
-        <button className="btn relative h-8 w-28 overflow-hidden rounded-full bg-blue-75 font-semibold max-lg:h-6 max-lg:w-20">
-          <span className="btn-text-one">whitepaper</span>
-          <span className="btn-text-two">whitepaper</span>
-        </button>
+        </Link>
+        <Link
+          to="/services"
+          className="hidden rounded-full border border-[#ff5c7a]/60 px-4 py-2 font-general font-semibold tracking-[0.2em] text-white transition hover:bg-[#ff5c7a] hover:text-black md:inline-flex"
+        >
+          START A PROJECT
+        </Link>
       </div>
       <div
         id="navbar-links"
-        className="center relative h-8 w-[32rem] text-white max-lg:hidden"
+        className="relative hidden h-8 w-[32rem] items-center justify-center text-white md:flex"
       >
-        <a href="/" className="navbar-link">
-          nexus <Send size={12} className="white-arrow" />
-        </a>
-        <a href="/" className="navbar-link">
-          vault <Send size={12} className="white-arrow" />
-        </a>
-        <a href="/" className="navbar-link">
-          prologue
-          <Send size={12} className="white-arrow" />
-        </a>
-        <a href="/" className="navbar-link">
-          about
-          <Send size={12} className="white-arrow" />
-        </a>
-        <a href="/" className="navbar-link">
-          contact
-          <Send size={12} className="white-arrow" />
-        </a>
+        {navItems.map((item) => (
+          <Link key={item.label} to={item.to} className="navbar-link">
+            {item.label}
+          </Link>
+        ))}
         <div id="navbar-hover-effect"></div>
       </div>
-      <AlignJustify className="cursor-pointer lg:hidden" color="white" />
+      <Link
+        to="/services"
+        className="inline-flex items-center justify-center rounded-full border border-[#ff5c7a]/60 px-4 py-2 font-general font-semibold tracking-[0.2em] text-white transition hover:bg-[#ff5c7a] hover:text-black md:hidden"
+      >
+        CONNECT
+      </Link>
     </nav>
   );
 };

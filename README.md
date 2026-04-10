@@ -1,7 +1,6 @@
-# Awwwards: A Modern React Landing Page
+# Kwerky Media
 
-A high-performance React landing page application built with modern web technologies and best practices.
-Is replicating some of the [Zentry](https://zentry.com/) landing page.
+A high-performance React landing page for Kwerky Media, built with modern web technologies and tailored for a premium dark-mode storytelling experience.
 
 ## 🚀 Technologies
 
@@ -14,10 +13,6 @@ Is replicating some of the [Zentry](https://zentry.com/) landing page.
 ## ⚙️ Installation
 
 ```bash
-# Clone repository
-git clone https://github.com/AhmedHanye/awwwards.git
-
-
 # Install dependencies
 npm install
 
@@ -30,14 +25,15 @@ npm run dev
 ```
 src/
 ├── components/
-│   ├── navbar/
-│   └── loading/
+│   ├── Footer.tsx
+│   ├── Preloader.tsx
+│   ├── loading.tsx
+│   └── navbar.tsx
 ├── pages/
-│   ├── hero/
-│   ├── about/
-│   ├── features/
-│   ├── story/
-│   └── contact/
+│   ├── hero.tsx
+│   ├── features.tsx
+│   ├── Story.tsx
+│   └── Testimonials.tsx
 └── App.tsx
 ```
 
@@ -46,18 +42,6 @@ src/
 - Dynamic component loading
 - Performance optimized with code splitting
 - Responsive design
-- Modern UI/UX
+- Premium dark-mode UI/UX
 - TypeScript integration
 - Loading states management
-
-# ⚡ Performance
-
-The application implements several performance optimizations:
-
-- Lazy loading of components
-- Suspense for loading states
-- Route-based code splitting
-
-# 🙏 Acknowledgments
-
-Special thanks to [JavaScript Mastery (JSM)](https://youtu.be/zA9r5zTllx4?si=_y45XQeG9mFi77GC) for their excellent tutorial that provided guidance and inspiration for building this project. Their educational content was instrumental in helping me understand and implement modern React development practices.

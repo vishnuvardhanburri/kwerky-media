@@ -1,171 +1,98 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import CardHoverEffect from '../hook/cardHoverEffect';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { SendHorizontal } from 'lucide-react';
+import { useRef } from 'react';
 
-const Hero = () => {
-  const videoContainerRef = useRef<HTMLDivElement>(null);
-  const primaryVideoRef = useRef<HTMLVideoElement>(null);
-  const secondaryVideoRef = useRef<HTMLVideoElement>(null);
+type HeroProps = {
+  canAnimate?: boolean;
+};
 
-  const [nextVideoIndex, setNextVideoIndex] = useState<number>(1);
-  const [isVideoTransitioning, setIsVideoTransitioning] =
-    useState<boolean>(false);
-
-  const handleMouseMove = CardHoverEffect();
-  const handleVideoTransition = useCallback(() => {
-    if (isVideoTransitioning) return;
-
-    setNextVideoIndex((prev) => (prev % 4) + 1);
-    setIsVideoTransitioning(true);
-  }, [isVideoTransitioning]);
-
-  const handleVideoSwitch = () => {
-    if (!primaryVideoRef.current || !secondaryVideoRef.current) return;
-
-    // Update primary video
-    primaryVideoRef.current.poster = `img/hero-${(nextVideoIndex % 4) + 1}.webp`;
-    primaryVideoRef.current.src = `videos/hero-${(nextVideoIndex % 4) + 1}.mp4`;
-    primaryVideoRef.current.load();
-    primaryVideoRef.current.pause();
-    primaryVideoRef.current.classList.replace(
-      'primary-video',
-      'secondary-video',
-    );
-
-    // Update secondary video
-    secondaryVideoRef.current.classList.replace(
-      'secondary-video',
-      'primary-video',
-    );
-
-    primaryVideoRef.current.removeAttribute('style');
-    secondaryVideoRef.current.removeAttribute('style');
-
-    // Swap refs using state management
-    [primaryVideoRef.current, secondaryVideoRef.current] = [
-      secondaryVideoRef.current,
-      primaryVideoRef.current,
-    ];
-
-    setIsVideoTransitioning(false);
-  };
+const Hero = ({ canAnimate = false }: HeroProps) => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    if (!isVideoTransitioning) return;
+    if (!canAnimate || !contentRef.current) return;
+
+    const [eyebrow, headline, subtext, cta] = Array.from(
+      contentRef.current.children,
+    );
+
     const tl = gsap.timeline({
-      onStart: () => {
-        secondaryVideoRef.current?.play();
-      },
-      onComplete: handleVideoSwitch,
+      defaults: { ease: 'power3.out' },
     });
-    tl.to(secondaryVideoRef.current, {
-      // ! stop wiggling through the transition
-      transform: 'none',
-      duration: 0,
-    })
-      .to(secondaryVideoRef.current, {
-        // * expand the secondary video
-        width: '100%',
-        height: '100%',
-        borderRadius: '0',
-        outline: 'none',
-        ease: 'power3.inOut',
-        duration: 0.3,
-      })
-      .to(primaryVideoRef.current, {
-        // * shrink the primary video
-        width: '0',
-        height: '0',
-        duration: 0.3,
-        ease: 'power3.inOut',
-      });
-  }, [isVideoTransitioning]);
 
-  useEffect(() => {
-    const videoElement = secondaryVideoRef.current;
-    videoElement?.addEventListener('click', handleVideoTransition);
-    return () => {
-      videoElement?.removeEventListener('click', handleVideoTransition);
-    };
-  }, [handleVideoTransition]);
-
-  useGSAP(() => {
-    gsap.set(videoContainerRef.current, {
-      clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-    });
-    gsap.to(videoContainerRef.current, {
-      clipPath: 'polygon(0 0, 50% 0, 89% 100%, 31% 100%)',
-      ease: 'power3.inOut', // Smoother easing
-      scrollTrigger: {
-        trigger: videoContainerRef.current,
-        start: '25% 25%',
-        end: '100% center',
-        scrub: 1,
-      },
-    });
-  }, []);
+    tl.fromTo(
+      eyebrow,
+      { y: 24, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.85 },
+    )
+      .fromTo(
+        headline,
+        { y: 42, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1 },
+        '+=0.5',
+      )
+      .fromTo(
+        [subtext, cta],
+        { y: 24, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.85, stagger: 0.16 },
+        '-=0.25',
+      );
+  }, [canAnimate]);
 
   return (
     <section
+      ref={sectionRef}
       id="hero"
-      className="full-height group relative"
-      onMouseMove={handleMouseMove}
+      className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-black"
     >
-      <div className="center relative z-30 size-full" ref={videoContainerRef}>
-        <div className="absolute left-10 top-24 z-20 max-md:left-5">
-          <h1 className="special-font hero-heading text-blue-100">
-            REDEFI<span>N</span>E
-          </h1>
-          <p className="font-robert-regular text-blue-100 max-lg:text-sm max-md:text-xs">
-            Enter the Metagame <br />
-            Unleash the Play Economy
-          </p>
-          <button
-            id="watch-trailer"
-            title="Watch trailer"
-            className="center trailer-button mt-5 gap-x-2 rounded-2xl bg-yellow-300 px-6 py-2 font-general text-[0.7rem] font-bold"
-          >
-            <SendHorizontal fill="black" size={12} /> WATCH TRAILER
-          </button>
-        </div>
-        <video
-          ref={primaryVideoRef}
-          preload="auto"
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="primary-video"
-          poster="img/hero-1.webp"
-          draggable="false"
-          controls={false}
-          disablePictureInPicture
-        >
-          <source src="videos/hero-1.mp4" type="video/mp4" />
-        </video>
-        <video
-          ref={secondaryVideoRef}
-          preload="auto"
-          muted
-          loop
-          playsInline
-          className="secondary-video"
-          poster="img/hero-2.webp"
-          draggable="false"
-          controls={false}
-          disablePictureInPicture
-        >
-          <source src="videos/hero-2.mp4" type="video/mp4" />
-        </video>
-        <h1 className="special-font hero-heading absolute bottom-4 right-5 z-20 text-blue-100">
-          G<span>A</span>MING
+      <video
+        className="absolute inset-0 z-0 hidden h-full w-full object-cover md:block"
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+      >
+        <source src="/hero-video.mp4" type="video/mp4" />
+      </video>
+      <video
+        className="absolute inset-0 z-0 block h-full w-full object-cover md:hidden"
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+      >
+        <source src="/hero-video-mobile.mp4" type="video/mp4" />
+      </video>
+
+      <div className="absolute inset-0 z-10 bg-black/60"></div>
+
+      <div
+        ref={contentRef}
+        className="relative z-20 mx-auto flex w-full max-w-5xl flex-col items-center px-4 text-center sm:px-10"
+      >
+        <p className="mb-5 font-general text-[0.72rem] font-semibold uppercase tracking-[0.34em] text-white/70 sm:text-[0.82rem]">
+          Content and Growth Partner for Tech Companies
+        </p>
+
+        <h1 className="max-w-4xl font-sans text-4xl font-medium tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[5.5rem]">
+          Get your spotlight.
         </h1>
+
+        <p className="mt-6 max-w-2xl font-robert-regular text-base leading-7 text-white/78 sm:text-lg">
+          Kwerky Media helps ambitious tech brands turn product complexity into
+          sharp stories, premium presentation, and content that earns trust.
+        </p>
+
+        <a
+          href="#contact"
+          className="mt-8 inline-flex items-center justify-center rounded-full border border-white/60 px-6 py-3.5 font-general text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-white transition duration-300 hover:border-[#ff5c7a] hover:bg-[#ff5c7a] hover:text-black sm:mt-10 sm:px-7"
+        >
+          Connect with us!
+        </a>
       </div>
-      <h1 className="special-font hero-heading absolute bottom-4 right-5 text-black">
-        G<span>A</span>MING
-      </h1>
     </section>
   );
 };

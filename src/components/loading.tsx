@@ -2,7 +2,7 @@ const Loading = () => {
   return (
     <section
       id="loading"
-      className="center full-height overflow-hidden bg-violet-50"
+      className="center full-height overflow-hidden bg-black"
     >
       <div>
         {/* https://uiverse.io/G4b413l/tidy-walrus-92 */}

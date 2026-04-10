@@ -9,9 +9,17 @@
    2. Global Styles
 -------------------------------- */
 body {
-  width: 100dvw;
+  width: 100%;
+  min-height: 100vh;
   overflow-x: hidden;
+  background: #050505;
+  color: #fff;
   font-family: 'General Sans', sans-serif;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
 }
 video,
 img,
@@ -63,7 +71,7 @@ a {
 }
 
 @font-face {
-  font-family: 'zentry';
+  font-family: 'kwerky';
   src: url('/fonts/zentry-regular.woff2') format('woff2');
   font-display: swap;
 }
@@ -84,7 +92,7 @@ a {
     @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2;
   }
   .special-font span {
-    font-family: 'Zentry';
+    font-family: 'kwerky';
     font-feature-settings: 'ss01' on;
   }
   /* ---- Hero Section ---- */
@@ -101,7 +109,7 @@ a {
     @apply tr z-10 size-0 cursor-pointer rounded-xl object-cover [perspective:1000px] group-hover:size-52 group-hover:outline group-hover:[transform:rotateX(calc(var(--rotate-x)_*_2))_rotateY(calc(var(--rotate-y)_*_2))];
   }
   .hero-heading {
-    @apply font-zentry text-5xl font-black sm:text-6xl md:text-8xl lg:text-[11rem];
+    @apply font-kwerky text-5xl font-black sm:text-6xl md:text-8xl lg:text-[11rem];
   }
   /* -- Trailer Button -- */
   .trailer-button {
@@ -157,7 +165,7 @@ a {
     @apply bg-violet-300;
   }
   .bento-title {
-    @apply font-zentry text-4xl font-black uppercase md:text-6xl;
+    @apply font-kwerky text-4xl font-black uppercase md:text-6xl;
   }
   .card-button {
     @apply center cursor-pointer gap-2 rounded-full border-2 border-current bg-black px-6 py-2 text-xs max-md:px-4 max-md:py-1 max-md:text-[0.5rem] max-sm:text-[0.4rem];
@@ -166,6 +174,30 @@ a {
   /* ---- contact Section ---- */
   .hovering-effect {
     @apply transition-transform ease-linear [perspective:1000px] group-hover:[transform:rotateX(var(--rotate-x))_rotateY(var(--rotate-y))];
+  }
+  .animated-title {
+    @apply flex flex-col gap-2 font-sans text-4xl font-medium tracking-tight text-white sm:text-5xl md:px-16 md:text-6xl lg:text-[5rem];
+  }
+  .animated-word {
+    @apply opacity-0;
+    transform: translate3d(0, 44px, -60px) rotateY(28deg) rotateX(-24deg);
+    transform-origin: 50% 50% -150px !important;
+    will-change: opacity, transform;
+  }
+  .story-img-container {
+    @apply relative h-screen w-full overflow-hidden;
+    filter: url('#flt_tag');
+  }
+  .story-img-mask {
+    @apply absolute left-[8%] top-[10%] h-[78vh] w-[84vw] overflow-hidden rounded-[2rem] md:left-[14%] md:top-[8%] md:h-[82vh] md:w-[72vw];
+    clip-path: polygon(4% 0, 83% 21%, 100% 73%, 0% 100%);
+  }
+  .story-img-content {
+    @apply absolute left-0 top-0 h-full w-full opacity-100;
+    transform: translate3d(0, 0, 0) rotateX(0) rotateY(0) rotateZ(0) scale(1);
+  }
+  .bento-tilt {
+    @apply transition-transform duration-300 ease-linear [perspective:1000px] group-hover:[transform:rotateX(var(--rotate-x))_rotateY(var(--rotate-y))];
   }
   .contact-clip-path-1 {
     clip-path: path(

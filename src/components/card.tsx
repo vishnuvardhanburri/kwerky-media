@@ -4,8 +4,6 @@ import { JSX, useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
-import { Send } from 'lucide-react';
-
 gsap.registerPlugin(ScrollTrigger);
 
 interface CardProps {
@@ -48,18 +46,18 @@ const Card = ({ title, description, video, box }: CardProps) => {
     <div
       ref={cardRef}
       className={`group cursor-grab ${clsx(box, {
-        'col-start-1 col-end-3 row-start-1 row-end-4': box === 1,
-        'col-start-2 col-end-3 row-start-4 row-end-6': box === 2,
-        'col-start-1 col-end-2 row-start-4 row-end-8': box === 3,
-        'col-start-2 col-end-3 row-start-6 row-end-8': box === 4,
-        'col-start-2 col-end-3 row-start-8 row-end-10': box === 5,
-        'card-violet col-start-1 col-end-2 row-start-8 row-end-10': box === 6,
+        'min-h-[22rem] lg:col-start-1 lg:col-end-3 lg:row-start-1 lg:row-end-4': box === 1,
+        'min-h-[20rem] lg:col-start-2 lg:col-end-3 lg:row-start-4 lg:row-end-6': box === 2,
+        'min-h-[22rem] lg:col-start-1 lg:col-end-2 lg:row-start-4 lg:row-end-8': box === 3,
+        'min-h-[20rem] lg:col-start-2 lg:col-end-3 lg:row-start-6 lg:row-end-8': box === 4,
+        'min-h-[20rem] lg:col-start-2 lg:col-end-3 lg:row-start-8 lg:row-end-10': box === 5,
+        'min-h-[20rem] lg:col-start-1 lg:col-end-2 lg:row-start-8 lg:row-end-10': box === 6,
       })} `}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseExit}
     >
-      <div className="relative size-full overflow-hidden rounded-lg border-[1px] border-white border-opacity-20 transition-transform ease-linear will-change-transform [perspective:1000px] group-hover:[transform:rotateX(var(--rotate-x))_rotateY(var(--rotate-y))_scale(0.95)]">
+      <div className="relative size-full overflow-hidden rounded-[1.5rem] border border-white/12 bg-neutral-900/80 transition-transform ease-linear will-change-transform [perspective:1000px] group-hover:[transform:rotateX(var(--rotate-x))_rotateY(var(--rotate-y))_scale(0.95)]">
         {video && (
           <video
             preload="auto"
@@ -69,38 +67,23 @@ const Card = ({ title, description, video, box }: CardProps) => {
             draggable="false"
             controls={false}
             disablePictureInPicture
-            className="video-player size-full scale-125"
+            className="video-player size-full scale-125 object-cover"
             ref={videoRef}
           >
             <source src={video} type="video/mp4" />
           </video>
         )}
-        <div className="absolute left-4 top-4 w-72 max-w-64 max-md:max-w-40">
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,5,5,0.12),rgba(5,5,5,0.82))]" />
+        <div className="absolute left-4 top-4 z-10 w-[calc(100%-2rem)] max-w-[18rem] sm:max-w-xs">
           {title}
           {description}
         </div>
-        <div className="center absolute bottom-4 left-4 gap-2 max-md:flex-col">
-          {box !== 6 && box !== 5 && (
-            <button className="card-button text-gray-300">
-              <Send size={12} className="max-md:size-3" fill="#d1d5db" /> COMING
-              SOON
-            </button>
-          )}
-          {box === 2 && (
-            <button className="card-button text-yellow-300">
-              LAUNCH SITE
-              <Send size={12} className="max-md:size-3" fill="#edff66" />
-            </button>
-          )}
+        <div className="absolute bottom-4 left-4 z-10">
+          <span className="inline-flex items-center rounded-full border border-white/12 bg-black/35 px-4 py-2 font-general text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-white/70 backdrop-blur-sm">
+            Kwerky Media
+          </span>
         </div>
-        {box === 6 && (
-          <img
-            src="favicon.ico"
-            className="absolute bottom-4 right-4 size-6 md:size-8 lg:size-12"
-            alt="logo"
-            loading='lazy'
-          />
-        )}
       </div>
     </div>
   );
