@@ -142,7 +142,7 @@ const Footer = () => {
           <p className="font-general text-[0.7rem] font-semibold uppercase tracking-[0.32em] text-white/55">
             Final Call
           </p>
-          <h2 className="mt-4 font-sans text-4xl font-medium tracking-tight text-white sm:text-5xl md:text-6xl">
+          <h2 className="mt-4 max-w-4xl font-sans text-4xl font-medium tracking-tight text-white sm:text-5xl md:text-6xl">
             Let&apos;s turn your tech into a story people actually remember.
           </h2>
           <p className="mt-5 max-w-2xl font-robert-regular text-base leading-7 text-white/68">
@@ -156,7 +156,7 @@ const Footer = () => {
           <div
             data-footer-block
             onMouseMove={isDesktop ? handleMouseMove : undefined}
-            className="group relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#0b0b0d] p-7 shadow-[0_30px_90px_rgba(0,0,0,0.44)] sm:p-8"
+            className="group relative overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(16,16,18,0.98),rgba(9,9,11,0.98))] p-7 shadow-[0_30px_90px_rgba(0,0,0,0.44)] sm:p-8"
           >
             <div className="absolute -left-12 top-2 hidden h-56 w-56 bg-[#ff5c7a]/18 blur-3xl lg:block" />
             <div className="hovering-effect relative z-10">
@@ -251,7 +251,7 @@ const Footer = () => {
           <div className="grid gap-6">
             <div
               data-footer-block
-              className="rounded-[2rem] border border-white/10 bg-[#0b0b0d] p-7 sm:p-8"
+              className="rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(16,16,18,0.98),rgba(9,9,11,0.98))] p-7 sm:p-8"
             >
               <p className="font-general text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-white/50">
                 Direct Contact
@@ -290,7 +290,7 @@ const Footer = () => {
 
             <div
               data-footer-block
-              className="rounded-[2rem] border border-white/10 bg-[#0b0b0d] p-7 sm:p-8"
+              className="rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(16,16,18,0.98),rgba(9,9,11,0.98))] p-7 sm:p-8"
             >
               <div className="grid gap-8 md:grid-cols-2">
                 <div>

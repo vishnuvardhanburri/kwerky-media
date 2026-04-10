@@ -27,10 +27,9 @@ const Story = () => {
     const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
-        start: 'top top',
-        end: '+=160%',
-        scrub: 1,
-        pin: true,
+        start: 'top 72%',
+        end: 'bottom 35%',
+        scrub: 0.8,
       },
     });
 
@@ -38,11 +37,11 @@ const Story = () => {
       .fromTo(
         maskRef.current,
         {
-          clipPath: 'polygon(10% 0%, 88% 12%, 78% 100%, 8% 88%)',
-          scale: 0.82,
+          clipPath: 'polygon(12% 4%, 90% 10%, 82% 96%, 10% 90%)',
+          scale: 0.92,
         },
         {
-          clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
+          clipPath: 'polygon(4% 3%, 97% 0%, 94% 100%, 2% 96%)',
           scale: 1,
           ease: 'power2.inOut',
         },
@@ -76,7 +75,7 @@ const Story = () => {
     <section
       ref={sectionRef}
       id="story"
-      className="relative min-h-screen overflow-hidden bg-black px-4 text-white sm:px-10"
+      className="relative overflow-hidden bg-black px-4 py-20 text-white sm:px-10 sm:py-24"
     >
       <svg className="absolute h-0 w-0" aria-hidden="true">
         <filter id="flt_tag">
@@ -100,7 +99,7 @@ const Story = () => {
       <div className="story-img-container">
         <div
           ref={maskRef}
-          className="story-img-mask absolute left-[4%] top-[14%] h-[72vh] w-[92vw] overflow-hidden rounded-[1.5rem] border border-white/10 md:left-[10%] md:top-[10%] md:h-[78vh] md:w-[80vw] lg:left-[14%] lg:top-[8%] lg:h-[82vh] lg:w-[72vw]"
+          className="story-img-mask absolute left-0 top-0 h-[33rem] w-full overflow-hidden rounded-[2rem] border border-white/10 sm:h-[40rem] lg:h-[42rem]"
         >
           <video
             ref={videoRef}
@@ -111,20 +110,30 @@ const Story = () => {
             muted
             playsInline
           />
-          <div className="absolute inset-0 bg-black/40" />
-          <div className="absolute inset-0 bg-gradient-to-br from-black/55 via-black/10 to-[#8c1731]/25" />
+          <div className="absolute inset-0 bg-black/52" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_28%),linear-gradient(135deg,rgba(255,92,122,0.16),transparent_34%),linear-gradient(to_bottom,rgba(0,0,0,0.12),rgba(0,0,0,0.72))]" />
         </div>
 
-        <div className="absolute inset-0 z-20 flex items-center justify-center px-4 sm:px-8 md:px-12">
-          <div
-            ref={contentRef}
-            className="animated-title max-w-6xl text-center text-3xl sm:text-5xl lg:text-[5rem]"
-          >
-            {quoteLines.map((line) => (
-              <span key={line} className="animated-word block">
-                {line}
-              </span>
-            ))}
+        <div className="absolute inset-0 z-20 flex items-center px-5 sm:px-10 lg:px-16">
+          <div className="max-w-5xl">
+            <p className="mb-5 font-general text-[0.72rem] font-semibold uppercase tracking-[0.32em] text-white/54">
+              Story and Perception
+            </p>
+            <div
+              ref={contentRef}
+              className="animated-title max-w-5xl text-left text-3xl sm:text-5xl lg:text-[4.5rem]"
+            >
+              {quoteLines.map((line) => (
+                <span key={line} className="animated-word block">
+                  {line}
+                </span>
+              ))}
+            </div>
+            <p className="mt-6 max-w-2xl font-robert-regular text-base leading-7 text-white/66">
+              Strong products deserve strong public language. This is where the
+              message gets shaped into something people can understand, trust,
+              and remember quickly.
+            </p>
           </div>
         </div>
       </div>

@@ -109,7 +109,7 @@ a {
     @apply tr z-10 size-0 cursor-pointer rounded-xl object-cover [perspective:1000px] group-hover:size-52 group-hover:outline group-hover:[transform:rotateX(calc(var(--rotate-x)_*_2))_rotateY(calc(var(--rotate-y)_*_2))];
   }
   .hero-heading {
-    @apply font-kwerky text-5xl font-black sm:text-6xl md:text-8xl lg:text-[11rem];
+    @apply font-sans text-5xl font-medium tracking-tight sm:text-6xl md:text-8xl lg:text-[11rem];
   }
   /* -- Trailer Button -- */
   .trailer-button {
@@ -131,13 +131,13 @@ a {
     @apply fill-black text-black;
   }
   .navbar-link {
-    @apply center z-[100] block h-full w-1/5 gap-2 font-semibold transition-colors delay-75 duration-75 ease-linear hover:text-black;
+    @apply center z-[100] block h-full w-1/5 gap-2 font-semibold tracking-[0.18em] text-white/80 transition-colors delay-75 duration-75 ease-linear hover:text-white;
   }
   .navbar-link > svg {
     @apply transition-colors delay-75 duration-75 ease-linear;
   }
   #navbar-hover-effect {
-    @apply absolute top-1/2 hidden h-full w-1/5 -translate-y-1/2 rounded-full bg-blue-75 transition-[left] duration-150 ease-linear;
+    @apply absolute top-1/2 hidden h-full w-1/5 -translate-y-1/2 rounded-full border border-white/10 bg-white/[0.05] transition-[left] duration-150 ease-linear;
   }
   .navbar-link:hover ~ #navbar-hover-effect {
     @apply block;
@@ -165,7 +165,7 @@ a {
     @apply bg-violet-300;
   }
   .bento-title {
-    @apply font-kwerky text-4xl font-black uppercase md:text-6xl;
+    @apply font-sans text-4xl font-medium tracking-tight md:text-6xl;
   }
   .card-button {
     @apply center cursor-pointer gap-2 rounded-full border-2 border-current bg-black px-6 py-2 text-xs max-md:px-4 max-md:py-1 max-md:text-[0.5rem] max-sm:text-[0.4rem];
@@ -176,7 +176,7 @@ a {
     @apply transition-transform ease-linear [perspective:1000px] group-hover:[transform:rotateX(var(--rotate-x))_rotateY(var(--rotate-y))];
   }
   .animated-title {
-    @apply flex flex-col gap-2 font-sans text-4xl font-medium tracking-tight text-white sm:text-5xl md:px-16 md:text-6xl lg:text-[5rem];
+    @apply flex flex-col gap-2 font-sans text-4xl font-medium tracking-tight text-white sm:text-5xl lg:text-[4.5rem];
   }
   .animated-word {
     @apply opacity-0;
@@ -185,12 +185,12 @@ a {
     will-change: opacity, transform;
   }
   .story-img-container {
-    @apply relative h-screen w-full overflow-hidden;
+    @apply relative mx-auto h-[33rem] w-full max-w-7xl overflow-hidden sm:h-[40rem] lg:h-[42rem];
     filter: url('#flt_tag');
   }
   .story-img-mask {
-    @apply absolute left-[8%] top-[10%] h-[78vh] w-[84vw] overflow-hidden rounded-[2rem] md:left-[14%] md:top-[8%] md:h-[82vh] md:w-[72vw];
-    clip-path: polygon(4% 0, 83% 21%, 100% 73%, 0% 100%);
+    @apply absolute left-0 top-0 h-full w-full overflow-hidden rounded-[2rem];
+    clip-path: polygon(8% 2%, 94% 0%, 100% 90%, 4% 100%);
   }
   .story-img-content {
     @apply absolute left-0 top-0 h-full w-full opacity-100;

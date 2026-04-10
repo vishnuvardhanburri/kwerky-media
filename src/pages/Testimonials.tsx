@@ -79,7 +79,7 @@ const Testimonials = () => {
           <p className="font-general text-[0.7rem] font-semibold uppercase tracking-[0.32em] text-[#f7d7df]/60">
             Social Proof
           </p>
-          <h2 className="mt-4 font-circular-web text-4xl font-bold leading-[0.95] tracking-[-0.05em] text-white sm:text-5xl md:text-6xl">
+          <h2 className="mt-4 font-sans text-4xl font-medium tracking-tight text-white sm:text-5xl md:text-6xl">
             Premium trust, built through clarity.
           </h2>
           <p className="mt-5 max-w-2xl font-robert-regular text-base leading-7 text-white/70">
@@ -97,8 +97,8 @@ const Testimonials = () => {
               onMouseMove={isDesktop ? handleMouseMove : undefined}
               className="group"
             >
-              <div className="bento-tilt relative h-full overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(28,28,31,0.96),rgba(10,10,12,0.96))] p-7 shadow-[0_24px_80px_rgba(0,0,0,0.36)] backdrop-blur-sm sm:p-8">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(196,23,63,0.18),transparent_36%)]" />
+              <div className="bento-tilt relative h-full overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(20,20,22,0.98),rgba(9,9,11,0.98))] p-7 shadow-[0_24px_80px_rgba(0,0,0,0.36)] backdrop-blur-sm sm:p-8">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,92,122,0.16),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(80,110,255,0.08),transparent_28%)]" />
                 <div className="relative z-10 flex h-full flex-col">
                   <div className="flex items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
@@ -109,7 +109,7 @@ const Testimonials = () => {
                         loading="lazy"
                       />
                       <div>
-                        <p className="font-circular-web text-xl font-bold tracking-[-0.03em] text-white">
+                        <p className="font-sans text-xl font-medium tracking-tight text-white">
                           {item.name}
                         </p>
                         <p className="font-robert-regular text-sm text-white/55">
@@ -127,13 +127,16 @@ const Testimonials = () => {
 
                   <div className="mt-8 flex gap-2 text-[#ff5c7a]">
                     {Array.from({ length: 5 }).map((_, index) => (
-                      <span key={index} className="text-lg drop-shadow-[0_0_10px_rgba(255,92,122,0.32)]">
+                      <span
+                        key={index}
+                        className="text-lg drop-shadow-[0_0_10px_rgba(255,92,122,0.32)]"
+                      >
                         ★
                       </span>
                     ))}
                   </div>
 
-                  <p className="mt-6 font-circular-web text-2xl font-bold leading-[1.08] tracking-[-0.04em] text-white sm:text-3xl">
+                  <p className="mt-6 font-sans text-2xl font-medium leading-[1.08] tracking-tight text-white sm:text-3xl">
                     “{item.quote}”
                   </p>
 

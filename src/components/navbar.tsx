@@ -54,7 +54,7 @@ const Navbar = () => {
     <nav
       id="navbar"
       ref={navbarRef}
-      className="fixed top-0 z-50 mx-3 mt-3 flex w-[calc(100%-1.5rem)] items-center justify-between rounded-2xl border border-white/10 bg-black/45 px-5 py-3 text-[0.62rem] uppercase backdrop-blur-xl max-lg:px-4 max-md:px-3"
+      className="fixed top-0 z-50 mx-3 mt-3 flex w-[calc(100%-1.5rem)] items-center justify-between rounded-2xl border border-white/10 bg-[linear-gradient(180deg,rgba(18,18,20,0.86),rgba(10,10,12,0.8))] px-5 py-3 text-[0.62rem] uppercase shadow-[0_16px_50px_rgba(0,0,0,0.28)] backdrop-blur-xl max-lg:px-4 max-md:px-3"
     >
       <div className="center h-12 gap-3 max-lg:h-8">
         <Link
@@ -78,7 +78,7 @@ const Navbar = () => {
         </Link>
         <Link
           to="/services"
-          className="hidden rounded-full border border-[#ff5c7a]/60 px-4 py-2 font-general font-semibold tracking-[0.2em] text-white transition hover:bg-[#ff5c7a] hover:text-black md:inline-flex"
+          className="hidden rounded-full border border-[#ff5c7a]/60 bg-[#ff5c7a]/10 px-4 py-2 font-general font-semibold tracking-[0.2em] text-white transition hover:bg-[#ff5c7a] hover:text-black md:inline-flex"
         >
           START A PROJECT
         </Link>
@@ -96,7 +96,7 @@ const Navbar = () => {
       </div>
       <Link
         to="/services"
-        className="inline-flex items-center justify-center rounded-full border border-[#ff5c7a]/60 px-4 py-2 font-general font-semibold tracking-[0.2em] text-white transition hover:bg-[#ff5c7a] hover:text-black md:hidden"
+        className="inline-flex items-center justify-center rounded-full border border-[#ff5c7a]/60 bg-[#ff5c7a]/10 px-4 py-2 font-general font-semibold tracking-[0.2em] text-white transition hover:bg-[#ff5c7a] hover:text-black md:hidden"
       >
         CONNECT
       </Link>

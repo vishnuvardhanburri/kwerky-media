@@ -45,7 +45,7 @@ const LiquidShowcase = () => {
       ref={sectionRef}
       className="bg-black px-4 py-20 text-white sm:px-10 lg:px-16"
     >
-      <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+      <div className="mx-auto grid max-w-7xl items-center gap-10 rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(12,12,14,0.98),rgba(7,7,8,0.98))] p-6 shadow-[0_30px_120px_rgba(0,0,0,0.36)] lg:grid-cols-[1.05fr_0.95fr] lg:p-10">
         <div data-liquid-reveal>
           <p className="font-general text-[0.72rem] font-semibold uppercase tracking-[0.32em] text-white/50">
             Liquid Surface
@@ -57,6 +57,14 @@ const LiquidShowcase = () => {
             We use motion and presentation with restraint. The result feels
             alive, modern, and premium, without turning the message into noise.
           </p>
+          <div className="mt-8 grid max-w-lg gap-3 text-sm text-white/62 sm:grid-cols-2">
+            <div className="rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-4">
+              Structured delivery that still feels human.
+            </div>
+            <div className="rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-4">
+              Motion used where it adds value, not distraction.
+            </div>
+          </div>
         </div>
 
         <div
@@ -78,7 +86,8 @@ const LiquidShowcase = () => {
                 muted
                 playsInline
               />
-              <div className="absolute inset-0 bg-black/35" />
+              <div className="absolute inset-0 bg-black/40" />
+              <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,92,122,0.18),transparent_32%),linear-gradient(to_top,rgba(0,0,0,0.45),transparent_42%)]" />
             </div>
           </div>
         </div>
