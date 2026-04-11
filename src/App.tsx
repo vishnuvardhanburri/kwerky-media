@@ -1,5 +1,11 @@
 import { lazy, Suspense, useState } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  useLocation,
+} from 'react-router-dom';
 import Loading from './components/loading';
 import Preloader from './components/Preloader';
 
@@ -12,6 +18,12 @@ const LiquidShowcase = lazy(() => import('./components/LiquidShowcase'));
 const RoutePlaceholder = lazy(() => import('./pages/RoutePlaceholder'));
 const Footer = lazy(() => import('./components/Footer'));
 
+const pageTransition = {
+  initial: { opacity: 0, y: 22 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -18 },
+};
+
 const HomePage = () => (
   <>
     <Hero />
@@ -21,6 +33,103 @@ const HomePage = () => (
     <LiquidShowcase />
   </>
 );
+
+const AnimatedRoutes = () => {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route
+          path="/"
+          element={
+            <motion.div
+              variants={pageTransition}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={{ duration: 0.55, ease: 'easeOut' }}
+            >
+              <HomePage />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/services"
+          element={
+            <motion.div
+              variants={pageTransition}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={{ duration: 0.45, ease: 'easeOut' }}
+            >
+              <RoutePlaceholder
+                eyebrow="Services"
+                title="Premium content systems built for modern tech brands."
+                description="This page is ready to become the dedicated Kwerky services surface, with deeper detail on storytelling, social media, and video execution."
+              />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/about"
+          element={
+            <motion.div
+              variants={pageTransition}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={{ duration: 0.45, ease: 'easeOut' }}
+            >
+              <RoutePlaceholder
+                eyebrow="About Us"
+                title="Built around clarity, curiosity, and better presentation."
+                description="This route will hold the Kwerky origin story, team philosophy, and the reasons technical brands choose us when they need sharper communication."
+              />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/blogs"
+          element={
+            <motion.div
+              variants={pageTransition}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={{ duration: 0.45, ease: 'easeOut' }}
+            >
+              <RoutePlaceholder
+                eyebrow="Blogs"
+                title="Editorial thinking that strengthens authority over time."
+                description="This destination is prepared for blog previews, category organization, and thought-leadership content that feels premium instead of filler."
+              />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/videos"
+          element={
+            <motion.div
+              variants={pageTransition}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={{ duration: 0.45, ease: 'easeOut' }}
+            >
+              <RoutePlaceholder
+                eyebrow="Videos"
+                title="Visual storytelling that makes complex technology feel clear."
+                description="This page will become the home for demos, explainers, launch films, and technical video systems designed to hold attention longer."
+              />
+            </motion.div>
+          }
+        />
+      </Routes>
+    </AnimatePresence>
+  );
+};
 
 const App = () => {
   const [isLoadingComplete, setIsLoadingComplete] = useState(false);
@@ -33,49 +142,7 @@ const App = () => {
         )}
         <Suspense fallback={<Loading />}>
           <Navbar />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route
-              path="/services"
-              element={
-                <RoutePlaceholder
-                  eyebrow="Services"
-                  title="Premium content systems built for modern tech brands."
-                  description="This page is ready to become the dedicated Kwerky services surface, with deeper detail on storytelling, social media, and video execution."
-                />
-              }
-            />
-            <Route
-              path="/about"
-              element={
-                <RoutePlaceholder
-                  eyebrow="About Us"
-                  title="Built around clarity, curiosity, and better presentation."
-                  description="This route will hold the Kwerky origin story, team philosophy, and the reasons technical brands choose us when they need sharper communication."
-                />
-              }
-            />
-            <Route
-              path="/blogs"
-              element={
-                <RoutePlaceholder
-                  eyebrow="Blogs"
-                  title="Editorial thinking that strengthens authority over time."
-                  description="This destination is prepared for blog previews, category organization, and thought-leadership content that feels premium instead of filler."
-                />
-              }
-            />
-            <Route
-              path="/videos"
-              element={
-                <RoutePlaceholder
-                  eyebrow="Videos"
-                  title="Visual storytelling that makes complex technology feel clear."
-                  description="This page will become the home for demos, explainers, launch films, and technical video systems designed to hold attention longer."
-                />
-              }
-            />
-          </Routes>
+          <AnimatedRoutes />
           <Footer />
         </Suspense>
       </main>

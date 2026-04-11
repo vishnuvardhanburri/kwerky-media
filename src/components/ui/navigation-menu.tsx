@@ -158,6 +158,14 @@ export function AnimatedNavFramer() {
               </span>
             </div>
           </Link>
+
+          <Link
+            to="/services"
+            onClick={(e) => e.stopPropagation()}
+            className="hidden items-center rounded-full border border-[#ff5c7a]/50 bg-[#ff5c7a]/12 px-4 py-1.5 font-general text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-white transition hover:bg-[#ff5c7a] hover:text-black md:inline-flex"
+          >
+            Start your project
+          </Link>
         </motion.div>
 
         <motion.div
@@ -187,15 +195,6 @@ export function AnimatedNavFramer() {
             );
           })}
 
-          <motion.div variants={itemVariants}>
-            <Link
-              to="/services"
-              onClick={(e) => e.stopPropagation()}
-              className="ml-1 inline-flex items-center rounded-full border border-[#ff5c7a]/50 bg-[#ff5c7a]/12 px-4 py-1.5 font-general text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-white transition hover:bg-[#ff5c7a] hover:text-black"
-            >
-              Start a Project
-            </Link>
-          </motion.div>
         </motion.div>
 
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">

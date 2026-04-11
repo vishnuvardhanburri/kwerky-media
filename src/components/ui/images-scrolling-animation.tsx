@@ -59,16 +59,16 @@ const StickyCard = ({
 }) => {
   const container = useRef<HTMLDivElement>(null);
   const scale = useTransform(progress, range, [1, targetScale]);
-  const opacity = useTransform(progress, range, [1, 0.42]);
-  const translateY = useTransform(progress, range, [0, -120]);
-  const cardHeight = useTransform(progress, range, ['100%', '78%']);
+  const opacity = useTransform(progress, range, [1, 0.34]);
+  const translateY = useTransform(progress, range, [0, -150]);
+  const cardHeight = useTransform(progress, range, ['100%', '68%']);
   const imageScale = useTransform(progress, range, [1, 1.08]);
   const clipPath = useTransform(
     progress,
     range,
     [
       'inset(0% 0% 0% 0% round 28px)',
-      'inset(0% 0% 22% 0% round 28px)',
+      'inset(0% 0% 30% 0% round 28px)',
     ],
   );
 
@@ -142,7 +142,7 @@ const ImagesScrollingAnimation = ({
             key={`p_${i}`}
             {...project}
             progress={scrollYProgress}
-            range={[i * 0.14, Math.min(1, 0.38 + i * 0.14)]}
+            range={[i * 0.12, Math.min(1, 0.28 + i * 0.16)]}
             targetScale={targetScale}
           />
         );

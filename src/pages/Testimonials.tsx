@@ -95,9 +95,9 @@ const Testimonials = () => {
               key={item.company}
               data-testimonial-card
               onMouseMove={isDesktop ? handleMouseMove : undefined}
-              className="group"
+              className="group lg:max-w-[34rem]"
             >
-              <div className="bento-tilt relative h-full overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(20,20,22,0.98),rgba(9,9,11,0.98))] p-7 shadow-[0_24px_80px_rgba(0,0,0,0.36)] backdrop-blur-sm sm:p-8">
+              <div className="bento-tilt relative h-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-[linear-gradient(180deg,rgba(20,20,22,0.98),rgba(9,9,11,0.98))] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.32)] backdrop-blur-sm sm:p-7">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,92,122,0.16),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(80,110,255,0.08),transparent_28%)]" />
                 <div className="relative z-10 flex h-full flex-col">
                   <div className="flex items-center justify-between gap-4">
@@ -105,11 +105,11 @@ const Testimonials = () => {
                       <img
                         src={item.image}
                         alt={item.name}
-                        className="h-16 w-16 rounded-2xl border border-white/10 object-cover"
+                        className="h-14 w-14 rounded-2xl border border-white/10 object-cover"
                         loading="lazy"
                       />
                       <div>
-                        <p className="font-sans text-xl font-medium tracking-tight text-white">
+                        <p className="font-sans text-lg font-medium tracking-tight text-white sm:text-xl">
                           {item.name}
                         </p>
                         <p className="font-robert-regular text-sm text-white/55">
@@ -125,24 +125,24 @@ const Testimonials = () => {
                     </div>
                   </div>
 
-                  <div className="mt-8 flex gap-2 text-[#ff5c7a]">
+                  <div className="mt-6 flex gap-1.5 text-[#ff5c7a]">
                     {Array.from({ length: 5 }).map((_, index) => (
                       <span
                         key={index}
-                        className="text-lg drop-shadow-[0_0_10px_rgba(255,92,122,0.32)]"
+                        className="text-base drop-shadow-[0_0_10px_rgba(255,92,122,0.32)]"
                       >
                         ★
                       </span>
                     ))}
                   </div>
 
-                  <p className="mt-6 font-sans text-2xl font-medium leading-[1.08] tracking-tight text-white sm:text-3xl">
+                  <p className="mt-5 font-sans text-xl font-medium leading-[1.12] tracking-tight text-white sm:text-2xl">
                     “{item.quote}”
                   </p>
 
-                  <div className="mt-8 h-px w-full bg-white/8" />
+                  <div className="mt-6 h-px w-full bg-white/8" />
 
-                  <p className="mt-5 max-w-xl font-robert-regular text-sm leading-7 text-white/62">
+                  <p className="mt-4 max-w-lg font-robert-regular text-sm leading-7 text-white/62">
                     Clear positioning, stronger content systems, and a more
                     compelling public-facing story.
                   </p>
