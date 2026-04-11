@@ -4,10 +4,12 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
 import {
   ArrowUpRight,
+  Facebook,
   Instagram,
   Linkedin,
   Mail,
   Phone,
+  Youtube,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import CardHoverEffect from '../hook/cardHoverEffect';
@@ -37,8 +39,26 @@ const navLinks = [
 ] as const;
 
 const socialLinks = [
-  { label: 'LinkedIn', href: 'https://www.linkedin.com', icon: Linkedin },
-  { label: 'Instagram', href: 'https://www.instagram.com', icon: Instagram },
+  {
+    label: 'LinkedIn',
+    href: 'https://www.linkedin.com/company/kwerky-media/',
+    icon: Linkedin,
+  },
+  {
+    label: 'Instagram',
+    href: 'https://www.instagram.com/kwerkymedia/',
+    icon: Instagram,
+  },
+  {
+    label: 'Facebook',
+    href: 'https://www.facebook.com/kwerkymedia',
+    icon: Facebook,
+  },
+  {
+    label: 'YouTube',
+    href: 'https://www.youtube.com/@kwerkymedia',
+    icon: Youtube,
+  },
 ] as const;
 
 const Footer = () => {
@@ -53,7 +73,9 @@ const Footer = () => {
 
   const [values, setValues] = useState<FormValues>(initialValues);
   const [errors, setErrors] = useState<FormErrors>({});
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitState, setSubmitState] = useState<
+    'idle' | 'submitting' | 'success' | 'error'
+  >('idle');
 
   useGSAP(() => {
     if (!footerRef.current) return;
@@ -114,19 +136,45 @@ const Footer = () => {
     }));
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const nextErrors = validate(values);
     setErrors(nextErrors);
 
     if (Object.keys(nextErrors).length > 0) {
-      setIsSubmitted(false);
+      setSubmitState('idle');
       return;
     }
 
-    setIsSubmitted(true);
-    setValues(initialValues);
+    setSubmitState('submitting');
+
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/hello@kwerkymedia.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          name: values.name,
+          email: values.email,
+          message: values.message,
+          _subject: 'New inquiry from Kwerky Media website',
+          _captcha: 'false',
+          _template: 'table',
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Submission failed');
+      }
+
+      setSubmitState('success');
+      setValues(initialValues);
+    } catch {
+      setSubmitState('error');
+    }
   };
 
   return (
@@ -233,13 +281,22 @@ const Footer = () => {
                   <div className="flex flex-wrap items-center gap-4">
                     <button
                       type="submit"
+                      disabled={submitState === 'submitting'}
                       className="inline-flex items-center justify-center rounded-full border border-[#ff5c7a]/70 bg-[#0d0d10] px-7 py-3.5 font-general text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-white transition duration-300 hover:bg-[#ff5c7a] hover:text-black"
                     >
-                      Submit Your Inquiry
+                      {submitState === 'submitting'
+                        ? 'Sending...'
+                        : 'Submit Your Inquiry'}
                     </button>
-                    {isSubmitted && (
+                    {submitState === 'success' && (
                       <p className="font-robert-regular text-sm text-white/70">
                         Thanks. We&apos;ll get back to you shortly.
+                      </p>
+                    )}
+                    {submitState === 'error' && (
+                      <p className="font-robert-regular text-sm text-[#ff8ea4]">
+                        Submission failed. Please email hello@kwerkymedia.com
+                        directly.
                       </p>
                     )}
                   </div>

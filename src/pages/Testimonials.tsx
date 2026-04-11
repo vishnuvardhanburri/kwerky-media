@@ -9,27 +9,18 @@ gsap.registerPlugin(ScrollTrigger);
 type Testimonial = {
   company: string;
   location?: string;
-  name: string;
-  title: string;
-  image: string;
   quote: string;
 };
 
 const testimonials: Testimonial[] = [
   {
     company: 'Elephanttree',
-    name: 'John Doe',
-    title: 'CTO',
-    image: '/testimonials/person-1.jpg',
     quote:
       'Kwerky Media transformed our storytelling, engaging our target audience effectively. Highly recommend!',
   },
   {
     company: 'SNIPE TECH',
     location: 'Bangalore',
-    name: 'Aarav Mehta',
-    title: 'Founder',
-    image: '/testimonials/person-2.jpg',
     quote:
       'Kwerky helped us sharpen how we present technical value. The content felt premium, clear, and far more convincing than what we had before.',
   },
@@ -102,25 +93,27 @@ const Testimonials = () => {
                 <div className="relative z-10 flex h-full flex-col">
                   <div className="flex items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="h-14 w-14 rounded-2xl border border-white/10 object-cover"
-                        loading="lazy"
-                      />
+                      <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] font-general text-sm font-semibold uppercase tracking-[0.24em] text-white/82">
+                        {item.company
+                          .split(' ')
+                          .map((part) => part[0])
+                          .join('')
+                          .slice(0, 2)}
+                      </div>
                       <div>
                         <p className="font-sans text-lg font-medium tracking-tight text-white sm:text-xl">
-                          {item.name}
+                          {item.company}
                         </p>
                         <p className="font-robert-regular text-sm text-white/55">
-                          {item.title}
+                          {item.location
+                            ? `${item.location} client`
+                            : 'Client feedback'}
                         </p>
                       </div>
                     </div>
                     <div className="text-right">
                       <p className="font-general text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-white/50">
-                        {item.company}
-                        {item.location ? ` • ${item.location}` : ''}
+                        Verified review
                       </p>
                     </div>
                   </div>
