@@ -12,9 +12,9 @@ const LiquidShowcase = lazy(() => import('./components/LiquidShowcase'));
 const RoutePlaceholder = lazy(() => import('./pages/RoutePlaceholder'));
 const Footer = lazy(() => import('./components/Footer'));
 
-const HomePage = ({ canAnimate }: { canAnimate: boolean }) => (
+const HomePage = () => (
   <>
-    <Hero canAnimate={canAnimate} />
+    <Hero />
     <Features />
     <Story />
     <Testimonials />
@@ -34,10 +34,7 @@ const App = () => {
         <Suspense fallback={<Loading />}>
           <Navbar />
           <Routes>
-            <Route
-              path="/"
-              element={<HomePage canAnimate={isLoadingComplete} />}
-            />
+            <Route path="/" element={<HomePage />} />
             <Route
               path="/services"
               element={

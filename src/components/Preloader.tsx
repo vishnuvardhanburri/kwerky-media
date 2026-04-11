@@ -35,13 +35,22 @@ const Preloader = ({ onComplete }: PreloaderProps) => {
 
     timeline
       .set(titleRef.current, {
-        y: 28,
+        y: 8,
         opacity: 0,
+        scale: 1.75,
       })
       .to(titleRef.current, {
         y: 0,
         opacity: 1,
-        duration: 1.2,
+        scale: 1.02,
+        duration: 1,
+        ease: 'power4.out',
+      })
+      .to(titleRef.current, {
+        scale: 0.78,
+        opacity: 0.92,
+        duration: 1.1,
+        ease: 'power3.inOut',
       })
       .to(
         overlayRef.current,
@@ -61,9 +70,9 @@ const Preloader = ({ onComplete }: PreloaderProps) => {
     >
       <h1
         ref={titleRef}
-        className="font-circular-web text-4xl font-bold tracking-[0.14em] text-white sm:text-5xl md:text-6xl"
+        className="text-center font-sans text-4xl font-medium tracking-[-0.06em] text-white sm:text-5xl md:text-6xl lg:text-7xl"
       >
-        Take Your Stage
+        Take your stage by Kwerky Media
       </h1>
     </div>
   );
