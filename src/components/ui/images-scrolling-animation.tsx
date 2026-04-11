@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export type ScrollProject = {
   title: string;
@@ -121,15 +121,62 @@ const ImagesScrollingAnimation = ({
   projects?: ScrollProject[];
 }) => {
   const container = useRef<HTMLDivElement>(null);
+  const [useStaticCards, setUseStaticCards] = useState(false);
   const { scrollYProgress } = useScroll({
     target: container,
     offset: ['start start', 'end end'],
   });
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(
+      '(max-width: 1023px), (prefers-reduced-motion: reduce)',
+    );
+    const updateLayout = () => setUseStaticCards(mediaQuery.matches);
+
+    updateLayout();
+    mediaQuery.addEventListener('change', updateLayout);
+
+    return () => mediaQuery.removeEventListener('change', updateLayout);
+  }, []);
+
+  if (useStaticCards) {
+    return (
+      <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:hidden">
+        {projects.map((project) => (
+          <article
+            key={project.title}
+            className="overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#111214] shadow-[0_20px_50px_rgba(0,0,0,0.28)]"
+          >
+            <img
+              src={project.src}
+              alt={project.title}
+              className="h-52 w-full object-cover"
+              loading="lazy"
+              draggable={false}
+            />
+            <div className="border-t border-white/8 p-5">
+              <p className="font-general text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-white/50">
+                Kwerky Media
+              </p>
+              <h3 className="mt-3 font-sans text-2xl font-medium tracking-tight text-white">
+                {project.title}
+              </h3>
+              {project.description ? (
+                <p className="mt-3 font-robert-regular text-sm leading-7 text-white/68">
+                  {project.description}
+                </p>
+              ) : null}
+            </div>
+          </article>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <main
       ref={container}
-      className="relative flex w-full flex-col items-center justify-center pb-[40vh] pt-[6vh] sm:pb-[52vh] sm:pt-[8vh] lg:pb-[64vh] lg:pt-[10vh]"
+      className="relative hidden w-full flex-col items-center justify-center pb-[40vh] pt-[6vh] sm:pb-[52vh] sm:pt-[8vh] lg:flex lg:pb-[64vh] lg:pt-[10vh]"
     >
       {projects.map((project, i) => {
         const targetScale = Math.max(

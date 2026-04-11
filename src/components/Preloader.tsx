@@ -17,7 +17,7 @@ const Preloader = ({ onComplete }: PreloaderProps) => {
         didCompleteRef.current = true;
         onComplete();
       }
-    }, 4200);
+    }, 2800);
 
     return () => window.clearTimeout(fallbackTimer);
   }, [onComplete]);
@@ -56,10 +56,10 @@ const Preloader = ({ onComplete }: PreloaderProps) => {
         overlayRef.current,
         {
           yPercent: -100,
-          duration: 1,
+          duration: 0.85,
           ease: 'power4.inOut',
         },
-        '+=1.5',
+        '+=0.35',
       );
   }, [onComplete]);
 

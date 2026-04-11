@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
@@ -9,6 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 const LiquidShowcase = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const mediaRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const handleMouseMove = CardHoverEffect();
   const isDesktop = useMemo(() => {
     if (typeof window === 'undefined') return false;
@@ -38,6 +39,26 @@ const LiquidShowcase = () => {
         },
       },
     );
+  }, []);
+
+  useEffect(() => {
+    if (!videoRef.current) return;
+
+    const video = videoRef.current;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          void video.play().catch(() => undefined);
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.2 },
+    );
+
+    observer.observe(video);
+
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -75,16 +96,17 @@ const LiquidShowcase = () => {
         >
           <div
             className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#0b0b0d] p-3 shadow-[0_30px_80px_rgba(0,0,0,0.45)]"
-            style={{ filter: 'url(#flt_tag)' }}
+            style={isDesktop ? { filter: 'url(#flt_tag)' } : undefined}
           >
             <div className="overflow-hidden rounded-[1.4rem] transition-transform duration-300 ease-linear will-change-transform group-hover:[transform:rotateX(var(--rotate-x))_rotateY(var(--rotate-y))_scale(0.985)]">
               <video
+                ref={videoRef}
                 className="h-[24rem] w-full object-cover sm:h-[30rem]"
                 src="/story-background.mp4"
-                autoPlay
                 loop
                 muted
                 playsInline
+                preload="metadata"
               />
               <div className="absolute inset-0 bg-black/40" />
               <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,92,122,0.18),transparent_32%),linear-gradient(to_top,rgba(0,0,0,0.45),transparent_42%)]" />

@@ -13,6 +13,8 @@ const Hero = () => {
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const mediaQuery = window.matchMedia('(min-width: 768px)');
+
     const tryPlay = async (video: HTMLVideoElement | null) => {
       if (!video) return;
 
@@ -26,30 +28,46 @@ const Hero = () => {
       }
     };
 
-    void tryPlay(desktopVideoRef.current);
-    void tryPlay(mobileVideoRef.current);
+    const syncPlayback = () => {
+      const desktopVideo = desktopVideoRef.current;
+      const mobileVideo = mobileVideoRef.current;
+
+      if (mediaQuery.matches) {
+        mobileVideo?.pause();
+        void tryPlay(desktopVideo);
+      } else {
+        desktopVideo?.pause();
+        void tryPlay(mobileVideo);
+      }
+    };
+
+    syncPlayback();
+    mediaQuery.addEventListener('change', syncPlayback);
+
+    return () => mediaQuery.removeEventListener('change', syncPlayback);
   }, []);
 
   useGSAP(() => {
     if (!sectionRef.current || !contentRef.current) return;
 
-    const mediaTargets = [desktopVideoRef.current, mobileVideoRef.current].filter(
-      Boolean,
-    );
-    const scrollTween = gsap.to(mediaTargets, {
-      scale: 1.02,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 0.8,
+    const contentTween = gsap.fromTo(
+      contentRef.current.children,
+      {
+        y: 18,
+        opacity: 0,
       },
-    });
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.72,
+        stagger: 0.08,
+        delay: 0.08,
+        ease: 'power2.out',
+      },
+    );
 
     return () => {
-      scrollTween.scrollTrigger?.kill();
-      scrollTween.kill();
+      contentTween.kill();
     };
   }, []);
 
@@ -61,31 +79,35 @@ const Hero = () => {
     >
       <video
         ref={desktopVideoRef}
-        className="absolute inset-0 z-0 hidden h-full w-full scale-[1.08] object-cover object-center brightness-[0.38] contrast-[1.08] saturate-[0.7] blur-[1px] md:block"
+        className="absolute inset-0 z-0 hidden h-full w-full object-cover object-center md:block"
         autoPlay
         loop
         muted
         playsInline
-        preload="auto"
+        preload="metadata"
+        poster="/og-image.jpg"
+        disablePictureInPicture
       >
-        <source src="/hero-video.mp4" type="video/mp4" />
+        <source src="/hero-video-optimized-540.mp4" type="video/mp4" />
       </video>
 
       <video
         ref={mobileVideoRef}
-        className="absolute inset-0 z-0 block h-full w-full scale-[1.06] object-cover object-center brightness-[0.38] contrast-[1.08] saturate-[0.7] blur-[1px] md:hidden"
+        className="absolute inset-0 z-0 block h-full w-full object-cover object-center md:hidden"
         autoPlay
         loop
         muted
         playsInline
-        preload="auto"
+        preload="metadata"
+        poster="/og-image.jpg"
+        disablePictureInPicture
       >
-        <source src="/hero-video-mobile.mp4" type="video/mp4" />
+        <source src="/hero-video-mobile-optimized.mp4" type="video/mp4" />
       </video>
 
       <div className="absolute inset-0 z-10">
-        <div className="absolute inset-0 bg-black/52" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(96,164,255,0.1),transparent_30%),radial-gradient(circle_at_78%_18%,rgba(255,92,122,0.14),transparent_20%),linear-gradient(to_bottom,rgba(0,0,0,0.12),rgba(0,0,0,0.78))]" />
+        <div className="absolute inset-0 bg-black/62 md:bg-black/56" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(96,164,255,0.08),transparent_28%),radial-gradient(circle_at_78%_18%,rgba(255,92,122,0.1),transparent_18%),linear-gradient(to_bottom,rgba(0,0,0,0.08),rgba(0,0,0,0.72))]" />
         <div className="absolute inset-x-0 bottom-0 h-52 bg-gradient-to-t from-black via-black/82 to-transparent" />
         <div className="absolute inset-y-0 left-0 w-[22%] bg-gradient-to-r from-black/42 to-transparent" />
         <div className="absolute inset-y-0 right-0 w-[22%] bg-gradient-to-l from-black/38 to-transparent" />
