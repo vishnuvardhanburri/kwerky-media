@@ -12,7 +12,7 @@ import Preloader from './components/Preloader';
 const Navbar = lazy(() => import('./components/navbar'));
 const Hero = lazy(() => import('./pages/hero'));
 const Features = lazy(() => import('./pages/features'));
-const Story = lazy(() => import('./pages/Story'));
+const Story = lazy(() => import('./pages/story'));
 const Testimonials = lazy(() => import('./pages/Testimonials'));
 const LiquidShowcase = lazy(() => import('./components/LiquidShowcase'));
 const RouteShowcase = lazy(() => import('./pages/RouteShowcase'));
