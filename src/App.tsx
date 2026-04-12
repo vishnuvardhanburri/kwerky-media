@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 import Loading from './components/loading';
 import Preloader from './components/Preloader';
+import { useTouchLayout } from '@/hooks/use-touch-layout';
 
 const Navbar = lazy(() => import('./components/navbar'));
 const Hero = lazy(() => import('./pages/hero'));
@@ -18,7 +19,7 @@ const LiquidShowcase = lazy(() => import('./components/LiquidShowcase'));
 const RouteShowcase = lazy(() => import('./pages/RouteShowcase'));
 const Footer = lazy(() => import('./components/Footer'));
 
-const pageTransition = {
+const desktopPageTransition = {
   initial: {
     opacity: 0,
     y: 30,
@@ -36,6 +37,21 @@ const pageTransition = {
     y: -24,
     scale: 1.01,
     filter: 'blur(8px)',
+  },
+};
+
+const touchPageTransition = {
+  initial: {
+    opacity: 0,
+    y: 18,
+  },
+  animate: {
+    opacity: 1,
+    y: 0,
+  },
+  exit: {
+    opacity: 0,
+    y: -12,
   },
 };
 
@@ -287,7 +303,11 @@ const HomePage = () => (
   </>
 );
 
-const RouteShell = ({ children }: { children: React.ReactNode }) => (
+const RouteShell = ({ children }: { children: React.ReactNode }) => {
+  const isTouchLayout = useTouchLayout();
+  const pageTransition = isTouchLayout ? touchPageTransition : desktopPageTransition;
+
+  return (
   <motion.div
     variants={pageTransition}
     initial="initial"
@@ -301,7 +321,8 @@ const RouteShell = ({ children }: { children: React.ReactNode }) => (
   >
     {children}
   </motion.div>
-);
+  );
+};
 
 const AnimatedRoutes = () => {
   const location = useLocation();

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
+import { useTouchLayout } from '@/hooks/use-touch-layout';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,10 +12,9 @@ const Hero = () => {
   const desktopVideoRef = useRef<HTMLVideoElement>(null);
   const mobileVideoRef = useRef<HTMLVideoElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const isTouchLayout = useTouchLayout();
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(min-width: 768px)');
-
     const tryPlay = async (video: HTMLVideoElement | null) => {
       if (!video) return;
 
@@ -32,20 +32,19 @@ const Hero = () => {
       const desktopVideo = desktopVideoRef.current;
       const mobileVideo = mobileVideoRef.current;
 
-      if (mediaQuery.matches) {
-        mobileVideo?.pause();
-        void tryPlay(desktopVideo);
-      } else {
+      if (isTouchLayout) {
         desktopVideo?.pause();
+        desktopVideo?.removeAttribute('src');
         void tryPlay(mobileVideo);
+      } else {
+        mobileVideo?.pause();
+        mobileVideo?.removeAttribute('src');
+        void tryPlay(desktopVideo);
       }
     };
 
     syncPlayback();
-    mediaQuery.addEventListener('change', syncPlayback);
-
-    return () => mediaQuery.removeEventListener('change', syncPlayback);
-  }, []);
+  }, [isTouchLayout]);
 
   useGSAP(() => {
     if (!sectionRef.current || !contentRef.current) return;
@@ -79,7 +78,7 @@ const Hero = () => {
     >
       <video
         ref={desktopVideoRef}
-        className="absolute inset-0 z-0 hidden h-full w-full object-cover object-center md:block"
+        className="absolute inset-0 z-0 h-full w-full object-cover object-center"
         autoPlay
         loop
         muted
@@ -87,13 +86,17 @@ const Hero = () => {
         preload="metadata"
         poster="/og-image.jpg"
         disablePictureInPicture
+        aria-hidden={isTouchLayout}
+        style={{ display: isTouchLayout ? 'none' : 'block' }}
       >
-        <source src="/hero-video-optimized-540.mp4?v=3" type="video/mp4" />
+        {!isTouchLayout ? (
+          <source src="/hero-video-optimized-540.mp4?v=4" type="video/mp4" />
+        ) : null}
       </video>
 
       <video
         ref={mobileVideoRef}
-        className="absolute inset-0 z-0 block h-full w-full object-cover object-[58%_center] md:hidden"
+        className="absolute inset-0 z-0 h-full w-full object-cover object-[58%_center]"
         autoPlay
         loop
         muted
@@ -101,8 +104,12 @@ const Hero = () => {
         preload="metadata"
         poster="/og-image.jpg"
         disablePictureInPicture
+        aria-hidden={!isTouchLayout}
+        style={{ display: isTouchLayout ? 'block' : 'none' }}
       >
-        <source src="/hero-video-mobile-optimized.mp4?v=3" type="video/mp4" />
+        {isTouchLayout ? (
+          <source src="/hero-video-mobile-optimized.mp4?v=4" type="video/mp4" />
+        ) : null}
       </video>
 
       <div className="absolute inset-0 z-10">
@@ -116,7 +123,11 @@ const Hero = () => {
 
       <div
         ref={contentRef}
-        className="relative z-20 mx-auto flex w-full max-w-7xl flex-col items-start justify-center px-5 pb-12 pt-28 text-left sm:px-10 md:justify-end md:pb-24 md:pt-32 lg:px-16 lg:pb-28"
+        className={`relative z-20 mx-auto flex w-full max-w-7xl flex-col items-start justify-center text-left ${
+          isTouchLayout
+            ? 'px-5 pb-12 pt-28'
+            : 'px-5 pb-12 pt-28 sm:px-10 md:justify-end md:pb-24 md:pt-32 lg:px-16 lg:pb-28'
+        }`}
       >
         <p className="mb-4 inline-flex max-w-[18rem] rounded-full border border-white/18 bg-black/18 px-4 py-2 font-general text-[0.55rem] font-semibold uppercase leading-[1.55] tracking-[0.28em] text-white/82 backdrop-blur-sm sm:mb-5 sm:max-w-none sm:text-[0.78rem] sm:tracking-[0.34em]">
           Content and Growth Partner for Tech Companies
@@ -126,16 +137,26 @@ const Hero = () => {
           Take your stage by Kwerky Media
         </span>
 
-        <h1 className="max-w-[14.5rem] text-balance font-sans text-[2.8rem] font-medium leading-[0.95] tracking-[-0.07em] text-white drop-shadow-[0_10px_40px_rgba(0,0,0,0.35)] sm:max-w-3xl sm:text-6xl md:text-7xl lg:text-[6.2rem]">
+        <h1 className={`text-balance font-sans font-medium leading-[0.95] tracking-[-0.07em] text-white drop-shadow-[0_10px_40px_rgba(0,0,0,0.35)] ${
+          isTouchLayout
+            ? 'max-w-[14.5rem] text-[2.8rem]'
+            : 'max-w-[15rem] sm:max-w-3xl text-[2.8rem] sm:text-6xl md:text-7xl lg:text-[6.2rem]'
+        }`}>
           Get your spotlight.
         </h1>
 
-        <p className="mt-4 max-w-[17.5rem] font-robert-regular text-[0.98rem] leading-8 text-white/84 drop-shadow-[0_6px_30px_rgba(0,0,0,0.28)] sm:mt-6 sm:max-w-xl sm:text-lg md:text-[1.08rem]">
+        <p className={`mt-4 font-robert-regular text-[0.98rem] leading-8 text-white/84 drop-shadow-[0_6px_30px_rgba(0,0,0,0.28)] ${
+          isTouchLayout ? 'max-w-[17.5rem]' : 'max-w-[17.5rem] sm:mt-6 sm:max-w-xl sm:text-lg md:text-[1.08rem]'
+        }`}>
           Kwerky Media helps ambitious tech brands turn product complexity into
           sharp stories, premium presentation, and content that earns trust.
         </p>
 
-        <div className="mt-7 flex w-full max-w-[17.5rem] flex-col items-stretch gap-3 sm:mt-10 sm:max-w-none sm:flex-row sm:items-center">
+        <div className={`mt-7 flex w-full flex-col items-stretch gap-3 ${
+          isTouchLayout
+            ? 'max-w-[17.5rem]'
+            : 'max-w-[17.5rem] sm:mt-10 sm:max-w-none sm:flex-row sm:items-center'
+        }`}>
           <Link
             to="/services"
             className="inline-flex items-center justify-center rounded-full bg-[#ff5c7a] px-6 py-3.5 font-general text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-black transition duration-300 hover:scale-[1.02] hover:bg-white sm:px-7 sm:tracking-[0.28em]"
