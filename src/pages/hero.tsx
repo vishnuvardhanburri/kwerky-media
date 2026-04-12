@@ -88,7 +88,7 @@ const Hero = () => {
         poster="/og-image.jpg"
         disablePictureInPicture
       >
-        <source src="/hero-video-optimized-540.mp4" type="video/mp4" />
+        <source src="/hero-video-optimized-540.mp4?v=3" type="video/mp4" />
       </video>
 
       <video
@@ -102,7 +102,7 @@ const Hero = () => {
         poster="/og-image.jpg"
         disablePictureInPicture
       >
-        <source src="/hero-video-optimized-540.mp4" type="video/mp4" />
+        <source src="/hero-video-mobile-optimized.mp4?v=3" type="video/mp4" />
       </video>
 
       <div className="absolute inset-0 z-10">
