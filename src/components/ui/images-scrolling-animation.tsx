@@ -43,6 +43,7 @@ const defaultProjects: ScrollProject[] = [
 ];
 
 const StickyCard = ({
+  index,
   title,
   description,
   src,
@@ -50,6 +51,7 @@ const StickyCard = ({
   range,
   targetScale,
 }: {
+  index: number;
   title: string;
   description?: string;
   src: string;
@@ -59,34 +61,42 @@ const StickyCard = ({
 }) => {
   const container = useRef<HTMLDivElement>(null);
   const scale = useTransform(progress, range, [1, targetScale]);
-  const opacity = useTransform(progress, range, [1, 0.34]);
-  const translateY = useTransform(progress, range, [0, -150]);
-  const cardHeight = useTransform(progress, range, ['100%', '68%']);
+  const opacity = useTransform(progress, range, [1, 0.26]);
+  const translateY = useTransform(progress, range, [0, -210]);
+  const rotateX = useTransform(progress, range, [0, -24]);
+  const rotateZ = useTransform(progress, range, [0, -2.8]);
+  const cardHeight = useTransform(progress, range, ['100%', '64%']);
   const imageScale = useTransform(progress, range, [1, 1.08]);
   const clipPath = useTransform(
     progress,
     range,
     [
       'inset(0% 0% 0% 0% round 28px)',
-      'inset(0% 0% 30% 0% round 28px)',
+      'inset(0% 0% 38% 0% round 28px)',
     ],
   );
 
   return (
     <div
       ref={container}
-      className="sticky top-[12vh] flex h-[78vh] items-start justify-center px-4 sm:px-6 lg:h-[82vh] lg:px-8"
+      className="sticky top-[10vh] flex h-[78vh] items-start justify-center px-4 [perspective:1800px] sm:px-6 lg:h-[82vh] lg:px-8"
     >
       <motion.div
         style={{
           scale,
           opacity,
           y: translateY,
+          rotateX,
+          rotateZ,
           height: cardHeight,
           clipPath,
+          transformPerspective: 1800,
+          transformOrigin: 'top center',
+          zIndex: 20 - index,
         }}
         className="relative mt-10 flex w-[300px] origin-top flex-col overflow-hidden rounded-[28px] border border-white/10 bg-[#111214] shadow-[0_40px_120px_rgba(0,0,0,0.42)] sm:w-[420px] md:w-[520px] lg:w-[640px]"
       >
+        <div className="absolute inset-x-0 top-0 z-20 h-5 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.03),transparent)]" />
         <motion.img
           src={src || '/placeholder.svg'}
           alt={title}
@@ -187,6 +197,7 @@ const ImagesScrollingAnimation = ({
         return (
           <StickyCard
             key={`p_${i}`}
+            index={i}
             {...project}
             progress={scrollYProgress}
             range={[i * 0.12, Math.min(1, 0.28 + i * 0.16)]}
