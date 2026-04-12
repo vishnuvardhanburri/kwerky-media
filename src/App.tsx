@@ -308,19 +308,26 @@ const RouteShell = ({ children }: { children: React.ReactNode }) => {
   const pageTransition = isTouchLayout ? touchPageTransition : desktopPageTransition;
 
   return (
-  <motion.div
-    variants={pageTransition}
-    initial="initial"
-    animate="animate"
-    exit="exit"
-    transition={{
-      duration: 0.62,
-      ease: [0.22, 1, 0.36, 1],
-    }}
-    className="will-change-transform"
-  >
-    {children}
-  </motion.div>
+    <motion.div
+      variants={pageTransition}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      transition={
+        isTouchLayout
+          ? {
+              duration: 0.28,
+              ease: [0.22, 1, 0.36, 1],
+            }
+          : {
+              duration: 0.62,
+              ease: [0.22, 1, 0.36, 1],
+            }
+      }
+      className="will-change-transform"
+    >
+      {children}
+    </motion.div>
   );
 };
 

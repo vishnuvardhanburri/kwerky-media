@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
 import CardHoverEffect from '../hook/cardHoverEffect';
+import { useTouchLayout } from '@/hooks/use-touch-layout';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,10 +12,7 @@ const LiquidShowcase = () => {
   const mediaRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const handleMouseMove = CardHoverEffect();
-  const isDesktop = useMemo(() => {
-    if (typeof window === 'undefined') return false;
-    return window.matchMedia('(min-width: 1024px)').matches;
-  }, []);
+  const isTouchLayout = useTouchLayout();
 
   useGSAP(() => {
     if (!sectionRef.current) return;
@@ -91,12 +89,12 @@ const LiquidShowcase = () => {
         <div
           ref={mediaRef}
           data-liquid-reveal
-          onMouseMove={isDesktop ? handleMouseMove : undefined}
+          onMouseMove={!isTouchLayout ? handleMouseMove : undefined}
           className="group relative"
         >
           <div
             className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#0b0b0d] p-3 shadow-[0_30px_80px_rgba(0,0,0,0.45)]"
-            style={isDesktop ? { filter: 'url(#flt_tag)' } : undefined}
+            style={!isTouchLayout ? { filter: 'url(#flt_tag)' } : undefined}
           >
             <div className="overflow-hidden rounded-[1.4rem] transition-transform duration-300 ease-linear will-change-transform group-hover:[transform:rotateX(var(--rotate-x))_rotateY(var(--rotate-y))_scale(0.985)]">
               <video

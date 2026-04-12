@@ -125,28 +125,36 @@ const Hero = () => {
         ref={contentRef}
         className={`relative z-20 mx-auto flex w-full max-w-7xl flex-col items-start justify-center text-left ${
           isTouchLayout
-            ? 'px-5 pb-12 pt-28'
+            ? 'px-5 pb-14 pt-32'
             : 'px-5 pb-12 pt-28 sm:px-10 md:justify-end md:pb-24 md:pt-32 lg:px-16 lg:pb-28'
         }`}
       >
-        <p className="mb-4 inline-flex max-w-[18rem] rounded-full border border-white/18 bg-black/18 px-4 py-2 font-general text-[0.55rem] font-semibold uppercase leading-[1.55] tracking-[0.28em] text-white/82 backdrop-blur-sm sm:mb-5 sm:max-w-none sm:text-[0.78rem] sm:tracking-[0.34em]">
+        <p className={`inline-flex rounded-full border border-white/18 bg-black/18 font-general font-semibold uppercase text-white/82 backdrop-blur-sm ${
+          isTouchLayout
+            ? 'mb-3 max-w-[16.75rem] px-3.5 py-2 text-[0.52rem] leading-[1.5] tracking-[0.24em]'
+            : 'mb-4 max-w-[18rem] px-4 py-2 text-[0.55rem] leading-[1.55] tracking-[0.28em] sm:mb-5 sm:max-w-none sm:text-[0.78rem] sm:tracking-[0.34em]'
+        }`}>
           Content and Growth Partner for Tech Companies
         </p>
 
-        <span className="mb-3 max-w-[16rem] font-general text-[0.52rem] font-semibold uppercase leading-[1.7] tracking-[0.3em] text-[#ff8ba0]/82 sm:mb-4 sm:max-w-none sm:text-[0.72rem] sm:tracking-[0.32em]">
+        <span className={`font-general font-semibold uppercase text-[#ff8ba0]/82 ${
+          isTouchLayout
+            ? 'mb-2 max-w-[14rem] text-[0.5rem] leading-[1.7] tracking-[0.24em]'
+            : 'mb-3 max-w-[16rem] text-[0.52rem] leading-[1.7] tracking-[0.3em] sm:mb-4 sm:max-w-none sm:text-[0.72rem] sm:tracking-[0.32em]'
+        }`}>
           Take your stage by Kwerky Media
         </span>
 
         <h1 className={`text-balance font-sans font-medium leading-[0.95] tracking-[-0.07em] text-white drop-shadow-[0_10px_40px_rgba(0,0,0,0.35)] ${
           isTouchLayout
-            ? 'max-w-[14.5rem] text-[2.8rem]'
+            ? 'max-w-[13.75rem] text-[2.45rem]'
             : 'max-w-[15rem] sm:max-w-3xl text-[2.8rem] sm:text-6xl md:text-7xl lg:text-[6.2rem]'
         }`}>
           Get your spotlight.
         </h1>
 
         <p className={`mt-4 font-robert-regular text-[0.98rem] leading-8 text-white/84 drop-shadow-[0_6px_30px_rgba(0,0,0,0.28)] ${
-          isTouchLayout ? 'max-w-[17.5rem]' : 'max-w-[17.5rem] sm:mt-6 sm:max-w-xl sm:text-lg md:text-[1.08rem]'
+          isTouchLayout ? 'max-w-[15.5rem] text-[0.94rem] leading-7' : 'max-w-[17.5rem] sm:mt-6 sm:max-w-xl sm:text-lg md:text-[1.08rem]'
         }`}>
           Kwerky Media helps ambitious tech brands turn product complexity into
           sharp stories, premium presentation, and content that earns trust.
@@ -154,18 +162,26 @@ const Hero = () => {
 
         <div className={`mt-7 flex w-full flex-col items-stretch gap-3 ${
           isTouchLayout
-            ? 'max-w-[17.5rem]'
+            ? 'max-w-[15.5rem]'
             : 'max-w-[17.5rem] sm:mt-10 sm:max-w-none sm:flex-row sm:items-center'
         }`}>
           <Link
             to="/services"
-            className="inline-flex items-center justify-center rounded-full bg-[#ff5c7a] px-6 py-3.5 font-general text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-black transition duration-300 hover:scale-[1.02] hover:bg-white sm:px-7 sm:tracking-[0.28em]"
+            className={`inline-flex items-center justify-center rounded-full bg-[#ff5c7a] font-general font-semibold uppercase text-black transition duration-300 hover:scale-[1.02] hover:bg-white ${
+              isTouchLayout
+                ? 'px-5 py-3.5 text-[0.66rem] tracking-[0.22em]'
+                : 'px-6 py-3.5 text-[0.72rem] tracking-[0.24em] sm:px-7 sm:tracking-[0.28em]'
+            }`}
           >
             Start a Project
           </Link>
           <a
             href="#contact"
-            className="inline-flex items-center justify-center rounded-full border border-white/26 bg-black/18 px-6 py-3.5 font-general text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-white backdrop-blur-sm transition duration-300 hover:border-white hover:bg-white hover:text-black sm:px-7 sm:tracking-[0.28em]"
+            className={`inline-flex items-center justify-center rounded-full border border-white/26 bg-black/18 font-general font-semibold uppercase text-white backdrop-blur-sm transition duration-300 hover:border-white hover:bg-white hover:text-black ${
+              isTouchLayout
+                ? 'px-5 py-3.5 text-[0.66rem] tracking-[0.22em]'
+                : 'px-6 py-3.5 text-[0.72rem] tracking-[0.24em] sm:px-7 sm:tracking-[0.28em]'
+            }`}
           >
             Connect with us
           </a>

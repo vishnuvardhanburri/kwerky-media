@@ -1,8 +1,9 @@
-import { useMemo, useRef } from 'react';
+import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
 import CardHoverEffect from '../hook/cardHoverEffect';
+import { useTouchLayout } from '@/hooks/use-touch-layout';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -29,10 +30,7 @@ const testimonials: Testimonial[] = [
 const Testimonials = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const handleMouseMove = CardHoverEffect();
-  const isDesktop = useMemo(() => {
-    if (typeof window === 'undefined') return false;
-    return window.matchMedia('(min-width: 1024px)').matches;
-  }, []);
+  const isTouchLayout = useTouchLayout();
 
   useGSAP(() => {
     if (!sectionRef.current) return;
@@ -85,7 +83,7 @@ const Testimonials = () => {
             <article
               key={item.company}
               data-testimonial-card
-              onMouseMove={isDesktop ? handleMouseMove : undefined}
+              onMouseMove={!isTouchLayout ? handleMouseMove : undefined}
               className="group lg:max-w-[34rem]"
             >
               <div className="bento-tilt relative h-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-[linear-gradient(180deg,rgba(20,20,22,0.98),rgba(9,9,11,0.98))] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.32)] backdrop-blur-sm sm:p-7">
