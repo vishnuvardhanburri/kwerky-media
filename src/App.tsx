@@ -19,9 +19,24 @@ const RouteShowcase = lazy(() => import('./pages/RouteShowcase'));
 const Footer = lazy(() => import('./components/Footer'));
 
 const pageTransition = {
-  initial: { opacity: 0, y: 22 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -18 },
+  initial: {
+    opacity: 0,
+    y: 30,
+    scale: 0.985,
+    filter: 'blur(10px)',
+  },
+  animate: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    filter: 'blur(0px)',
+  },
+  exit: {
+    opacity: 0,
+    y: -24,
+    scale: 1.01,
+    filter: 'blur(8px)',
+  },
 };
 
 const routeContent = {
@@ -272,6 +287,22 @@ const HomePage = () => (
   </>
 );
 
+const RouteShell = ({ children }: { children: React.ReactNode }) => (
+  <motion.div
+    variants={pageTransition}
+    initial="initial"
+    animate="animate"
+    exit="exit"
+    transition={{
+      duration: 0.62,
+      ease: [0.22, 1, 0.36, 1],
+    }}
+    className="will-change-transform"
+  >
+    {children}
+  </motion.div>
+);
+
 const AnimatedRoutes = () => {
   const location = useLocation();
 
@@ -281,71 +312,41 @@ const AnimatedRoutes = () => {
         <Route
           path="/"
           element={
-            <motion.div
-              variants={pageTransition}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              transition={{ duration: 0.55, ease: 'easeOut' }}
-            >
+            <RouteShell>
               <HomePage />
-            </motion.div>
+            </RouteShell>
           }
         />
         <Route
           path="/services"
           element={
-            <motion.div
-              variants={pageTransition}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              transition={{ duration: 0.45, ease: 'easeOut' }}
-            >
+            <RouteShell>
               <RouteShowcase {...routeContent.services} />
-            </motion.div>
+            </RouteShell>
           }
         />
         <Route
           path="/about"
           element={
-            <motion.div
-              variants={pageTransition}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              transition={{ duration: 0.45, ease: 'easeOut' }}
-            >
+            <RouteShell>
               <RouteShowcase {...routeContent.about} />
-            </motion.div>
+            </RouteShell>
           }
         />
         <Route
           path="/blogs"
           element={
-            <motion.div
-              variants={pageTransition}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              transition={{ duration: 0.45, ease: 'easeOut' }}
-            >
+            <RouteShell>
               <RouteShowcase {...routeContent.blogs} />
-            </motion.div>
+            </RouteShell>
           }
         />
         <Route
           path="/videos"
           element={
-            <motion.div
-              variants={pageTransition}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              transition={{ duration: 0.45, ease: 'easeOut' }}
-            >
+            <RouteShell>
               <RouteShowcase {...routeContent.videos} />
-            </motion.div>
+            </RouteShell>
           }
         />
       </Routes>

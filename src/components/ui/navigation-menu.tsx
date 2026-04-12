@@ -5,6 +5,7 @@ import {
   motion,
   useMotionValueEvent,
   useScroll,
+  useReducedMotion,
   type Variants,
 } from 'framer-motion';
 import { Menu } from 'lucide-react';
@@ -97,6 +98,7 @@ export function AnimatedNavFramer() {
   const [isExpanded, setExpanded] = React.useState(true);
   const { scrollY } = useScroll();
   const location = useLocation();
+  const prefersReducedMotion = useReducedMotion();
   const lastScrollY = React.useRef(0);
   const scrollPositionOnCollapse = React.useRef(0);
 
@@ -133,6 +135,12 @@ export function AnimatedNavFramer() {
         whileHover={!isExpanded ? { scale: 1.08 } : {}}
         whileTap={!isExpanded ? { scale: 0.96 } : {}}
         onClick={handleNavClick}
+        layout
+        transition={{
+          type: 'spring',
+          stiffness: 260,
+          damping: 24,
+        }}
         className={cn(
           'flex h-12 items-center overflow-hidden rounded-full border border-white/10 bg-black/80 shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl',
           !isExpanded && 'cursor-pointer justify-center',
@@ -183,13 +191,38 @@ export function AnimatedNavFramer() {
                   to={item.href}
                   onClick={(e) => e.stopPropagation()}
                   className={cn(
-                    'inline-flex items-center rounded-full px-3 py-1.5 font-general text-[0.68rem] font-semibold uppercase tracking-[0.22em] transition-colors',
+                    'relative inline-flex items-center rounded-full px-3 py-1.5 font-general text-[0.68rem] font-semibold uppercase tracking-[0.22em] transition-colors',
                     isActive
-                      ? 'bg-white text-black'
+                      ? 'text-black'
                       : 'text-white/72 hover:text-white',
                   )}
                 >
-                  {item.name}
+                  {isActive ? (
+                    <motion.span
+                      layoutId="nav-active-pill"
+                      className="absolute inset-0 rounded-full bg-white shadow-[0_8px_24px_rgba(255,255,255,0.18)]"
+                      transition={
+                        prefersReducedMotion
+                          ? { duration: 0.2 }
+                          : {
+                              type: 'spring',
+                              stiffness: 380,
+                              damping: 30,
+                            }
+                      }
+                    />
+                  ) : null}
+                  <motion.span
+                    className="relative z-10"
+                    whileHover={
+                      prefersReducedMotion ? undefined : { y: -1, scale: 1.02 }
+                    }
+                    whileTap={
+                      prefersReducedMotion ? undefined : { scale: 0.98 }
+                    }
+                  >
+                    {item.name}
+                  </motion.span>
                 </Link>
               </motion.div>
             );
