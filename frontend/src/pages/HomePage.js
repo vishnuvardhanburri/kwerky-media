@@ -4,6 +4,7 @@ import BackgroundLayers from "@/components/shared/BackgroundLayers";
 import TextParallaxSection from "@/components/shared/TextParallaxSection";
 import { Card3D, RevealOnScroll } from "@/components/shared/Animations";
 import Footer from "@/components/shared/Footer";
+import Ethereal from "@/components/ui/ethereal";
 
 const SERVICES = [
   {
@@ -49,6 +50,7 @@ const HomePage = () => {
       />
 
       <section className="relative min-h-screen overflow-hidden px-6 pt-24" data-testid="hero-section">
+        <Ethereal />
         <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.14),transparent_42%),linear-gradient(180deg,rgba(0,0,0,0.25),rgba(0,0,0,0.92))]" />
 
         <div className="container mx-auto min-h-[calc(100vh-6rem)] max-w-5xl py-16 relative z-10">
