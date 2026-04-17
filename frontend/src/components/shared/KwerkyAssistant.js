@@ -6,7 +6,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+const API_BASE = process.env.REACT_APP_BACKEND_URL?.trim();
+const API = API_BASE ? `${API_BASE}/api` : null;
 
 const SUGGESTIONS = [
   "What does Kwerky Media do?",
@@ -31,6 +32,24 @@ const KwerkyAssistant = () => {
 
   const canSend = useMemo(() => input.trim().length > 0 && !isSending, [input, isSending]);
 
+  const localReply = (message) => {
+    const text = message.toLowerCase();
+
+    if (text.includes("contact") || text.includes("email") || text.includes("phone")) {
+      return "You can reach Kwerky Media at hello@kwerkymedia.com or 08031548088. The Services page also has the contact form.";
+    }
+
+    if (text.includes("founder") || text.includes("shashi") || text.includes("mithun")) {
+      return "The founders are Shashikanth Peetla and Mithun Mohan. Shashikanth leads tech storytelling and content, while Mithun leads client relationships and delivery.";
+    }
+
+    if (text.includes("service") || text.includes("blog") || text.includes("video") || text.includes("social")) {
+      return "Kwerky Media offers website content, blogs, social media posts, slide decks, and videos for tech companies.";
+    }
+
+    return "I can help with Kwerky Media’s services, founders, blogs, videos, or contact details. Ask me anything about the site.";
+  };
+
   useEffect(() => {
     if (!viewportRef.current) return;
     viewportRef.current.scrollTop = viewportRef.current.scrollHeight;
@@ -47,6 +66,10 @@ const KwerkyAssistant = () => {
     setIsSending(true);
 
     try {
+      if (!API) {
+        throw new Error("No backend configured");
+      }
+
       const response = await fetch(`${API}/assistant`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -73,8 +96,9 @@ const KwerkyAssistant = () => {
         ...current,
         {
           role: "assistant",
-          content:
-            "I’m having a quick connection issue. You can still check the Services and About pages, or contact hello@kwerkymedia.com.",
+          content: API
+            ? "I’m having a quick connection issue. You can still check the Services and About pages, or contact hello@kwerkymedia.com."
+            : localReply(text),
         },
       ]);
     } finally {
