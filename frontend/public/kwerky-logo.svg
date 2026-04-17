@@ -1,0 +1,10 @@
+<svg width="200" height="56" viewBox="0 0 200 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- K in blue -->
+  <text x="0" y="38" font-family="Arial, sans-serif" font-size="38" font-weight="800" fill="#3B82F6">K</text>
+  <!-- W in yellow -->
+  <text x="25" y="38" font-family="Arial, sans-serif" font-size="38" font-weight="800" fill="#FBBF24">W</text>
+  <!-- ERKY in white -->
+  <text x="58" y="38" font-family="Arial, sans-serif" font-size="38" font-weight="800" fill="#FFFFFF">ERKY</text>
+  <!-- MEDIA in smaller white text -->
+  <text x="0" y="52" font-family="Arial, sans-serif" font-size="12" font-weight="500" fill="#9CA3AF" letter-spacing="2">MEDIA</text>
+</svg>
