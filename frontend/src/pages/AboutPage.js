@@ -161,6 +161,48 @@ const AboutPage = () => {
         </div>
       </section>
 
+      <section className="px-6 py-24 relative section-warm" data-testid="about-videos">
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <RevealOnScroll>
+            <div className="text-center mb-10">
+              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.34em] text-blue-300/80">Videos</p>
+              <h2 className="text-4xl md:text-6xl font-bold text-white">Explore our Kwerky videos</h2>
+            </div>
+          </RevealOnScroll>
+          <div className="grid gap-6 md:grid-cols-2">
+            {[
+              {
+                title: "Our Services",
+                src: "https://www.youtube.com/embed/q6suj10uq_0",
+              },
+              {
+                title: "Kwerky in Action",
+                src: "https://www.youtube.com/embed/ZJuVlEQ2AIM",
+              },
+            ].map((video, index) => (
+              <RevealOnScroll key={video.title} delay={index * 0.08}>
+                <div className="overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#050b16] shadow-[0_18px_60px_rgba(0,0,0,0.35)]">
+                  <div className="aspect-video">
+                    <iframe
+                      src={video.src}
+                      title={video.title}
+                      loading="lazy"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="h-full w-full"
+                    />
+                  </div>
+                  <div className="p-5">
+                    <p className="text-xs uppercase tracking-[0.28em] text-blue-300/80">Videos</p>
+                    <h3 className="mt-2 text-xl font-semibold text-white">{video.title}</h3>
+                  </div>
+                </div>
+              </RevealOnScroll>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </div>
   );

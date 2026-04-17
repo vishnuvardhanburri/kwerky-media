@@ -3,6 +3,21 @@ import BackgroundLayers from "@/components/shared/BackgroundLayers";
 import { RevealOnScroll } from "@/components/shared/Animations";
 import Footer from "@/components/shared/Footer";
 
+const VIDEOS = [
+  {
+    title: "Kwerky in Action",
+    src: "https://www.youtube.com/embed/ZJuVlEQ2AIM",
+  },
+  {
+    title: "Our Services",
+    src: "https://www.youtube.com/embed/q6suj10uq_0",
+  },
+  {
+    title: "About Kwerky Media",
+    src: "https://www.youtube.com/embed/nXaoAh2DVpo",
+  },
+];
+
 const VideosPage = () => {
   return (
     <motion.div
@@ -34,23 +49,26 @@ const VideosPage = () => {
           </div>
 
           <RevealOnScroll delay={0.24}>
-            <div className="mt-12 grid gap-4 md:grid-cols-3">
-              {[
-                "/brand/hero.jpg",
-                "/brand/services-promo.jpg",
-                "/brand/contact-promo.png",
-              ].map((src, index) => (
+            <div className="mt-12 grid gap-6 lg:grid-cols-3 md:grid-cols-2">
+              {VIDEOS.map((video, index) => (
                 <div
-                  key={src}
+                  key={video.title}
                   className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#050b16] shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
                 >
-                  <img
-                    src={src}
-                    alt={`Kwerky Media video visual ${index + 1}`}
-                    className="h-56 w-full object-cover"
-                    loading="lazy"
-                    decoding="async"
-                  />
+                  <div className="aspect-video">
+                    <iframe
+                      src={video.src}
+                      title={video.title}
+                      loading="lazy"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="h-full w-full"
+                    />
+                  </div>
+                  <div className="p-5">
+                    <p className="text-xs uppercase tracking-[0.28em] text-blue-300/80">Videos</p>
+                    <h3 className="mt-2 text-xl font-semibold text-white">{video.title}</h3>
+                  </div>
                 </div>
               ))}
             </div>

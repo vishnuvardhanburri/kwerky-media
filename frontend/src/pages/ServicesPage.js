@@ -7,6 +7,10 @@ import { Card3D, RevealOnScroll } from "@/components/shared/Animations";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
+const VIDEO_URLS = {
+  services: "https://www.youtube.com/embed/nXaoAh2DVpo",
+};
+
 const SERVICES = [
   {
     title: "Website Content",
@@ -177,6 +181,31 @@ const ServicesPage = () => {
               </Card3D>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="px-6 py-20 relative section-deep" data-testid="services-video">
+        <div className="container mx-auto max-w-5xl relative z-10">
+          <RevealOnScroll>
+            <div className="text-center mb-10">
+              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.34em] text-blue-300/80">Videos</p>
+              <h2 className="text-4xl md:text-6xl font-bold text-white">Explore our Kwerky videos</h2>
+            </div>
+          </RevealOnScroll>
+          <RevealOnScroll delay={0.1}>
+            <div className="mx-auto max-w-3xl overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#050b16] shadow-[0_18px_60px_rgba(0,0,0,0.35)]">
+              <div className="aspect-video">
+                <iframe
+                  src={VIDEO_URLS.services}
+                  title="Kwerky Media video"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="h-full w-full"
+                />
+              </div>
+            </div>
+          </RevealOnScroll>
         </div>
       </section>
 

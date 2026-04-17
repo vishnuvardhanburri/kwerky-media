@@ -122,22 +122,22 @@ const KwerkyAssistant = () => {
       </motion.button>
 
       <Drawer open={open} onOpenChange={setOpen}>
-        <DrawerContent className="h-[90vh] border-white/10 bg-[#020817] text-white md:mx-auto md:max-w-2xl">
+        <DrawerContent className="h-[86vh] border-white/10 bg-[#020817] text-white md:mx-auto md:max-w-lg">
           <DrawerHeader className="border-b border-white/10 px-5 pb-4 pt-2 text-left">
             <DrawerTitle className="flex items-center gap-2 text-white">
               <Sparkles className="h-5 w-5 text-blue-300" />
-              Kwerky AI Assistant
+              Kwerky AI
             </DrawerTitle>
             <DrawerDescription className="text-white/45">
-              Ask anything about Kwerky Media. Mobile-friendly and fast.
+              Ask about Kwerky services, founders, blogs, videos, or contact details.
             </DrawerDescription>
           </DrawerHeader>
 
-          <div className="flex h-full min-h-0 flex-col px-4 pb-4">
+          <div className="flex h-full min-h-0 flex-col px-3 pb-3">
             <ScrollArea className="min-h-0 flex-1 pr-2">
               <div
                 ref={viewportRef}
-                className="flex h-full flex-col gap-3 py-4"
+                className="flex h-full flex-col gap-2.5 py-3"
               >
                 {messages.map((message, index) => (
                   <div
@@ -154,7 +154,7 @@ const KwerkyAssistant = () => {
               </div>
             </ScrollArea>
 
-            <div className="mt-4 space-y-3">
+            <div className="mt-3 space-y-2.5">
               <div className="flex flex-wrap gap-2">
                 {SUGGESTIONS.map((item) => (
                   <button
@@ -168,12 +168,12 @@ const KwerkyAssistant = () => {
                 ))}
               </div>
 
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
+              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-2.5">
                 <Textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Type your question..."
-                  className="min-h-[96px] border-0 bg-transparent px-1 text-white placeholder:text-white/30 focus-visible:ring-0"
+                  className="min-h-[82px] border-0 bg-transparent px-1 text-white placeholder:text-white/30 focus-visible:ring-0"
                   onKeyDown={(e) => {
                     if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
                       sendMessage(input);
