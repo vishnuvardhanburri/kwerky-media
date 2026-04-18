@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useSpring } from "framer-motion";
 import BackgroundLayers from "@/components/shared/BackgroundLayers";
@@ -11,6 +11,8 @@ import { DEFAULT_HOME, DEFAULT_SERVICES_HOMEPAGE, DEFAULT_TESTIMONIAL_PAGE, form
 
 const HomePage = () => {
   const { openContactInfo } = useSiteActions();
+  const heroVideoRef = useRef(null);
+  const [heroSoundOn, setHeroSoundOn] = useState(false);
   const [content, setContent] = useState({
     home: DEFAULT_HOME,
     services: DEFAULT_SERVICES_HOMEPAGE,
@@ -38,6 +40,18 @@ const HomePage = () => {
     ? (home.heroTitle || "").split("\n").filter(Boolean)
     : ["Content and growth partner", "for tech companies"];
   const valueTitle = formatCmsTitle(home.valueTitle || "Content that Captivates");
+
+  const enableHeroAudio = async () => {
+    const video = heroVideoRef.current;
+    if (!video) return;
+    try {
+      video.muted = false;
+      await video.play();
+      setHeroSoundOn(true);
+    } catch {
+      setHeroSoundOn(false);
+    }
+  };
 
   return (
     <div className="min-h-screen relative bg-black">
@@ -105,6 +119,7 @@ const HomePage = () => {
                 >
                   <div className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-black">
                     <video
+                      ref={heroVideoRef}
                       className="h-full w-full object-cover"
                       src="/brand/stage-reveal.mp4"
                       poster="/brand/hero.jpg"
@@ -113,6 +128,13 @@ const HomePage = () => {
                       muted
                       playsInline
                     />
+                    <button
+                      type="button"
+                      onClick={enableHeroAudio}
+                      className="absolute right-4 top-4 rounded-full border border-[#ffb347]/30 bg-black/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-white/85 backdrop-blur-sm transition-colors hover:bg-[#ffb347] hover:text-black"
+                    >
+                      {heroSoundOn ? "Sound on" : "Play with sound"}
+                    </button>
                   </div>
                   <div className="mt-4 flex items-center justify-between gap-4 px-2 pb-2">
                     <div>

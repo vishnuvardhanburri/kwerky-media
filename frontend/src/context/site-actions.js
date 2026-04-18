@@ -1,30 +1,20 @@
-import { createContext, useCallback, useContext } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { createContext, useCallback, useContext, useState } from "react";
 
 const SiteActionsContext = createContext(null);
 
 export const SiteActionsProvider = ({ children }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [isContactOpen, setIsContactOpen] = useState(false);
 
   const openContactInfo = useCallback(() => {
-    if (location.pathname === "/services") {
-      const target = document.getElementById("contact-info-section");
-      target?.scrollIntoView({ behavior: "smooth", block: "start" });
-      return;
-    }
+    setIsContactOpen(true);
+  }, []);
 
-    navigate("/services#contact-info-section");
-    window.setTimeout(() => {
-      document.getElementById("contact-info-section")?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 100);
-  }, [location.pathname, navigate]);
+  const closeContactInfo = useCallback(() => {
+    setIsContactOpen(false);
+  }, []);
 
   return (
-    <SiteActionsContext.Provider value={{ openContactInfo }}>
+    <SiteActionsContext.Provider value={{ openContactInfo, closeContactInfo, isContactOpen, setIsContactOpen }}>
       {children}
     </SiteActionsContext.Provider>
   );

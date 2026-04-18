@@ -14,6 +14,7 @@ import BlogPostPage from "@/pages/BlogPostPage";
 import VideosPage from "@/pages/VideosPage";
 import WhatsAppButton from "@/components/shared/WhatsAppButton";
 import KwerkyAssistant from "@/components/shared/KwerkyAssistant";
+import ContactDrawer from "@/components/shared/ContactDrawer";
 import { SiteActionsProvider, useSiteActions } from "@/context/site-actions";
 
 const NAV_LINKS = [
@@ -331,6 +332,7 @@ function App() {
             <Route path="/blogs/:slug" element={<BlogPostPage />} />
           </Routes>
           <WhatsAppButton />
+          <ContactDrawer />
           <KwerkyAssistant />
         </SiteActionsProvider>
       </BrowserRouter>
