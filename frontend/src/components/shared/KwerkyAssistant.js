@@ -12,19 +12,29 @@ const API_BASE = process.env.REACT_APP_BACKEND_URL?.trim();
 const API = API_BASE ? `${API_BASE}/api` : null;
 
 const SUGGESTIONS = [
-  "What does Kwerky Media do?",
-  "Take me to Services",
-  "How can I contact Kwerky Media?",
-  "Tell me about the founders.",
+  "What do you do?",
+  "Why Kwerky?",
+  "What services?",
+  "Pricing?",
 ];
 
 const starterMessages = [
   {
     role: "assistant",
     content:
-      "Hi, I’m Kwerky AI. I can guide you through the whole Kwerky Media website, from Home to Contact, and I can answer questions about services, founders, blogs, and videos.",
+      "Hi — how can I help you with your content or growth today?",
   },
 ];
+
+const defaultLead = {
+  name: "",
+  email: "",
+  product: "",
+  audience: "",
+  problem: "",
+  stage: "greet",
+  email_sent: false,
+};
 
 const SITE_ACTIONS = [
   { label: "Home", icon: Home, path: "/" },
@@ -47,12 +57,33 @@ const KwerkyAssistant = () => {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState(starterMessages);
+  const [lead, setLead] = useState(defaultLead);
   const [isSending, setIsSending] = useState(false);
   const viewportRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
 
   const canSend = useMemo(() => input.trim().length > 0 && !isSending, [input, isSending]);
+
+  useEffect(() => {
+    try {
+      const saved = window.sessionStorage.getItem("kwerky-assistant-lead");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        setLead({ ...defaultLead, ...parsed });
+      }
+    } catch {
+      // ignore persistence errors
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      window.sessionStorage.setItem("kwerky-assistant-lead", JSON.stringify(lead));
+    } catch {
+      // ignore persistence errors
+    }
+  }, [lead]);
 
   const scrollToHash = (hash) => {
     if (!hash) return;
@@ -132,30 +163,38 @@ const KwerkyAssistant = () => {
     const text = message.toLowerCase();
 
     if (text.includes("hello") || text.includes("hi") || text.includes("hey")) {
-      return "Hello. I’m Kwerky AI. I can help you explore the whole website, jump to pages, or answer questions about services, founders, blogs, videos, and contact details.";
+      return "Hi — how can I help you with your content or growth today?";
     }
 
     if (text.includes("bye") || text.includes("goodbye") || text.includes("see you")) {
-      return "Bye for now. If you need anything later, I can take you to Services, About Us, Blogs, Videos, or the Contact section.";
+      return "Bye for now. If you need anything later, I can take you to Services, About Us, Blogs, Videos, or Contact.";
     }
 
-    if (text.includes("contact") || text.includes("email") || text.includes("phone")) {
-      return "You can reach Kwerky Media at hello@kwerkymedia.com or 08031548088. I can also open the Contact section on the Services page for you.";
+    if (text.includes("price") || text.includes("pricing") || text.includes("cost") || text.includes("budget")) {
+      return "Pricing depends on your product, stage, and goals. Let’s discuss your project and suggest the right approach.";
     }
 
-    if (text.includes("founder") || text.includes("shashi") || text.includes("mithun")) {
-      return "The founders are Shashikanth Peetla and Mithun Mohan. Shashikanth leads tech storytelling and content, while Mithun leads client relationships and delivery. I can take you to About Us.";
+    if (text.includes("what do you do") || text.includes("who are you") || text.includes("what is kwerky")) {
+      return "We help tech companies turn complex products into clear, high-conversion messaging.";
+    }
+
+    if (text.includes("why") || text.includes("choose")) {
+      return "Most agencies focus on content output. We focus on clarity and conversion. If your product is complex, we make it simple and compelling.";
     }
 
     if (text.includes("service") || text.includes("blog") || text.includes("video") || text.includes("social")) {
-      return "Kwerky Media offers website content, blogs, social media posts, slide decks, and videos for tech companies. I can open any of those pages for you.";
+      return "We work on content creation, social media, video content, blogs, and website content. All focused on improving how your product is understood.";
     }
 
-    if (text.includes("home") || text.includes("value") || text.includes("proof") || text.includes("cta")) {
-      return "The Home page has five sections: Hero, Value, Services, Proof, and CTA. I can jump you there instantly.";
+    if (text.includes("startup") || text.includes("early")) {
+      return "If you're early-stage, getting your messaging right now saves time and cost later.";
     }
 
-    return "I can help with Kwerky Media’s full website journey, from the home hero to contact. Try asking about services, founders, blogs, videos, or say 'take me to Services'.";
+    if (text.includes("scale") || text.includes("growth")) {
+      return "If you're scaling, we refine your messaging to improve conversion and engagement.";
+    }
+
+    return "I can help with services, founders, blogs, videos, contact details, or project discussion. Ask me anything about the site.";
   };
 
   useEffect(() => {
@@ -192,12 +231,13 @@ const KwerkyAssistant = () => {
         throw new Error("No backend configured");
       }
 
-      const response = await fetch(`${API}/assistant`, {
+      const response = await fetch(`${API}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: text,
           history: nextMessages.slice(-6),
+          lead,
         }),
       });
 
@@ -206,6 +246,9 @@ const KwerkyAssistant = () => {
       }
 
       const data = await response.json();
+      if (data.lead) {
+        setLead({ ...defaultLead, ...data.lead });
+      }
       setMessages((current) => [
         ...current,
         {
@@ -235,7 +278,7 @@ const KwerkyAssistant = () => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.97 }}
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 left-6 z-50 flex items-center gap-3 rounded-[1.5rem] border border-white/10 bg-black/70 px-3 py-2.5 text-left text-white shadow-[0_20px_50px_rgba(37,99,235,0.2)] backdrop-blur-xl transition-colors hover:border-blue-400/30 hover:bg-black/80"
+        className="fixed bottom-6 left-6 z-50 flex items-center gap-3 rounded-[1.35rem] border border-white/10 bg-black/76 px-3 py-2.5 text-left text-white shadow-[0_20px_50px_rgba(37,99,235,0.18)] backdrop-blur-xl transition-colors hover:border-blue-400/30 hover:bg-black/84"
         aria-label="Open AI assistant"
         data-testid="assistant-toggle"
       >
@@ -252,10 +295,10 @@ const KwerkyAssistant = () => {
       </motion.button>
 
       <Drawer open={open} onOpenChange={setOpen}>
-        <DrawerContent className="h-[88vh] border-white/10 bg-[#02040b] text-white md:mx-auto md:max-w-[28rem]">
+        <DrawerContent className="h-[84vh] border-white/10 bg-[#02040b] text-white md:mx-auto md:max-w-[23rem]">
           <DrawerHeader className="border-b border-white/10 px-5 pb-4 pt-3 text-left">
             <div className="flex items-center gap-4">
-              <div className="h-16 w-16 shrink-0 overflow-hidden rounded-[1.6rem] border border-white/10 bg-[#050b16]">
+              <div className="h-14 w-14 shrink-0 overflow-hidden rounded-[1.45rem] border border-white/10 bg-[#050b16]">
                 <KwerkyRobotArt compact className="h-full w-full scale-[1.05]" />
               </div>
               <div className="min-w-0">
@@ -264,7 +307,7 @@ const KwerkyAssistant = () => {
                   Kwerky AI
                 </DrawerTitle>
                 <DrawerDescription className="text-white/45">
-                  I can guide visitors from hello to bye across the full Kwerky Media site.
+                  Short answers. Clear guidance. Project-focused.
                 </DrawerDescription>
               </div>
             </div>
@@ -291,7 +334,7 @@ const KwerkyAssistant = () => {
                 {messages.map((message, index) => (
                   <div
                     key={`${message.role}-${index}`}
-                    className={`max-w-[92%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+                    className={`max-w-[88%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
                       message.role === "user"
                         ? "ml-auto bg-blue-600 text-white"
                         : "mr-auto bg-white/[0.04] text-white/80"
@@ -310,8 +353,20 @@ const KwerkyAssistant = () => {
                     key={item}
                     type="button"
                     onClick={() => {
-                      if (item === "Take me to Services") {
-                        navigateTo("/services", "#contact-section");
+                      if (item === "What services?") {
+                        sendMessage(item);
+                        return;
+                      }
+                      if (item === "Pricing?") {
+                        sendMessage(item);
+                        return;
+                      }
+                      if (item === "Why Kwerky?") {
+                        sendMessage(item);
+                        return;
+                      }
+                      if (item === "What do you do?") {
+                        sendMessage(item);
                         return;
                       }
                       sendMessage(item);
@@ -355,7 +410,10 @@ const KwerkyAssistant = () => {
                 <div className="mt-3 flex items-center justify-between gap-3">
                   <button
                     type="button"
-                    onClick={() => setMessages(starterMessages)}
+                    onClick={() => {
+                      setMessages(starterMessages);
+                      setLead(defaultLead);
+                    }}
                     className="inline-flex items-center gap-2 text-xs text-white/35 transition-colors hover:text-white/60"
                   >
                     <X className="h-3.5 w-3.5" />
