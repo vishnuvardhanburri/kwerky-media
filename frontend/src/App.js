@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "@/App.css";
 import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
@@ -30,6 +30,56 @@ const MENU_ITEMS = [
   { icon: BookOpen, label: "Blogs", href: "/blogs", gradient: "radial-gradient(circle, rgba(59,130,246,0.22) 0%, rgba(29,78,216,0.08) 50%, rgba(30,64,175,0) 100%)", iconColor: "text-blue-300" },
   { icon: PlayCircle, label: "Videos", href: "/videos", gradient: "radial-gradient(circle, rgba(96,165,250,0.22) 0%, rgba(59,130,246,0.08) 50%, rgba(29,78,216,0) 100%)", iconColor: "text-blue-400" },
 ];
+
+const CursorAura = () => {
+  const auraRef = useRef(null);
+
+  useEffect(() => {
+    const finePointer = window.matchMedia("(pointer: fine)").matches;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!finePointer || reducedMotion || !auraRef.current) return undefined;
+
+    const aura = auraRef.current;
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+    let currentX = targetX;
+    let currentY = targetY;
+    let rafId;
+
+    const onMove = (event) => {
+      targetX = event.clientX;
+      targetY = event.clientY;
+      aura.style.opacity = "1";
+    };
+
+    const onLeave = () => {
+      aura.style.opacity = "0";
+    };
+
+    const tick = () => {
+      currentX += (targetX - currentX) * 0.11;
+      currentY += (targetY - currentY) * 0.11;
+      aura.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
+      rafId = window.requestAnimationFrame(tick);
+    };
+
+    window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("mouseleave", onLeave);
+    rafId = window.requestAnimationFrame(tick);
+
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseleave", onLeave);
+      window.cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  return (
+    <div ref={auraRef} className="cursor-aura" aria-hidden="true">
+      <div className="cursor-aura-core" />
+    </div>
+  );
+};
 
 const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -151,6 +201,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
+        <CursorAura />
         <Navigation />
         <Routes>
           <Route path="/" element={<HomePage />} />
