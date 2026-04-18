@@ -18,9 +18,11 @@ const Ethereal = ({
   },
 }) => {
   const mountRef = useRef(null);
+  const sparkLayerRef = useRef(null);
 
   useEffect(() => {
     const container = mountRef.current;
+    const sparkLayer = sparkLayerRef.current;
     if (!container) return undefined;
 
     let disposed = false;
@@ -52,6 +54,7 @@ const Ethereal = ({
     scene.background = new THREE.Color(colorPalette.dark);
     scene.fog = new THREE.Fog(colorPalette.dark, 7, 16);
     const isSmallScreen = window.matchMedia("(max-width: 767px)").matches;
+    const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
 
     const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
     camera.position.set(0, 0, 7.2);
@@ -176,11 +179,53 @@ const Ethereal = ({
 
     const pointer = { x: 0, y: 0 };
     const scrollState = { progress: 0 };
+    let lastSparkAt = 0;
 
     const onPointerMove = (event) => {
       const rect = container.getBoundingClientRect();
       pointer.x = ((event.clientX - rect.left) / rect.width - 0.5) * 0.45;
       pointer.y = ((event.clientY - rect.top) / rect.height - 0.5) * 0.3;
+
+      if (isSmallScreen || isTouchDevice || !sparkLayer) return;
+      const now = performance.now();
+      if (now - lastSparkAt < 42) return;
+      lastSparkAt = now;
+
+      const spark = document.createElement("span");
+      const size = 6 + Math.random() * 8;
+      const left = event.clientX - rect.left;
+      const top = event.clientY - rect.top;
+      spark.className = "hero-spark";
+      spark.style.position = "absolute";
+      spark.style.left = `${left}px`;
+      spark.style.top = `${top}px`;
+      spark.style.width = `${size}px`;
+      spark.style.height = `${size}px`;
+      spark.style.borderRadius = "9999px";
+      spark.style.pointerEvents = "none";
+      spark.style.transformOrigin = "center center";
+      spark.style.translate = "-50% -50%";
+      spark.style.background = `radial-gradient(circle, rgba(191, 219, 254, 0.96) 0%, rgba(96, 165, 250, 0.92) 35%, rgba(59, 130, 246, 0.0) 72%)`;
+      spark.style.boxShadow = "0 0 16px rgba(96,165,250,0.42), 0 0 32px rgba(59,130,246,0.18)";
+      spark.style.filter = "blur(0.2px)";
+      spark.style.zIndex = "1";
+      sparkLayer.appendChild(spark);
+
+      const driftX = (Math.random() - 0.5) * 64;
+      const driftY = -(18 + Math.random() * 38);
+      spark.animate(
+        [
+          { transform: "translate3d(0, 0, 0) scale(0.6)", opacity: 0 },
+          { transform: "translate3d(0, 0, 0) scale(1)", opacity: 1, offset: 0.15 },
+          { transform: `translate3d(${driftX}px, ${driftY}px, 0) scale(0.35)`, opacity: 0 }
+        ],
+        {
+          duration: 900,
+          easing: "cubic-bezier(0.23, 1, 0.32, 1)",
+        }
+      ).onfinish = () => {
+        spark.remove();
+      };
     };
 
     const onResize = () => {
@@ -261,7 +306,11 @@ const Ethereal = ({
     return () => cleanup();
   }, [colorPalette]);
 
-  return <div ref={mountRef} className="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true" />;
+  return (
+    <div ref={mountRef} className="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+      <div ref={sparkLayerRef} className="absolute inset-0 overflow-hidden" />
+    </div>
+  );
 };
 
 export default Ethereal;

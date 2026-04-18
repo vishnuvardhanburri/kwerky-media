@@ -38,9 +38,9 @@ const TextParallaxSection = ({
           </motion.div>
 
           <motion.div style={{ y: visualY }} className="relative min-h-[320px] lg:min-h-[440px]">
-            <div className="absolute inset-0 overflow-hidden rounded-[2rem] border border-white/10 bg-[#030814] shadow-[0_24px_90px_rgba(0,0,0,0.45)]">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.2),transparent_40%),radial-gradient(circle_at_bottom_right,rgba(96,165,250,0.12),transparent_32%)]" />
-              <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.08)_1px,transparent_1px)] bg-[size:72px_72px] opacity-35" />
+            <div className="absolute inset-0 overflow-hidden rounded-[2rem] border border-white/10 bg-[#010204] shadow-[0_24px_90px_rgba(0,0,0,0.45)]">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.18),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(96,165,250,0.08),transparent_30%),radial-gradient(circle_at_center,rgba(15,23,42,0.46),transparent_44%)]" />
+              <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.06)_1px,transparent_1px)] bg-[size:84px_84px] opacity-28" />
               <motion.div
                 className="absolute left-[10%] top-[12%] h-40 w-40 rounded-[1.6rem] border border-blue-400/15 bg-blue-500/6"
                 animate={{ y: [0, -8, 0], rotate: [0, 1.5, 0] }}

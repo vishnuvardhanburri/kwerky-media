@@ -53,16 +53,16 @@ const HomePage = () => {
         <Ethereal />
         <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.14),transparent_42%),linear-gradient(180deg,rgba(0,0,0,0.25),rgba(0,0,0,0.92))]" />
 
-        <div className="container mx-auto min-h-[calc(100vh-6rem)] max-w-5xl py-16 relative z-10">
-          <div className="max-w-3xl">
+        <div className="container mx-auto min-h-[calc(100vh-6rem)] max-w-6xl py-16 relative z-10">
+          <div className="max-w-3xl lg:pl-6">
             <RevealOnScroll>
-              <p className="mb-6 text-xs font-semibold uppercase tracking-[0.34em] text-blue-300/80">
+              <p className="mb-6 text-xs font-semibold uppercase tracking-[0.42em] text-blue-300/80">
                 Kwerky Media
               </p>
             </RevealOnScroll>
 
             <RevealOnScroll delay={0.05}>
-              <h1 className="text-5xl font-bold leading-[0.96] text-white md:text-6xl lg:text-7xl">
+              <h1 className="text-5xl font-bold leading-[0.94] text-white md:text-6xl lg:text-7xl">
                 <span className="block">Content and Growth Partner</span>
                 <span className="block text-blue-300">for Tech Companies</span>
               </h1>
@@ -96,10 +96,10 @@ const HomePage = () => {
         eyebrow="Value"
         title={"Content that\nCaptivates"}
         description="We go beyond the norm. We are Kwerky."
-        className="section-deep"
+        className="section-midnight"
       />
 
-      <section className="relative px-6 py-28 section-blue" data-testid="services-section">
+      <section className="relative px-6 py-28 section-midnight" data-testid="services-section">
         <div className="container mx-auto max-w-6xl relative z-10">
           <RevealOnScroll>
             <div className="max-w-2xl">
@@ -128,7 +128,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section className="relative px-6 py-28 section-deep" data-testid="proof-section">
+      <section className="relative px-6 py-28 section-midnight" data-testid="proof-section">
         <div className="container mx-auto max-w-6xl relative z-10">
           <RevealOnScroll>
             <div className="max-w-2xl">
@@ -157,7 +157,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section className="relative px-6 py-28 section-blue" data-testid="cta-section">
+      <section className="relative px-6 py-28 section-midnight" data-testid="cta-section">
         <div className="container mx-auto max-w-4xl relative z-10 text-center">
           <RevealOnScroll>
             <h2 className="text-5xl font-bold leading-[0.96] text-white md:text-7xl">

@@ -15,6 +15,22 @@ body {
   overflow-x: hidden;
 }
 
+/* Aurora background */
+.bg-aurora {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 14%, rgba(59, 130, 246, 0.22), transparent 0 24%),
+    radial-gradient(circle at 86% 22%, rgba(37, 99, 235, 0.16), transparent 0 22%),
+    radial-gradient(circle at 70% 78%, rgba(96, 165, 250, 0.12), transparent 0 20%),
+    radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.24), transparent 0 34%),
+    #000;
+  z-index: 0;
+  pointer-events: none;
+  animation: auroraDrift 26s ease-in-out infinite alternate;
+  transform: translateZ(0);
+}
+
 /* Background Grid Animation */
 .bg-grid {
   position: fixed;
@@ -23,17 +39,45 @@ body {
   width: 100%;
   height: 100%;
   background-image: 
-    linear-gradient(rgba(59, 130, 246, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(59, 130, 246, 0.035) 1px, transparent 1px);
-  background-size: 72px 72px;
+    linear-gradient(rgba(59, 130, 246, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.018) 1px, transparent 1px);
+  background-size: 96px 96px;
   z-index: 0;
   pointer-events: none;
-  animation: gridMove 30s linear infinite;
+  opacity: 0.72;
+  animation: gridMove 42s linear infinite;
+}
+
+.bg-stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.35;
+  background-image:
+    radial-gradient(circle at 12% 22%, rgba(255,255,255,0.85) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 24% 68%, rgba(96,165,250,0.85) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 38% 14%, rgba(255,255,255,0.75) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 66% 28%, rgba(255,255,255,0.8) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 74% 72%, rgba(96,165,250,0.75) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 86% 12%, rgba(255,255,255,0.7) 0 1px, transparent 1.5px);
+  background-size: 320px 320px;
+  animation: starTwinkle 9s ease-in-out infinite alternate;
 }
 
 @keyframes gridMove {
   0% { transform: translateY(0); }
   100% { transform: translateY(60px); }
+}
+
+@keyframes auroraDrift {
+  0% { filter: hue-rotate(0deg) saturate(100%); transform: scale(1); }
+  100% { filter: hue-rotate(-8deg) saturate(115%); transform: scale(1.03); }
+}
+
+@keyframes starTwinkle {
+  0% { opacity: 0.22; transform: translate3d(0, 0, 0); }
+  100% { opacity: 0.44; transform: translate3d(0, -8px, 0); }
 }
 
 /* Noise overlay */
@@ -44,9 +88,9 @@ body {
   width: 100%;
   height: 100%;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
-  z-index: 1;
+  z-index: 2;
   pointer-events: none;
-  opacity: 0.45;
+  opacity: 0.26;
 }
 
 /* 3D Card */
@@ -132,19 +176,28 @@ body > div:last-child a[href*="emergent.sh"] {
 
 /* Section color themes */
 .section-blue {
-  background: linear-gradient(180deg, #000 0%, #081225 52%, #000 100%);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(59, 130, 246, 0.12), transparent 0 26%),
+    radial-gradient(circle at 88% 18%, rgba(37, 99, 235, 0.09), transparent 0 22%),
+    linear-gradient(180deg, #000 0%, #050816 52%, #000 100%);
 }
 
 .section-warm {
-  background: linear-gradient(180deg, #000 0%, #0a1020 52%, #000 100%);
+  background:
+    radial-gradient(circle at 22% 12%, rgba(59, 130, 246, 0.08), transparent 0 24%),
+    linear-gradient(180deg, #000 0%, #04070f 52%, #000 100%);
 }
 
 .section-deep {
-  background: linear-gradient(180deg, #000 0%, #050b16 52%, #000 100%);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(96, 165, 250, 0.1), transparent 0 32%),
+    linear-gradient(180deg, #000 0%, #02050d 52%, #000 100%);
 }
 
 .section-midnight {
-  background: linear-gradient(180deg, #000 0%, #050b16 52%, #000 100%);
+  background:
+    radial-gradient(circle at 78% 0%, rgba(37, 99, 235, 0.08), transparent 0 24%),
+    linear-gradient(180deg, #000 0%, #010204 52%, #000 100%);
 }
 
 /* Client logo carousel */
