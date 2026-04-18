@@ -51,6 +51,7 @@ const Ethereal = ({
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(colorPalette.dark);
     scene.fog = new THREE.Fog(colorPalette.dark, 7, 16);
+    const isSmallScreen = window.matchMedia("(max-width: 767px)").matches;
 
     const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
     camera.position.set(0, 0, 7.2);
@@ -81,7 +82,7 @@ const Ethereal = ({
     }
 
     renderer.setClearColor(0x020816, 1);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isSmallScreen ? 1.5 : 2));
     renderer.setSize(container.clientWidth, container.clientHeight, false);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     container.appendChild(renderer.domElement);
@@ -89,7 +90,7 @@ const Ethereal = ({
     const group = new THREE.Group();
     scene.add(group);
 
-    const glowGeometry = new THREE.SphereGeometry(2.15, 48, 48);
+    const glowGeometry = new THREE.SphereGeometry(isSmallScreen ? 1.95 : 2.15, 32, 32);
     const glowMaterial = new THREE.MeshBasicMaterial({
       color: new THREE.Color(colorPalette.secondary),
       transparent: true,
@@ -98,7 +99,7 @@ const Ethereal = ({
     const glow = new THREE.Mesh(glowGeometry, glowMaterial);
     group.add(glow);
 
-    const coreGeometry = new THREE.IcosahedronGeometry(1.2, 4);
+    const coreGeometry = new THREE.IcosahedronGeometry(isSmallScreen ? 1.02 : 1.2, isSmallScreen ? 2 : 4);
     const coreMaterial = new THREE.MeshStandardMaterial({
       color: new THREE.Color(colorPalette.primary),
       emissive: new THREE.Color(colorPalette.secondary),
@@ -109,7 +110,7 @@ const Ethereal = ({
     const core = new THREE.Mesh(coreGeometry, coreMaterial);
     group.add(core);
 
-    const shellGeometry = new THREE.TorusKnotGeometry(1.8, 0.18, 240, 24);
+    const shellGeometry = new THREE.TorusKnotGeometry(isSmallScreen ? 1.55 : 1.8, 0.14, isSmallScreen ? 96 : 180, isSmallScreen ? 16 : 24);
     const shellMaterial = new THREE.MeshStandardMaterial({
       color: new THREE.Color("#07172f"),
       emissive: new THREE.Color(colorPalette.tertiary),
@@ -122,7 +123,7 @@ const Ethereal = ({
     shell.rotation.z = Math.PI * 0.18;
     group.add(shell);
 
-    const ringGeometry = new THREE.TorusGeometry(2.8, 0.03, 12, 240);
+    const ringGeometry = new THREE.TorusGeometry(isSmallScreen ? 2.45 : 2.8, 0.03, 10, isSmallScreen ? 120 : 240);
     const ringMaterial = new THREE.MeshBasicMaterial({
       color: new THREE.Color(colorPalette.accent),
       transparent: true,
@@ -132,7 +133,7 @@ const Ethereal = ({
     ring.rotation.x = Math.PI / 2.4;
     group.add(ring);
 
-    const particlesCount = 240;
+    const particlesCount = isSmallScreen ? 120 : 240;
     const positions = new Float32Array(particlesCount * 3);
     for (let i = 0; i < particlesCount; i += 1) {
       const radius = 3.8 + Math.random() * 2.8;
@@ -194,7 +195,12 @@ const Ethereal = ({
 
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
-    const bloom = new UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 0.58, 0.34, 0.9);
+    const bloom = new UnrealBloomPass(
+      new THREE.Vector2(container.clientWidth, container.clientHeight),
+      isSmallScreen ? 0.42 : 0.58,
+      0.34,
+      0.9,
+    );
     composer.addPass(bloom);
 
     const clock = new THREE.Clock();
