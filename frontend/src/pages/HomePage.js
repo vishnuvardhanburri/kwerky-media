@@ -118,7 +118,7 @@ const HomePage = () => {
                     <img
                       src={service.image}
                       alt={service.title}
-                      className="h-full w-full object-contain p-5"
+                      className="h-full w-full object-cover object-center"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
                   </div>
