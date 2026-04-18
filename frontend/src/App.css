@@ -19,25 +19,25 @@ body {
   position: fixed;
   left: 0;
   top: 0;
-  width: 140px;
-  height: 140px;
+  width: 108px;
+  height: 108px;
   border-radius: 9999px;
   pointer-events: none;
   z-index: 3;
   opacity: 0;
   transition: opacity 220ms ease;
-  background: radial-gradient(circle, rgba(96, 165, 250, 0.35) 0%, rgba(37, 99, 235, 0.16) 30%, rgba(3, 7, 18, 0) 72%);
-  filter: blur(24px);
+  background: radial-gradient(circle, rgba(96, 165, 250, 0.28) 0%, rgba(37, 99, 235, 0.12) 34%, rgba(3, 7, 18, 0) 74%);
+  filter: blur(20px);
   mix-blend-mode: screen;
   will-change: transform, opacity;
 }
 
 .cursor-aura-core {
   position: absolute;
-  inset: 26px;
+  inset: 20px;
   border-radius: 9999px;
-  background: radial-gradient(circle, rgba(191, 219, 254, 0.5) 0%, rgba(59, 130, 246, 0.2) 48%, rgba(59, 130, 246, 0) 76%);
-  filter: blur(6px);
+  background: radial-gradient(circle, rgba(191, 219, 254, 0.36) 0%, rgba(59, 130, 246, 0.14) 52%, rgba(59, 130, 246, 0) 78%);
+  filter: blur(5px);
 }
 
 @media (pointer: coarse), (prefers-reduced-motion: reduce) {

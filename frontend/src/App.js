@@ -57,8 +57,8 @@ const CursorAura = () => {
     };
 
     const tick = () => {
-      currentX += (targetX - currentX) * 0.11;
-      currentY += (targetY - currentY) * 0.11;
+      currentX += (targetX - currentX) * 0.085;
+      currentY += (targetY - currentY) * 0.085;
       aura.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
       rafId = window.requestAnimationFrame(tick);
     };
