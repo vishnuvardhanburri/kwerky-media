@@ -56,8 +56,8 @@ const HomePage = () => {
         <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.14),transparent_42%),linear-gradient(180deg,rgba(0,0,0,0.25),rgba(0,0,0,0.92))]" />
 
         <div className="container mx-auto min-h-[calc(100vh-6rem)] max-w-6xl py-16 relative z-10">
-          <div className="grid items-start gap-12 lg:grid-cols-[0.98fr_0.92fr] lg:items-center">
-            <div className="max-w-3xl lg:pt-10">
+          <div className="grid items-start gap-12 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div className="max-w-3xl lg:max-w-2xl lg:pt-10 lg:pr-20">
               <RevealOnScroll>
                 <p className="mb-6 text-xs font-semibold uppercase tracking-[0.48em] text-blue-300/80">
                   Kwerky Media
@@ -116,31 +116,31 @@ const HomePage = () => {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.18, ease: [0.23, 1, 0.32, 1] }}
-              className="relative hidden lg:block"
+              className="relative hidden lg:block self-end justify-self-end"
             >
-              <div className="absolute -left-8 top-6 h-72 w-72 rounded-full bg-blue-500/12 blur-3xl" />
-              <div className="absolute right-8 bottom-10 h-64 w-64 rounded-full bg-cyan-400/10 blur-3xl" />
-              <div className="relative ml-auto max-w-[460px] rounded-[2.5rem] border border-white/10 bg-white/[0.03] p-5 shadow-[0_28px_100px_rgba(0,0,0,0.42)] backdrop-blur-xl">
-                <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b16] p-5">
-                  <div className="flex items-start gap-5">
-                    <div className="h-44 w-44 flex-shrink-0">
+              <div className="absolute -right-8 top-4 h-56 w-56 rounded-full bg-blue-500/12 blur-3xl" />
+              <div className="absolute right-2 bottom-6 h-44 w-44 rounded-full bg-cyan-400/10 blur-3xl" />
+              <div className="relative mr-1 max-w-[330px] rounded-[2rem] border border-white/10 bg-white/[0.03] p-4 shadow-[0_22px_80px_rgba(0,0,0,0.42)] backdrop-blur-xl">
+                <div className="overflow-hidden rounded-[1.6rem] border border-white/10 bg-[#050b16] p-4">
+                  <div className="flex items-start gap-4">
+                    <div className="h-28 w-28 flex-shrink-0">
                       <KwerkyRobotArt className="h-full w-full" />
                     </div>
-                    <div className="pt-4">
+                    <div className="pt-1">
                       <p className="text-xs font-semibold uppercase tracking-[0.42em] text-blue-300/80">
                         Kwerky AI
                       </p>
-                      <h2 className="mt-4 text-2xl font-bold leading-tight text-white">
+                      <h2 className="mt-3 text-xl font-bold leading-tight text-white">
                         Your site guide,
                         <span className="block text-blue-300">from hello to bye.</span>
                       </h2>
-                      <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/55">
+                      <p className="mt-3 max-w-sm text-xs leading-relaxed text-white/55">
                         I can talk visitors through the entire website, open each section, and help them reach the contact form without friction.
                       </p>
                     </div>
                   </div>
 
-                  <div className="mt-5 grid grid-cols-2 gap-3">
+                  <div className="mt-4 grid grid-cols-2 gap-2.5">
                     {[
                       { label: "Open Services", path: "/services", hash: null },
                       { label: "Go to About", path: "/about", hash: null },
