@@ -26,22 +26,22 @@ const TextParallaxSection = ({
             <p className="mb-5 text-xs font-semibold uppercase tracking-[0.34em] text-blue-300/80">
               {eyebrow}
             </p>
-            <h2 className="text-5xl font-bold leading-[0.9] tracking-[-0.04em] text-white md:text-7xl lg:text-[7rem]">
+            <h2 className="torch-text text-5xl font-bold leading-[0.9] tracking-[-0.04em] text-white md:text-7xl lg:text-[7rem]">
               {title.split("\n").map((line) => (
                 <span key={line} className="block">
                   {line}
                 </span>
               ))}
             </h2>
-            <p className="mt-8 max-w-md text-base leading-relaxed text-white/55 md:text-lg">
+            <p className="mt-8 max-w-md text-base leading-relaxed text-white/75 md:text-lg">
               {description}
             </p>
           </motion.div>
 
           <motion.div style={{ y: visualY }} className="relative min-h-[300px] lg:min-h-[420px]">
             <div className="absolute inset-0 overflow-hidden rounded-[2rem] border border-white/10 bg-[#010204]">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.18),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(96,165,250,0.08),transparent_30%),radial-gradient(circle_at_center,rgba(15,23,42,0.46),transparent_44%)]" />
-              <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.04)_1px,transparent_1px)] bg-[size:96px_96px] opacity-20" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.18),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(255,179,71,0.08),transparent_30%),radial-gradient(circle_at_center,rgba(15,23,42,0.46),transparent_44%)]" />
+              <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,179,71,0.04)_1px,transparent_1px)] bg-[size:96px_96px] opacity-20" />
               <motion.div
                 className="absolute left-[12%] top-[14%] h-36 w-36 rounded-[1.6rem] border border-blue-400/12 bg-blue-500/5"
                 animate={{ y: [0, -5, 0], rotate: [0, 1, 0] }}

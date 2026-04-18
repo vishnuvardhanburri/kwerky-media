@@ -1,30 +1,29 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import BackgroundLayers from "@/components/shared/BackgroundLayers";
 import { RevealOnScroll, Card3D } from "@/components/shared/Animations";
 import Footer from "@/components/shared/Footer";
-
-const BLOGS = [
-  {
-    slug: "understanding-blockchain-and-bitcoin",
-    title: "Understanding Blockchain and Bitcoin",
-    desc: "An insightful take on what blockchain and bitcoin really mean, beyond the buzzwords.",
-    author: "Shashikanth Peetla",
-    date: "5/8/2024",
-    readTime: "5 min read",
-    image: "/brand/blog-blockchain.png"
-  },
-  {
-    slug: "data-center-vs-cloud",
-    title: "Traditional Data Center vs. Cloud Data Center vs. Cloud Computing",
-    desc: "Discover where the differences end, the similarities begin, and how the lines between them continue to blur.",
-    author: "Shashikanth Peetla",
-    date: "5/8/2024",
-    readTime: "2 min read",
-    image: "/brand/blog-cloud.jpg"
-  }
-];
+import { DEFAULT_BLOGS, DEFAULT_BLOG_BANNER, getBlogsPageData } from "@/lib/cms";
 
 const BlogsPage = () => {
+  const [cms, setCms] = useState({
+    bannerImage: DEFAULT_BLOG_BANNER,
+    blogs: DEFAULT_BLOGS,
+  });
+
+  useEffect(() => {
+    let alive = true;
+    getBlogsPageData().then((data) => {
+      if (alive) setCms(data);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  const blogs = cms?.blogs || [];
+  const bannerImage = cms?.bannerImage || "/brand/blog-banner.png";
+
   return (
     <div className="min-h-screen pt-20 relative">
       <BackgroundLayers />
@@ -45,7 +44,7 @@ const BlogsPage = () => {
           <RevealOnScroll delay={0.2}>
             <div className="mt-10 flex justify-center">
               <div className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#050b16] shadow-[0_24px_90px_rgba(0,0,0,0.35)] max-w-3xl w-full">
-                <img src="/brand/blog-banner.png" alt="Kwerky Media collage" className="h-56 w-full object-cover md:h-72" />
+                <img src={bannerImage} alt="Kwerky Media collage" className="h-56 w-full object-cover md:h-72" />
               </div>
             </div>
           </RevealOnScroll>
@@ -55,7 +54,7 @@ const BlogsPage = () => {
       <section className="px-6 py-16 relative section-warm" data-testid="blogs-list">
         <div className="container mx-auto max-w-5xl relative z-10">
           <div className="grid md:grid-cols-2 gap-8">
-            {BLOGS.map((blog, i) => (
+            {blogs.map((blog, i) => (
               <Card3D key={i} delay={i * 0.12} testId={`blog-card-${i}`}>
                 <Link to={`/blogs/${blog.slug}`} className="block">
                   <div className="glass rounded-2xl depth-shadow border border-white/8 overflow-hidden h-full group hover:border-blue-400/20 transition-all">
@@ -74,7 +73,7 @@ const BlogsPage = () => {
                       <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors leading-tight">
                         {blog.title}
                       </h3>
-                      <p className="text-white/50 text-sm leading-relaxed">{blog.desc}</p>
+                      <p className="text-white/50 text-sm leading-relaxed">{blog.desc || blog.excerpt}</p>
                       <span className="inline-flex items-center gap-2 mt-4 text-blue-300 text-sm font-medium group-hover:gap-3 transition-all">
                         Read more
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>

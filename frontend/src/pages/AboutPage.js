@@ -1,8 +1,30 @@
+import { useEffect, useState } from "react";
 import BackgroundLayers from "@/components/shared/BackgroundLayers";
 import { RevealOnScroll, Card3D } from "@/components/shared/Animations";
 import Footer from "@/components/shared/Footer";
+import { DEFAULT_ABOUT_NOTES, DEFAULT_FOUNDERS, DEFAULT_VIDEOS, getAboutPageData } from "@/lib/cms";
 
 const AboutPage = () => {
+  const [cms, setCms] = useState({
+    founders: DEFAULT_FOUNDERS,
+    notes: DEFAULT_ABOUT_NOTES,
+    videos: DEFAULT_VIDEOS,
+  });
+
+  useEffect(() => {
+    let alive = true;
+    getAboutPageData().then((data) => {
+      if (alive) setCms(data);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  const founders = cms?.founders || [];
+  const notes = cms?.notes || [];
+  const videos = cms?.videos || [];
+
   return (
     <div className="min-h-screen pt-20 relative">
       <BackgroundLayers />
@@ -15,11 +37,11 @@ const AboutPage = () => {
               <p className="text-xs font-semibold uppercase tracking-[0.34em] text-blue-300/80">
                 About Us
               </p>
-              <h1 className="text-5xl md:text-7xl font-bold leading-[0.95]">
+              <h1 className="torch-text text-5xl font-bold leading-[0.95] md:text-7xl">
                 <span className="block text-white">Your Partner in</span>
                 <span className="block text-blue-300">Tech Storytelling</span>
               </h1>
-              <p className="text-lg text-white/50 max-w-2xl leading-relaxed">
+              <p className="max-w-2xl text-lg leading-relaxed text-white/75">
                 Kwerky Media is the result of more than a decade of tech storytelling—and a childlike excitement that&apos;s stayed with us since we wrote our very first tech story.
               </p>
             </div>
@@ -63,50 +85,33 @@ const AboutPage = () => {
       <section className="px-6 py-24 relative section-blue" data-testid="founders-section">
         <div className="container mx-auto max-w-5xl relative z-10">
           <RevealOnScroll>
-            <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">
-              <span className="text-white">About </span>
-              <span className="text-blue-300">Kwerky Media</span>
-            </h2>
+              <h2 className="torch-text mb-16 text-center text-4xl font-bold md:text-5xl">
+                <span className="text-white">About </span>
+                <span className="text-blue-300">Kwerky Media</span>
+              </h2>
           </RevealOnScroll>
 
           <div className="grid md:grid-cols-2 gap-8">
-            <Card3D delay={0.1} testId="founder-shashi">
-              <div className="glass rounded-2xl depth-shadow border border-white/8 overflow-hidden h-full bg-[#050b16]">
-                <div className="p-6 md:p-8">
-                  <p className="text-xs text-white/40 mb-4 uppercase tracking-wider">Shashikanth Peetla</p>
-                  <h3 className="text-xl font-bold text-white mb-4">Shashikanth Peetla:</h3>
-                  <p className="text-white/60 text-sm leading-relaxed">
-                    I have over a decade of media experience writing profiles, cover stories, blogs, and ad copies for tech companies. Previously, I served as an Assistant Managing Editor, overseeing more than 20 technology magazines. Over the years, I&apos;ve mastered the art and science of digital marketing — from copywriting and editing to campaign design and SEO. I look forward to partnering with you to craft a great tech story.
-                  </p>
-                  <a href="https://www.linkedin.com/in/shashikanth-p-59911564/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 mt-4 text-blue-400 hover:text-blue-300 transition-colors text-sm" data-testid="shashi-linkedin">
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 110-4.13 2.07 2.07 0 010 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.21 0 22.23 0z"/></svg>
-                    Connect on LinkedIn
-                  </a>
+            {founders.map((founder, index) => (
+              <Card3D key={founder.name} delay={0.1 + index * 0.1} testId={`founder-${index}`}>
+                <div className="glass rounded-2xl depth-shadow border border-white/8 overflow-hidden h-full bg-[#050b16]">
+                  <div className="aspect-[4/3] overflow-hidden bg-black">
+                    <img src={founder.image} alt={founder.name} className="h-full w-full object-contain" />
+                  </div>
+                  <div className="p-6 md:p-8">
+                    <p className="text-xs text-white/40 mb-4 uppercase tracking-wider">{founder.role}</p>
+                    <h3 className="text-xl font-bold text-white mb-4">{founder.name}:</h3>
+                    <p className="text-white/60 text-sm leading-relaxed">
+                      {founder.bio}
+                    </p>
+                    <a href={founder.linkedinUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 mt-4 text-blue-400 hover:text-blue-300 transition-colors text-sm" data-testid={`founder-linkedin-${index}`}>
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 110-4.13 2.07 2.07 0 010 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.21 0 22.23 0z"/></svg>
+                      Connect on LinkedIn
+                    </a>
+                  </div>
                 </div>
-              </div>
-            </Card3D>
-
-            <Card3D delay={0.2} testId="founder-mithun">
-              <div className="glass rounded-2xl depth-shadow border border-white/8 overflow-hidden h-full bg-[#050b16]">
-                <div className="p-6 md:p-8">
-                  <p className="text-xs text-white/40 mb-4 uppercase tracking-wider">Mithun Mohan</p>
-                  <h3 className="text-xl font-bold text-white mb-4">Mithun Mohan:</h3>
-                  <p className="text-white/60 text-sm leading-relaxed">
-                    I have over a decade of experience closing deals and delivering on promises. I&apos;ve partnered with clients from project initiation to completion, overseeing each stage until final delivery met their expectations. I&apos;m usually the first point of contact and am responsible for building and maintaining long-term client relationships. I&apos;m excited about Kwerky Media and look forward to a fruitful partnership with you.
-                  </p>
-                  <a
-                    href="https://www.linkedin.com/in/emithunmohan/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 mt-4 text-blue-400 hover:text-blue-300 transition-colors text-sm"
-                    data-testid="mithun-linkedin"
-                  >
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 110-4.13 2.07 2.07 0 010 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.21 0 22.23 0z"/></svg>
-                    LinkedIn
-                  </a>
-                </div>
-              </div>
-            </Card3D>
+              </Card3D>
+            ))}
           </div>
         </div>
       </section>
@@ -124,20 +129,7 @@ const AboutPage = () => {
             </div>
           </RevealOnScroll>
           <div className="grid gap-6 md:grid-cols-2">
-            {[
-              {
-                name: "Shashikanth Peetla",
-                role: "Co-Founder",
-                image: "/brand/founder-shashi.avif",
-                text: "I write profiles, cover stories, blogs, and ad copies that make tech brands feel clear, credible, and memorable.",
-              },
-              {
-                name: "Mithun Mohan",
-                role: "Co-Founder",
-                image: "/brand/founder-mithun.avif",
-                text: "I guide clients from first contact to final delivery, building partnerships that last beyond the project.",
-              },
-            ].map((founder, index) => (
+            {notes.map((founder, index) => (
               <Card3D key={founder.name} delay={index * 0.08} testId={`founder-note-${index}`}>
                 <div className="h-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#050b16] shadow-[0_18px_60px_rgba(0,0,0,0.35)]">
                   <div className="aspect-[4/3] overflow-hidden bg-black">
@@ -166,25 +158,16 @@ const AboutPage = () => {
           <RevealOnScroll>
             <div className="text-center mb-10">
               <p className="mb-4 text-xs font-semibold uppercase tracking-[0.34em] text-blue-300/80">Videos</p>
-              <h2 className="text-4xl md:text-6xl font-bold text-white">Explore our Kwerky videos</h2>
+              <h2 className="torch-text text-4xl font-bold text-white md:text-6xl">Explore our Kwerky videos</h2>
             </div>
           </RevealOnScroll>
           <div className="grid gap-6 md:grid-cols-2">
-            {[
-              {
-                title: "Our Services",
-                src: "https://www.youtube.com/embed/q6suj10uq_0",
-              },
-              {
-                title: "Kwerky in Action",
-                src: "https://www.youtube.com/embed/ZJuVlEQ2AIM",
-              },
-            ].map((video, index) => (
+            {videos.slice(0, 2).map((video, index) => (
               <RevealOnScroll key={video.title} delay={index * 0.08}>
                 <div className="overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#050b16] shadow-[0_18px_60px_rgba(0,0,0,0.35)]">
                   <div className="aspect-video">
                     <iframe
-                      src={video.src}
+                      src={video.url}
                       title={video.title}
                       loading="lazy"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
