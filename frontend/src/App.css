@@ -31,6 +31,28 @@ body {
   transform: translateZ(0);
 }
 
+/* Aurora GIF overlay */
+.bg-aurora-media {
+  position: fixed;
+  inset: 0;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.12;
+  mix-blend-mode: screen;
+  filter: saturate(1.05) brightness(0.7) contrast(1.06);
+  transform: translateZ(0);
+}
+
+@media (max-width: 768px) {
+  .bg-aurora-media {
+    opacity: 0.06;
+    background-size: 150% auto;
+  }
+}
+
 /* Background Grid Animation */
 .bg-grid {
   position: fixed;
