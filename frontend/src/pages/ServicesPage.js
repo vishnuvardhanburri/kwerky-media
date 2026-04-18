@@ -209,7 +209,7 @@ const ServicesPage = () => {
         </div>
       </section>
 
-      <section className="px-6 py-24 relative section-blue" data-testid="contact-section">
+      <section id="contact-section" className="px-6 py-24 relative section-blue" data-testid="contact-section">
         <div className="container mx-auto max-w-3xl relative z-10">
           <RevealOnScroll>
             <div className="text-center mb-12">

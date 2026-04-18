@@ -6,7 +6,8 @@ const TextParallaxSection = ({
   title = "Content that\nCaptivates.",
   description = "We go beyond the norm. We are Kwerky.",
   className = "",
-  dataTestId = "value-section"
+  dataTestId = "value-section",
+  id = "value-section"
 }) => {
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -18,7 +19,7 @@ const TextParallaxSection = ({
   const visualY = useTransform(scrollYProgress, [0, 1], [90, -70]);
 
   return (
-    <section ref={sectionRef} className={`relative overflow-hidden px-6 py-28 ${className}`} data-testid={dataTestId}>
+    <section ref={sectionRef} id={id} className={`relative overflow-hidden px-6 py-28 ${className}`} data-testid={dataTestId}>
       <div className="container mx-auto max-w-6xl relative z-10">
         <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
           <motion.div style={{ y: textY }} className="max-w-2xl">

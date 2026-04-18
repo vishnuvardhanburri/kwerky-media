@@ -111,6 +111,15 @@ async def submit_contact_form(input: ContactFormCreate):
 def build_local_assistant_reply(message: str) -> str:
     text = message.lower()
 
+    if any(word in text for word in ["hello", "hi", "hey"]):
+        return "Hello. I’m Kwerky AI and I can guide you through the full website from Home to Contact."
+
+    if any(word in text for word in ["bye", "goodbye", "see you"]):
+        return "Bye for now. If you need anything later, I can open Services, About Us, Blogs, Videos, or Contact."
+
+    if any(word in text for word in ["home", "hero", "value", "proof", "cta"]):
+        return "The Home page has five sections: Hero, Value, Services, Proof, and CTA. I can take you there section by section."
+
     if any(word in text for word in ["contact", "email", "phone", "reach", "call"]):
         return "You can reach Kwerky Media at hello@kwerkymedia.com or 08031548088. For a project discussion, use the Services page contact form."
 
@@ -138,7 +147,10 @@ async def assistant_chat(input: AssistantRequest):
             "If asked about contact, use hello@kwerkymedia.com and 08031548088. "
             "The founders are Shashikanth Peetla and Mithun Mohan. "
             "Services include website content, blogs, social media posts, slide decks, and videos. "
-            "Keep replies short, clear, and friendly."
+            "The website pages are Home, Services, About Us, Blogs, and Videos. "
+            "The Home page has Hero, Value, Services, Proof, and CTA sections. "
+            "The Services page contains the contact form, and the About page explains the founders' story. "
+            "When users ask where to go, mention the relevant page or section and keep replies short, clear, and friendly."
         )
         messages = [{"role": "system", "content": system_prompt}]
         for item in input.history[-6:]:

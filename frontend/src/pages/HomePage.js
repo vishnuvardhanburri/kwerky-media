@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion, useScroll, useSpring } from "framer-motion";
 import BackgroundLayers from "@/components/shared/BackgroundLayers";
 import TextParallaxSection from "@/components/shared/TextParallaxSection";
 import { Card3D, RevealOnScroll } from "@/components/shared/Animations";
 import Footer from "@/components/shared/Footer";
 import Ethereal from "@/components/ui/ethereal";
+import KwerkyRobotArt from "@/components/shared/KwerkyRobotArt";
 
 const SERVICES = [
   {
@@ -40,6 +41,7 @@ const PROOF = [
 const HomePage = () => {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen relative bg-black">
@@ -49,45 +51,123 @@ const HomePage = () => {
         style={{ scaleX }}
       />
 
-      <section className="relative min-h-screen overflow-hidden px-6 pt-24" data-testid="hero-section">
+      <section id="hero-section" className="relative min-h-screen overflow-hidden px-6 pt-24" data-testid="hero-section">
         <Ethereal />
         <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.14),transparent_42%),linear-gradient(180deg,rgba(0,0,0,0.25),rgba(0,0,0,0.92))]" />
 
         <div className="container mx-auto min-h-[calc(100vh-6rem)] max-w-6xl py-16 relative z-10">
-          <div className="max-w-3xl lg:pl-6">
-            <RevealOnScroll>
-              <p className="mb-6 text-xs font-semibold uppercase tracking-[0.42em] text-blue-300/80">
-                Kwerky Media
-              </p>
-            </RevealOnScroll>
+          <div className="grid items-start gap-12 lg:grid-cols-[0.98fr_0.92fr] lg:items-center">
+            <div className="max-w-3xl lg:pt-10">
+              <RevealOnScroll>
+                <p className="mb-6 text-xs font-semibold uppercase tracking-[0.48em] text-blue-300/80">
+                  Kwerky Media
+                </p>
+              </RevealOnScroll>
 
-            <RevealOnScroll delay={0.05}>
-              <h1 className="text-5xl font-bold leading-[0.94] text-white md:text-6xl lg:text-7xl">
-                <span className="block">Content and Growth Partner</span>
-                <span className="block text-blue-300">for Tech Companies</span>
-              </h1>
-            </RevealOnScroll>
+              <RevealOnScroll delay={0.05}>
+                <h1 className="max-w-2xl text-5xl font-bold leading-[0.92] text-white md:text-6xl lg:text-7xl">
+                  <span className="block">Content and Growth Partner</span>
+                  <span className="block text-blue-300">for Tech Companies</span>
+                </h1>
+              </RevealOnScroll>
 
-            <RevealOnScroll delay={0.12}>
-              <p className="mt-8 max-w-xl text-base leading-relaxed text-white/55 md:text-lg">
-                Kwerky Media is a dynamic content and growth partner for tech companies. With over a decade of expertise in strategic storytelling and technology content creation, we help businesses gain the spotlight they deserve.
-              </p>
-            </RevealOnScroll>
+              <RevealOnScroll delay={0.12}>
+                <p className="mt-8 max-w-xl text-base leading-relaxed text-white/55 md:text-lg">
+                  Kwerky Media is a dynamic content and growth partner for tech companies. With over a decade of expertise in strategic storytelling and technology content creation, we help businesses gain the spotlight they deserve.
+                </p>
+              </RevealOnScroll>
 
-            <RevealOnScroll delay={0.2}>
-              <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
-                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-                  <Link
-                    to="/services"
-                    className="inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-4 font-semibold text-white shadow-[0_16px_40px_rgba(37,99,235,0.32)] transition-colors hover:bg-blue-500"
-                    data-testid="hero-cta"
-                  >
-                    Connect with us!
-                  </Link>
-                </motion.div>
-                <span className="text-sm text-white/45">Get your spotlight.</span>
+              <RevealOnScroll delay={0.2}>
+                <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
+                  <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
+                    <Link
+                      to="/services"
+                      className="inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-4 font-semibold text-white shadow-[0_16px_40px_rgba(37,99,235,0.32)] transition-colors hover:bg-blue-500"
+                      data-testid="hero-cta"
+                    >
+                      Connect with us!
+                    </Link>
+                  </motion.div>
+                  <span className="text-sm text-white/45">Get your spotlight.</span>
+                </div>
+              </RevealOnScroll>
+
+              <RevealOnScroll delay={0.28}>
+                <div className="mt-8 max-w-xl rounded-[2rem] border border-white/10 bg-white/[0.03] p-4 backdrop-blur-sm lg:hidden">
+                  <div className="flex items-center gap-4">
+                    <div className="h-20 w-20 flex-shrink-0">
+                      <KwerkyRobotArt className="h-full w-full" compact />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-[0.34em] text-blue-300/80">
+                        Kwerky AI
+                      </p>
+                      <p className="mt-1 text-lg font-semibold text-white">I can guide you from hello to bye.</p>
+                      <p className="mt-2 text-sm leading-relaxed text-white/55">
+                        Ask about the site, and I can open Home, Services, About Us, Blogs, Videos, or Contact for you.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </RevealOnScroll>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.18, ease: [0.23, 1, 0.32, 1] }}
+              className="relative hidden lg:block"
+            >
+              <div className="absolute -left-8 top-6 h-72 w-72 rounded-full bg-blue-500/12 blur-3xl" />
+              <div className="absolute right-8 bottom-10 h-64 w-64 rounded-full bg-cyan-400/10 blur-3xl" />
+              <div className="relative ml-auto max-w-[460px] rounded-[2.5rem] border border-white/10 bg-white/[0.03] p-5 shadow-[0_28px_100px_rgba(0,0,0,0.42)] backdrop-blur-xl">
+                <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#050b16] p-5">
+                  <div className="flex items-start gap-5">
+                    <div className="h-44 w-44 flex-shrink-0">
+                      <KwerkyRobotArt className="h-full w-full" />
+                    </div>
+                    <div className="pt-4">
+                      <p className="text-xs font-semibold uppercase tracking-[0.42em] text-blue-300/80">
+                        Kwerky AI
+                      </p>
+                      <h2 className="mt-4 text-2xl font-bold leading-tight text-white">
+                        Your site guide,
+                        <span className="block text-blue-300">from hello to bye.</span>
+                      </h2>
+                      <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/55">
+                        I can talk visitors through the entire website, open each section, and help them reach the contact form without friction.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 grid grid-cols-2 gap-3">
+                    {[
+                      { label: "Open Services", path: "/services", hash: null },
+                      { label: "Go to About", path: "/about", hash: null },
+                      { label: "See Blogs", path: "/blogs", hash: null },
+                      { label: "Contact Now", path: "/services", hash: "#contact-section" },
+                    ].map((item) => (
+                      <button
+                        key={item.label}
+                        type="button"
+                        onClick={() => {
+                          navigate(item.path);
+                          if (item.hash) {
+                            window.setTimeout(() => {
+                              const el = document.getElementById(item.hash.replace("#", ""));
+                              if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                            }, 250);
+                          }
+                        }}
+                        className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm font-medium text-white/75 transition-colors hover:border-blue-400/30 hover:text-blue-300"
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </RevealOnScroll>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -97,9 +177,10 @@ const HomePage = () => {
         title={"Content that\nCaptivates"}
         description="We go beyond the norm. We are Kwerky."
         className="section-midnight"
+        id="value-section"
       />
 
-      <section className="relative px-6 py-28 section-midnight" data-testid="services-section">
+      <section id="services-section" className="relative px-6 py-28 section-midnight" data-testid="services-section">
         <div className="container mx-auto max-w-6xl relative z-10">
           <RevealOnScroll>
             <div className="max-w-2xl">
@@ -128,7 +209,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section className="relative px-6 py-28 section-midnight" data-testid="proof-section">
+      <section id="proof-section" className="relative px-6 py-28 section-midnight" data-testid="proof-section">
         <div className="container mx-auto max-w-6xl relative z-10">
           <RevealOnScroll>
             <div className="max-w-2xl">
@@ -157,7 +238,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section className="relative px-6 py-28 section-midnight" data-testid="cta-section">
+      <section id="cta-section" className="relative px-6 py-28 section-midnight" data-testid="cta-section">
         <div className="container mx-auto max-w-4xl relative z-10 text-center">
           <RevealOnScroll>
             <h2 className="text-5xl font-bold leading-[0.96] text-white md:text-7xl">
