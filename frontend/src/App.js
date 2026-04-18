@@ -111,14 +111,14 @@ const Navigation = () => {
       }`}
       data-testid="navigation"
     >
-      <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3 group relative z-10" data-testid="nav-logo">
+      <div className="container mx-auto px-5 py-3.5 flex items-center justify-between gap-3 sm:px-6">
+        <Link to="/" className="flex items-center gap-2.5 group relative z-10 min-w-0 shrink-0" data-testid="nav-logo">
           <motion.img
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 400 }}
             src="/brand/big-logo.png"
             alt="Kwerky Media"
-            className="h-18 w-auto md:h-[5.25rem] drop-shadow-[0_12px_34px_rgba(0,0,0,0.62)]"
+            className="h-12 w-auto sm:h-14 md:h-[4.75rem] drop-shadow-[0_12px_34px_rgba(0,0,0,0.62)]"
           />
           <span className="hidden lg:block text-sm font-semibold tracking-[0.24em] uppercase text-white/55">
             Kwerky Media
@@ -126,7 +126,7 @@ const Navigation = () => {
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex flex-1 items-center justify-end gap-4 lg:gap-6 min-w-0">
           <MenuBar
             items={MENU_ITEMS}
             activeItem={activeItem}
@@ -134,11 +134,12 @@ const Navigation = () => {
               const item = MENU_ITEMS.find((entry) => entry.label === label);
               if (item) navigate(item.href);
             }}
+            className="max-w-full scale-[0.96] origin-center"
           />
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link
               to="/services"
-              className="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-full transition-all hover:shadow-[0_12px_24px_rgba(59,130,246,0.3)]"
+              className="shrink-0 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-full transition-all hover:shadow-[0_12px_24px_rgba(59,130,246,0.3)]"
               data-testid="nav-cta"
             >
               Let's discuss your project
@@ -149,7 +150,7 @@ const Navigation = () => {
         {/* Mobile toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-            className={`md:hidden z-10 text-white/70`}
+          className="md:hidden z-10 text-white/70"
           data-testid="mobile-menu-toggle"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -171,7 +172,7 @@ const Navigation = () => {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden bg-black/90 backdrop-blur-md border-b border-white/5"
           >
-            <div className="px-6 py-4 flex flex-col gap-3">
+            <div className="px-5 py-4 flex flex-col gap-3">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.path}

@@ -278,11 +278,11 @@ const KwerkyAssistant = () => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.97 }}
         onClick={() => setOpen(true)}
-        className="fixed bottom-4 left-4 z-50 flex items-center gap-3 rounded-[1.25rem] border border-white/10 bg-black/76 px-2.5 py-2 text-left text-white shadow-[0_20px_50px_rgba(37,99,235,0.18)] backdrop-blur-xl transition-colors hover:border-blue-400/30 hover:bg-black/84 sm:bottom-6 sm:left-6 sm:px-3 sm:py-2.5"
+        className="fixed bottom-4 left-4 z-50 flex items-center gap-3 rounded-[1.15rem] border border-white/10 bg-black/76 px-2 py-1.75 text-left text-white shadow-[0_20px_50px_rgba(37,99,235,0.18)] backdrop-blur-xl transition-colors hover:border-blue-400/30 hover:bg-black/84 sm:bottom-6 sm:left-6 sm:px-3 sm:py-2.5"
         aria-label="Open AI assistant"
         data-testid="assistant-toggle"
       >
-        <div className="h-10 w-10 overflow-hidden rounded-2xl border border-white/10 bg-[#050b16] sm:h-12 sm:w-12">
+        <div className="h-9 w-9 overflow-hidden rounded-2xl border border-white/10 bg-[#050b16] sm:h-12 sm:w-12">
           <KwerkyRobotArt compact className="h-full w-full scale-[1.1]" />
         </div>
         <div className="hidden sm:block">

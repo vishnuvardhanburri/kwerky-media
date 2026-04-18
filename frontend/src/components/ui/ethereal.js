@@ -28,16 +28,12 @@ const Ethereal = ({
     let disposed = false;
     let frameId = 0;
     let cleanup = () => {};
-
-    const supportCanvas = document.createElement("canvas");
-    const hasWebGL = Boolean(supportCanvas.getContext("webgl2") || supportCanvas.getContext("webgl"));
-
-    if (!hasWebGL) {
+    const makeFallback = () => {
       const fallback = document.createElement("div");
       fallback.style.position = "absolute";
       fallback.style.inset = "0";
       fallback.style.background =
-        "radial-gradient(circle at 68% 30%, rgba(59,130,246,0.24), transparent 0 34%), radial-gradient(circle at 22% 22%, rgba(96,165,250,0.12), transparent 0 26%), linear-gradient(180deg, rgba(2,8,22,1), rgba(2,8,22,0.84))";
+        "radial-gradient(circle at 68% 30%, rgba(59,130,246,0.22), transparent 0 34%), radial-gradient(circle at 22% 22%, rgba(96,165,250,0.1), transparent 0 26%), linear-gradient(180deg, rgba(2,8,22,1), rgba(2,8,22,0.84))";
       fallback.style.pointerEvents = "none";
       container.appendChild(fallback);
 
@@ -48,13 +44,20 @@ const Ethereal = ({
       };
 
       return () => cleanup();
+    };
+
+    const supportCanvas = document.createElement("canvas");
+    const hasWebGL = Boolean(supportCanvas.getContext("webgl2") || supportCanvas.getContext("webgl"));
+    const isSmallScreen = window.matchMedia("(max-width: 767px)").matches;
+    const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
+
+    if (!hasWebGL || isTouchDevice) {
+      return makeFallback();
     }
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(colorPalette.dark);
     scene.fog = new THREE.Fog(colorPalette.dark, 7, 16);
-    const isSmallScreen = window.matchMedia("(max-width: 767px)").matches;
-    const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
 
     const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
     camera.position.set(0, 0, 7.2);
@@ -67,25 +70,11 @@ const Ethereal = ({
         powerPreference: "high-performance",
       });
     } catch (error) {
-      const fallback = document.createElement("div");
-      fallback.style.position = "absolute";
-      fallback.style.inset = "0";
-      fallback.style.background =
-        "radial-gradient(circle at 68% 30%, rgba(59,130,246,0.24), transparent 0 34%), radial-gradient(circle at 22% 22%, rgba(96,165,250,0.12), transparent 0 26%), linear-gradient(180deg, rgba(2,8,22,1), rgba(2,8,22,0.84))";
-      fallback.style.pointerEvents = "none";
-      container.appendChild(fallback);
-
-      cleanup = () => {
-        if (fallback.parentNode === container) {
-          container.removeChild(fallback);
-        }
-      };
-
-      return () => cleanup();
+      return makeFallback();
     }
 
     renderer.setClearColor(0x020816, 1);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isSmallScreen ? 1.5 : 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isSmallScreen ? 1.25 : 1.85));
     renderer.setSize(container.clientWidth, container.clientHeight, false);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     container.appendChild(renderer.domElement);
@@ -93,7 +82,7 @@ const Ethereal = ({
     const group = new THREE.Group();
     scene.add(group);
 
-    const glowGeometry = new THREE.SphereGeometry(isSmallScreen ? 1.95 : 2.15, 32, 32);
+    const glowGeometry = new THREE.SphereGeometry(isSmallScreen ? 1.75 : 2.05, 28, 28);
     const glowMaterial = new THREE.MeshBasicMaterial({
       color: new THREE.Color(colorPalette.secondary),
       transparent: true,
@@ -102,7 +91,7 @@ const Ethereal = ({
     const glow = new THREE.Mesh(glowGeometry, glowMaterial);
     group.add(glow);
 
-    const coreGeometry = new THREE.IcosahedronGeometry(isSmallScreen ? 1.02 : 1.2, isSmallScreen ? 2 : 4);
+    const coreGeometry = new THREE.IcosahedronGeometry(isSmallScreen ? 0.96 : 1.15, isSmallScreen ? 1 : 3);
     const coreMaterial = new THREE.MeshStandardMaterial({
       color: new THREE.Color(colorPalette.primary),
       emissive: new THREE.Color(colorPalette.secondary),
@@ -113,7 +102,7 @@ const Ethereal = ({
     const core = new THREE.Mesh(coreGeometry, coreMaterial);
     group.add(core);
 
-    const shellGeometry = new THREE.TorusKnotGeometry(isSmallScreen ? 1.55 : 1.8, 0.14, isSmallScreen ? 96 : 180, isSmallScreen ? 16 : 24);
+    const shellGeometry = new THREE.TorusKnotGeometry(isSmallScreen ? 1.42 : 1.7, 0.13, isSmallScreen ? 72 : 156, isSmallScreen ? 14 : 20);
     const shellMaterial = new THREE.MeshStandardMaterial({
       color: new THREE.Color("#07172f"),
       emissive: new THREE.Color(colorPalette.tertiary),
@@ -126,7 +115,7 @@ const Ethereal = ({
     shell.rotation.z = Math.PI * 0.18;
     group.add(shell);
 
-    const ringGeometry = new THREE.TorusGeometry(isSmallScreen ? 2.45 : 2.8, 0.03, 10, isSmallScreen ? 120 : 240);
+    const ringGeometry = new THREE.TorusGeometry(isSmallScreen ? 2.25 : 2.7, 0.03, 8, isSmallScreen ? 100 : 200);
     const ringMaterial = new THREE.MeshBasicMaterial({
       color: new THREE.Color(colorPalette.accent),
       transparent: true,
@@ -136,7 +125,7 @@ const Ethereal = ({
     ring.rotation.x = Math.PI / 2.4;
     group.add(ring);
 
-    const particlesCount = isSmallScreen ? 120 : 240;
+    const particlesCount = isSmallScreen ? 84 : 200;
     const positions = new Float32Array(particlesCount * 3);
     for (let i = 0; i < particlesCount; i += 1) {
       const radius = 3.8 + Math.random() * 2.8;
@@ -174,7 +163,7 @@ const Ethereal = ({
     accentLight.position.set(0, 3, 2);
     scene.add(accentLight);
 
-    group.scale.setScalar(1.1);
+    group.scale.setScalar(isSmallScreen ? 0.96 : 1.08);
     group.position.x = 0.18;
 
     const pointer = { x: 0, y: 0 };
@@ -255,11 +244,11 @@ const Ethereal = ({
       frameId = window.requestAnimationFrame(animate);
       const elapsed = clock.getElapsedTime();
 
-      group.rotation.y = elapsed * 0.045 + pointer.x * 0.18 + scrollState.progress * 0.15;
-      group.rotation.x = Math.sin(elapsed * 0.35) * 0.06 + pointer.y * 0.12;
-      glow.scale.setScalar(1 + Math.sin(elapsed * 0.45) * 0.04);
-      shell.rotation.z = Math.PI * 0.18 + Math.sin(elapsed * 0.16) * 0.06;
-      particles.rotation.y = elapsed * 0.02;
+      group.rotation.y = elapsed * 0.03 + pointer.x * 0.14 + scrollState.progress * 0.12;
+      group.rotation.x = Math.sin(elapsed * 0.24) * 0.04 + pointer.y * 0.08;
+      glow.scale.setScalar(1 + Math.sin(elapsed * 0.35) * 0.03);
+      shell.rotation.z = Math.PI * 0.18 + Math.sin(elapsed * 0.12) * 0.045;
+      particles.rotation.y = elapsed * 0.014;
       particles.rotation.x = elapsed * 0.008;
 
       composer.render();
