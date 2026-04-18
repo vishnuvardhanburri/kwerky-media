@@ -106,7 +106,7 @@ const Navigation = () => {
       transition={{ duration: 0.5 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-black/60 backdrop-blur-md"
+          ? "bg-black/92 border-b border-white/8 backdrop-blur-sm"
           : "bg-transparent"
       }`}
       data-testid="navigation"
@@ -118,7 +118,7 @@ const Navigation = () => {
             transition={{ type: "spring", stiffness: 400 }}
             src="/brand/big-logo.png"
             alt="Kwerky Media"
-            className="h-16 w-auto md:h-20 drop-shadow-[0_12px_34px_rgba(0,0,0,0.62)]"
+            className="h-18 w-auto md:h-[5.25rem] drop-shadow-[0_12px_34px_rgba(0,0,0,0.62)]"
           />
           <span className="hidden lg:block text-sm font-semibold tracking-[0.24em] uppercase text-white/55">
             Kwerky Media

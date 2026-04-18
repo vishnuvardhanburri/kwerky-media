@@ -53,33 +53,33 @@ const HomePage = () => {
         <Ethereal />
         <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.14),transparent_42%),linear-gradient(180deg,rgba(0,0,0,0.25),rgba(0,0,0,0.92))]" />
 
-        <div className="container mx-auto min-h-[calc(100vh-6rem)] max-w-6xl py-16 relative z-10">
-          <div className="max-w-3xl lg:pt-10">
+        <div className="container mx-auto min-h-[calc(100vh-6rem)] max-w-6xl py-20 relative z-10">
+          <div className="max-w-4xl lg:pt-12">
             <RevealOnScroll>
-              <p className="mb-6 text-xs font-semibold uppercase tracking-[0.48em] text-blue-300/80">
+              <p className="mb-6 text-xs font-semibold uppercase tracking-[0.52em] text-blue-300/80">
                 Kwerky Media
               </p>
             </RevealOnScroll>
 
             <RevealOnScroll delay={0.05}>
-              <h1 className="max-w-2xl text-5xl font-bold leading-[0.92] text-white md:text-6xl lg:text-7xl">
-                <span className="block">Content and Growth Partner</span>
-                <span className="block text-blue-300">for Tech Companies</span>
+              <h1 className="max-w-3xl text-6xl font-bold leading-[0.88] tracking-[-0.04em] text-white md:text-7xl lg:text-[7.4rem]">
+                <span className="block">Content and growth partner</span>
+                <span className="block text-blue-300">for tech companies</span>
               </h1>
             </RevealOnScroll>
 
             <RevealOnScroll delay={0.12}>
-              <p className="mt-8 max-w-xl text-base leading-relaxed text-white/55 md:text-lg">
+              <p className="mt-8 max-w-lg text-base leading-relaxed text-white/55 md:text-lg">
                 Kwerky Media is a dynamic content and growth partner for tech companies. With over a decade of expertise in strategic storytelling and technology content creation, we help businesses gain the spotlight they deserve.
               </p>
             </RevealOnScroll>
 
             <RevealOnScroll delay={0.2}>
-              <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
-                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
+              <div className="mt-12 flex flex-col gap-4 sm:flex-row sm:items-center">
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                   <Link
                     to="/services"
-                    className="inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-4 font-semibold text-white shadow-[0_16px_40px_rgba(37,99,235,0.32)] transition-colors hover:bg-blue-500"
+                    className="inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-4 font-semibold text-white shadow-[0_12px_30px_rgba(37,99,235,0.22)] transition-colors hover:bg-blue-500"
                     data-testid="hero-cta"
                   >
                     Connect with us!
@@ -100,7 +100,7 @@ const HomePage = () => {
         id="value-section"
       />
 
-      <section id="services-section" className="relative px-6 py-28 section-midnight" data-testid="services-section">
+      <section id="services-section" className="relative px-6 py-32 section-midnight" data-testid="services-section">
         <div className="container mx-auto max-w-6xl relative z-10">
           <RevealOnScroll>
             <div className="max-w-2xl">
@@ -113,16 +113,16 @@ const HomePage = () => {
           <div className="mt-14 grid gap-6 md:grid-cols-3">
             {SERVICES.map((service, index) => (
               <Card3D key={service.title} delay={index * 0.08} testId={`service-card-${index}`}>
-                <div className="h-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#050b16] shadow-[0_18px_60px_rgba(0,0,0,0.35)]">
-                  <div className="relative aspect-square overflow-hidden bg-[#040816]">
+                <div className="h-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#030712]">
+                  <div className="relative aspect-[4/3] overflow-hidden bg-[#040816]">
                     <img
                       src={service.image}
                       alt={service.title}
-                      className="h-full w-full object-contain p-4"
+                      className="h-full w-full object-contain p-5"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
                   </div>
-                  <div className="p-6">
+                  <div className="p-7">
                     <h3 className="text-2xl font-semibold text-white">{service.title}</h3>
                     <p className="mt-3 text-sm leading-7 text-white/55">{service.desc}</p>
                   </div>
@@ -133,7 +133,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section id="proof-section" className="relative px-6 py-28 section-midnight" data-testid="proof-section">
+      <section id="proof-section" className="relative px-6 py-32 section-midnight" data-testid="proof-section">
         <div className="container mx-auto max-w-6xl relative z-10">
           <RevealOnScroll>
             <div className="max-w-2xl">
@@ -149,8 +149,8 @@ const HomePage = () => {
           <div className="mt-14 grid gap-6 md:grid-cols-2">
             {PROOF.map((item, index) => (
               <Card3D key={item.title} delay={index * 0.08} testId={`proof-card-${index}`}>
-                <div className="h-full rounded-[1.75rem] border border-white/10 bg-[#050b16] p-7 shadow-[0_18px_60px_rgba(0,0,0,0.35)] md:p-8">
-                  <p className="text-white/70 text-lg leading-relaxed">★★★★★</p>
+                <div className="h-full rounded-[1.75rem] border border-white/10 bg-[#030712] p-8 md:p-10">
+                  <p className="text-lg leading-relaxed text-white/70">★★★★★</p>
                   <p className="mt-4 text-white/70 text-lg leading-relaxed">&quot;{item.quote}&quot;</p>
                   <div className="mt-8 h-px w-full bg-gradient-to-r from-blue-400/30 via-white/10 to-transparent" />
                   <p className="mt-4 text-sm font-semibold text-blue-300">{item.title}</p>
@@ -162,10 +162,10 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section id="cta-section" className="relative px-6 py-28 section-midnight" data-testid="cta-section">
+      <section id="cta-section" className="relative px-6 py-32 section-midnight" data-testid="cta-section">
         <div className="container mx-auto max-w-4xl relative z-10 text-center">
           <RevealOnScroll>
-            <h2 className="text-5xl font-bold leading-[0.96] text-white md:text-7xl">
+            <h2 className="text-5xl font-bold leading-[0.92] tracking-[-0.03em] text-white md:text-7xl">
               Connect with us!
             </h2>
           </RevealOnScroll>
@@ -173,7 +173,7 @@ const HomePage = () => {
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }} className="mt-10">
               <Link
                 to="/services"
-                className="inline-flex items-center justify-center rounded-full bg-blue-600 px-10 py-4 text-lg font-semibold text-white shadow-[0_20px_50px_rgba(37,99,235,0.28)] transition-colors hover:bg-blue-500"
+                className="inline-flex items-center justify-center rounded-full bg-blue-600 px-10 py-4 text-lg font-semibold text-white shadow-[0_14px_34px_rgba(37,99,235,0.2)] transition-colors hover:bg-blue-500"
                 data-testid="cta-button"
               >
                 Get your spotlight.

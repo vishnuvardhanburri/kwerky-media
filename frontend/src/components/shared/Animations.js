@@ -8,9 +8,9 @@ export const RevealOnScroll = ({ children, delay = 0, className = "" }) => {
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 60, scale: 0.98 }}
-      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 60, scale: 0.98 }}
-      transition={{ duration: 0.5, delay, ease: [0.23, 1, 0.32, 1] }}
+      initial={{ opacity: 0, y: 60, scale: 0.985 }}
+      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 60, scale: 0.985 }}
+      transition={{ duration: 0.55, delay, ease: [0.23, 1, 0.32, 1] }}
       className={className}
     >
       {children}
@@ -25,11 +25,11 @@ export const Card3D = ({ children, className = "", delay = 0, testId }) => {
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 60, rotateX: 10 }}
-      animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : { opacity: 0, y: 60, rotateX: 10 }}
-      transition={{ duration: 0.5, delay, ease: [0.23, 1, 0.32, 1] }}
+      initial={{ opacity: 0, y: 60, rotateX: 8, scale: 0.985 }}
+      animate={isInView ? { opacity: 1, y: 0, rotateX: 0, scale: 1 } : { opacity: 0, y: 60, rotateX: 8, scale: 0.985 }}
+      transition={{ duration: 0.55, delay, ease: [0.23, 1, 0.32, 1] }}
       whileHover={{
-        y: -6,
+        y: -5,
         scale: 1.03,
         transition: { duration: 0.2 }
       }}
@@ -61,7 +61,7 @@ export const StaggerItem = ({ children, delay = 0, className = "" }) => (
     initial={{ opacity: 0, y: 32 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: "-40px" }}
-    transition={{ duration: 0.5, delay, ease: [0.23, 1, 0.32, 1] }}
+    transition={{ duration: 0.55, delay, ease: [0.23, 1, 0.32, 1] }}
     className={className}
   >
     {children}
@@ -81,7 +81,7 @@ export const LineReveal = ({ text, className = "", delay = 0 }) => {
           className="block"
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-          transition={{ duration: 0.5, delay: delay + i * 0.06, ease: [0.23, 1, 0.32, 1] }}
+          transition={{ duration: 0.55, delay: delay + i * 0.07, ease: [0.23, 1, 0.32, 1] }}
         >
           {line}
         </motion.span>
