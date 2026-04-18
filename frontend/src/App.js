@@ -143,7 +143,7 @@ const Navigation = () => {
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
           onClick={openContactInfo}
-          className="hidden shrink-0 rounded-full border border-[#ffb347]/30 bg-[#ffb347] px-4 py-2 text-sm font-semibold text-black shadow-[0_12px_26px_rgba(255,179,71,0.18)] transition-colors hover:bg-[#ffc56e] md:inline-flex"
+          className="hidden shrink-0 rounded-full border border-blue-400/30 bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-[0_12px_26px_rgba(37,99,235,0.18)] transition-colors hover:bg-blue-500 md:inline-flex"
           data-testid="nav-cta"
         >
           Let&apos;s discuss your project
@@ -156,7 +156,7 @@ const Navigation = () => {
                 key={link.path}
                 to={link.path}
                 className={`text-sm font-medium transition-colors ${
-                  activeItem === link.label ? "text-white" : "text-white/68 hover:text-[#ffb347]"
+                  activeItem === link.label ? "text-white" : "text-white/68 hover:text-blue-300"
                 }`}
               >
                 {link.label}
@@ -168,7 +168,7 @@ const Navigation = () => {
                 <button
                   type="button"
                   className={`inline-flex items-center gap-1 text-sm font-medium transition-colors ${
-                    location.pathname === "/services" ? "text-white" : "text-white/68 hover:text-[#ffb347]"
+                    location.pathname === "/services" ? "text-white" : "text-white/68 hover:text-blue-300"
                   }`}
                 >
                   Services
@@ -180,7 +180,7 @@ const Navigation = () => {
                   <DropdownMenuItem
                     key={service.label}
                     asChild
-                    className="cursor-pointer text-sm text-white/75 focus:bg-white/5 focus:text-[#ffb347]"
+                    className="cursor-pointer text-sm text-white/75 focus:bg-white/5 focus:text-blue-300"
                   >
                     <Link to={`/services${service.hash}`}>{service.label}</Link>
                   </DropdownMenuItem>
@@ -193,7 +193,7 @@ const Navigation = () => {
                 key={link.path}
                 to={link.path}
                 className={`text-sm font-medium transition-colors ${
-                  activeItem === link.label ? "text-white" : "text-white/68 hover:text-[#ffb347]"
+                  activeItem === link.label ? "text-white" : "text-white/68 hover:text-blue-300"
                 }`}
               >
                 {link.label}
@@ -211,7 +211,7 @@ const Navigation = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={item.label}
-                  className="text-white/58 transition-colors hover:text-[#ffb347]"
+                  className="text-white/58 transition-colors hover:text-blue-300"
                   data-testid={item.testId}
                 >
                   <Icon className="h-4.5 w-4.5" />
@@ -253,7 +253,7 @@ const Navigation = () => {
                   openContactInfo();
                   setMobileOpen(false);
                 }}
-                className="w-full rounded-full bg-[#ffb347] px-5 py-2.5 text-sm font-semibold text-black"
+                className="w-full rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white"
               >
                 Let&apos;s discuss your project
               </button>
@@ -270,7 +270,7 @@ const Navigation = () => {
                     <Link
                       key={service.label}
                       to={`/services${service.hash}`}
-                      className="text-sm text-white/62 transition-colors hover:text-[#ffb347]"
+                      className="text-sm text-white/62 transition-colors hover:text-blue-300"
                     >
                       {service.label}
                     </Link>
@@ -301,7 +301,7 @@ const Navigation = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={item.label}
-                      className="text-white/60 transition-colors hover:text-[#ffb347]"
+                      className="text-white/60 transition-colors hover:text-blue-300"
                     >
                       <Icon className="h-5 w-5" />
                     </a>

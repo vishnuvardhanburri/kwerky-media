@@ -80,7 +80,7 @@ const HomePage = () => {
                 {heroLines.map((line, index) => (
                   <span
                     key={`${line}-${index}`}
-                    className={`block ${index === heroLines.length - 1 ? "text-[#ffb347]" : "text-white"}`}
+                    className={`block ${index === heroLines.length - 1 ? "text-blue-300" : "text-white"}`}
                   >
                     {line}
                   </span>
@@ -100,7 +100,7 @@ const HomePage = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={openContactInfo}
-                  className="inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-4 font-semibold text-white shadow-[0_12px_30px_rgba(37,99,235,0.22)] transition-colors hover:bg-[#ffb347] hover:text-black"
+                  className="inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-4 font-semibold text-white shadow-[0_12px_30px_rgba(37,99,235,0.22)] transition-colors hover:bg-blue-500"
                   data-testid="hero-cta"
                 >
                     {home.ctaText || "Let's discuss your project"}
@@ -131,7 +131,7 @@ const HomePage = () => {
                     <button
                       type="button"
                       onClick={enableHeroAudio}
-                      className="absolute right-4 top-4 rounded-full border border-[#ffb347]/30 bg-black/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-white/85 backdrop-blur-sm transition-colors hover:bg-[#ffb347] hover:text-black"
+                      className="absolute right-4 top-4 rounded-full border border-blue-400/30 bg-black/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-white/85 backdrop-blur-sm transition-colors hover:bg-blue-500 hover:text-white"
                     >
                       {heroSoundOn ? "Sound on" : "Play with sound"}
                     </button>
@@ -143,7 +143,7 @@ const HomePage = () => {
                       </p>
                       <p className="mt-1 text-sm text-white/72">Content, growth, and clarity for tech brands.</p>
                     </div>
-                    <div className="hidden rounded-full border border-[#ffb347]/30 bg-[#ffb347]/10 px-3 py-2 text-xs font-medium text-[#ffb347] sm:block">
+                    <div className="hidden rounded-full border border-blue-400/30 bg-blue-400/10 px-3 py-2 text-xs font-medium text-blue-300 sm:block">
                       Stage reveal
                     </div>
                   </div>
@@ -203,7 +203,7 @@ const HomePage = () => {
                 Proof
               </p>
               <h2 className="torch-text text-4xl font-bold leading-[0.96] text-white md:text-6xl">
-                Clients Click on the <span className="text-blue-300">5th Star</span> – Because They Know <span className="text-[#ffb347]">4 Doesn&apos;t Do Justice!</span>
+                Clients Click on the <span className="text-blue-300">5th Star</span> – Because They Know 4 Doesn&apos;t Do Justice!
               </h2>
             </div>
           </RevealOnScroll>
@@ -229,7 +229,7 @@ const HomePage = () => {
           <RevealOnScroll>
             <h2 className="torch-text text-5xl font-bold leading-[0.92] tracking-[-0.03em] text-white md:text-7xl">
               <span className="text-blue-300">Let&apos;s</span>{" "}
-              <span className="text-[#ffb347]">discuss your project</span>
+              <span className="text-blue-300">discuss your project</span>
             </h2>
           </RevealOnScroll>
           <RevealOnScroll delay={0.2}>
@@ -237,7 +237,7 @@ const HomePage = () => {
               <button
                 type="button"
                 onClick={openContactInfo}
-                className="inline-flex items-center justify-center rounded-full bg-blue-600 px-10 py-4 text-lg font-semibold text-white shadow-[0_14px_34px_rgba(37,99,235,0.2)] transition-colors hover:bg-[#ffb347] hover:text-black"
+                className="inline-flex items-center justify-center rounded-full bg-blue-600 px-10 py-4 text-lg font-semibold text-white shadow-[0_14px_34px_rgba(37,99,235,0.2)] transition-colors hover:bg-blue-500"
                 data-testid="cta-button"
               >
                 {home.ctaText || "Let's discuss your project"}

@@ -70,7 +70,8 @@ const ServicesPage = () => {
               <p className="mb-5 text-xs font-semibold uppercase tracking-[0.34em] text-blue-300/80">Services</p>
               <h1 className="torch-text text-5xl font-bold leading-[0.96] text-white md:text-7xl">
                 <span className="text-blue-300">Why Choose</span>{" "}
-                <span className="text-[#ffb347]">Kwerky Media?</span>
+                <span className="text-blue-300">Kwerky</span>{" "}
+                <span className="text-[#ffb347]">Media?</span>
               </h1>
               <p className="mt-6 max-w-xl text-base md:text-lg text-white/75">
                 {page.heroSub || "Tech companies are laser-focused on product innovation and development—that’s their niche."}
@@ -137,8 +138,8 @@ const ServicesPage = () => {
                   ))}
                   <div className="flex flex-col gap-7 md:flex-row md:items-start md:gap-10">
                     <div className="flex-shrink-0">
-                      <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-[#ffb347]/20 bg-[#ffb347]/10">
-                        <svg className="h-8 w-8 text-[#ffb347]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-blue-400/20 bg-blue-400/10">
+                        <svg className="h-8 w-8 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
                         </svg>
                       </div>
@@ -149,7 +150,7 @@ const ServicesPage = () => {
                       <ul className="mt-6 grid gap-2">
                         {(service.points || []).map((point) => (
                           <li key={point} className="flex items-start gap-2 text-sm leading-relaxed text-white/60">
-                            <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#ffb347]" fill="currentColor" viewBox="0 0 20 20">
+                            <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-300" fill="currentColor" viewBox="0 0 20 20">
                               <path
                                 fillRule="evenodd"
                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -176,7 +177,8 @@ const ServicesPage = () => {
               <p className="mb-4 text-xs font-semibold uppercase tracking-[0.34em] text-blue-300/80">Videos</p>
               <h2 className="text-4xl font-bold text-white md:text-6xl">
                 <span className="text-blue-300">Explore</span>{" "}
-                <span className="text-[#ffb347]">our Kwerky videos</span>
+                <span className="text-blue-300">our Kwerky</span>{" "}
+                <span className="text-[#ffb347]">videos</span>
               </h2>
             </div>
           </RevealOnScroll>
@@ -204,7 +206,7 @@ const ServicesPage = () => {
               <p className="mb-5 text-xs font-semibold uppercase tracking-[0.34em] text-blue-300/80">Contact</p>
               <h2 className="torch-text text-5xl font-bold leading-[0.96] text-white md:text-6xl">
                 <span className="text-blue-300">Let&apos;s</span>{" "}
-                <span className="text-[#ffb347]">discuss your project</span>
+                <span className="text-blue-300">discuss your project</span>
               </h2>
               <p className="mt-5 max-w-xl leading-relaxed text-white/75">
                 This is the direct contact info section. No form here, only the details your team needs.
@@ -217,21 +219,21 @@ const ServicesPage = () => {
               <div className="rounded-[2rem] border border-white/10 bg-[#050b16] p-6 shadow-[0_24px_90px_rgba(0,0,0,0.45)] md:p-8">
                 <div className="grid gap-5 sm:grid-cols-3">
                   <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-5">
-                    <Phone className="h-5 w-5 text-[#ffb347]" />
+                    <Phone className="h-5 w-5 text-blue-300" />
                     <p className="mt-4 text-xs uppercase tracking-[0.28em] text-white/45">Phone</p>
                     <a href="tel:08031548088" className="mt-2 block text-lg font-semibold text-white">
                       08031548088
                     </a>
                   </div>
                   <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-5">
-                    <Mail className="h-5 w-5 text-[#ffb347]" />
+                    <Mail className="h-5 w-5 text-blue-300" />
                     <p className="mt-4 text-xs uppercase tracking-[0.28em] text-white/45">Email</p>
                     <a href="mailto:hello@kwerkymedia.com" className="mt-2 block text-lg font-semibold text-white break-words">
                       hello@kwerkymedia.com
                     </a>
                   </div>
                   <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-5">
-                    <MapPin className="h-5 w-5 text-[#ffb347]" />
+                    <MapPin className="h-5 w-5 text-blue-300" />
                     <p className="mt-4 text-xs uppercase tracking-[0.28em] text-white/45">Location</p>
                     <p className="mt-2 text-lg font-semibold text-white">Bangalore</p>
                   </div>
@@ -249,7 +251,7 @@ const ServicesPage = () => {
                         href={item.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-white/75 transition-colors hover:border-[#ffb347]/30 hover:text-[#ffb347]"
+                        className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-white/75 transition-colors hover:border-blue-400/30 hover:text-blue-300"
                       >
                         <Icon className="h-4 w-4" />
                         {item.label}

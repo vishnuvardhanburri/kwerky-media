@@ -38,11 +38,11 @@ const Footer = () => {
                 type="email"
                 required
                 placeholder="Enter your email"
-                className="h-12 rounded-full border border-white/10 bg-white/[0.03] px-4 text-white outline-none transition-colors placeholder:text-white/30 focus:border-[#ffb347]/60"
+                className="h-12 rounded-full border border-white/10 bg-white/[0.03] px-4 text-white outline-none transition-colors placeholder:text-white/30 focus:border-blue-400/60"
               />
               <button
                 type="submit"
-                className="h-12 rounded-full bg-[#ffb347] px-6 font-semibold text-black transition-colors hover:bg-[#ffc56e]"
+                className="h-12 rounded-full bg-blue-600 px-6 font-semibold text-white transition-colors hover:bg-blue-500"
               >
                 Submit
               </button>
@@ -63,19 +63,19 @@ const Footer = () => {
           <div>
             <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white">Quick Links</h4>
             <nav className="flex flex-col gap-2">
-              <Link to="/" className="text-sm text-white/65 transition-colors hover:text-[#ffb347]">
+              <Link to="/" className="text-sm text-white/65 transition-colors hover:text-blue-300">
                 Home
               </Link>
-              <Link to="/services" className="text-sm text-white/65 transition-colors hover:text-[#ffb347]">
+              <Link to="/services" className="text-sm text-white/65 transition-colors hover:text-blue-300">
                 Services
               </Link>
-              <Link to="/about" className="text-sm text-white/65 transition-colors hover:text-[#ffb347]">
+              <Link to="/about" className="text-sm text-white/65 transition-colors hover:text-blue-300">
                 About Us
               </Link>
-              <Link to="/blogs" className="text-sm text-white/65 transition-colors hover:text-[#ffb347]">
+              <Link to="/blogs" className="text-sm text-white/65 transition-colors hover:text-blue-300">
                 Blogs
               </Link>
-              <Link to="/videos" className="text-sm text-white/65 transition-colors hover:text-[#ffb347]">
+              <Link to="/videos" className="text-sm text-white/65 transition-colors hover:text-blue-300">
                 Videos
               </Link>
             </nav>
@@ -84,16 +84,16 @@ const Footer = () => {
           <div>
             <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white">Get in Touch</h4>
             <div className="space-y-3">
-              <a href="mailto:hello@kwerkymedia.com" className="block text-sm text-white/65 transition-colors hover:text-[#ffb347]">
+              <a href="mailto:hello@kwerkymedia.com" className="block text-sm text-white/65 transition-colors hover:text-blue-300">
                 hello@kwerkymedia.com
               </a>
-              <a href="tel:08031548088" className="block text-sm text-white/65 transition-colors hover:text-[#ffb347]">
+              <a href="tel:08031548088" className="block text-sm text-white/65 transition-colors hover:text-blue-300">
                 08031548088
               </a>
               <p className="text-sm leading-relaxed text-white/50">Bangalore</p>
               <Link
                 to="/services#contact-info-section"
-                className="inline-flex items-center gap-2 text-sm font-medium text-blue-300 transition-colors hover:text-[#ffb347]"
+                className="inline-flex items-center gap-2 text-sm font-medium text-blue-300 transition-colors hover:text-blue-400"
               >
                 Let&apos;s discuss your project
                 <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -110,7 +110,7 @@ const Footer = () => {
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-white/50 transition-colors hover:text-[#ffb347]"
+                    className="text-white/50 transition-colors hover:text-blue-300"
                     data-testid={item.testId}
                   >
                     <Icon className="h-5 w-5" />
