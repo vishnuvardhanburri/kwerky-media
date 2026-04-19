@@ -1,26 +1,11 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import BackgroundLayers from "@/components/shared/BackgroundLayers";
 import { RevealOnScroll, Card3D } from "@/components/shared/Animations";
 import Footer from "@/components/shared/Footer";
-import { DEFAULT_BLOGS, DEFAULT_BLOG_BANNER, getBlogsPageData } from "@/lib/cms";
+import { useBlogsPageCms } from "@/lib/cms";
 
 const BlogsPage = () => {
-  const [cms, setCms] = useState({
-    bannerImage: DEFAULT_BLOG_BANNER,
-    blogs: DEFAULT_BLOGS,
-  });
-
-  useEffect(() => {
-    let alive = true;
-    getBlogsPageData().then((data) => {
-      if (alive) setCms(data);
-    });
-    return () => {
-      alive = false;
-    };
-  }, []);
-
+  const cms = useBlogsPageCms();
   const blogs = cms?.blogs || [];
   const bannerImage = cms?.bannerImage || "/brand/blog-banner.png";
 

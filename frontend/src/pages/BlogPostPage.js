@@ -1,42 +1,12 @@
-import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import BackgroundLayers from "@/components/shared/BackgroundLayers";
 import { RevealOnScroll } from "@/components/shared/Animations";
 import Footer from "@/components/shared/Footer";
-import { DEFAULT_BLOGS, getBlogPostData } from "@/lib/cms";
+import { useBlogPostCms, DEFAULT_BLOGS } from "@/lib/cms";
 
 const BlogPostPage = () => {
   const { slug } = useParams();
-  const defaultBlog = DEFAULT_BLOGS.find((item) => item.slug === slug) || null;
-  const [blog, setBlog] = useState(defaultBlog);
-  const [loading, setLoading] = useState(!defaultBlog);
-
-  useEffect(() => {
-    let alive = true;
-    if (!defaultBlog) {
-      setLoading(true);
-    }
-    getBlogPostData(slug).then((data) => {
-      if (alive) {
-        setBlog(data);
-        setLoading(false);
-      }
-    });
-    return () => {
-      alive = false;
-    };
-  }, [slug, defaultBlog]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen pt-20 relative flex items-center justify-center">
-        <BackgroundLayers />
-        <div className="relative z-10 text-center">
-          <h1 className="text-4xl font-bold text-white mb-4">Loading blog...</h1>
-        </div>
-      </div>
-    );
-  }
+  const blog = useBlogPostCms(slug);
 
   if (!blog) {
     return (

@@ -1,26 +1,10 @@
-import { useEffect, useState } from "react";
 import BackgroundLayers from "@/components/shared/BackgroundLayers";
 import { RevealOnScroll, Card3D } from "@/components/shared/Animations";
 import Footer from "@/components/shared/Footer";
-import { DEFAULT_ABOUT_NOTES, DEFAULT_FOUNDERS, DEFAULT_VIDEOS, getAboutPageData } from "@/lib/cms";
+import { useAboutPageCms } from "@/lib/cms";
 
 const AboutPage = () => {
-  const [cms, setCms] = useState({
-    founders: DEFAULT_FOUNDERS,
-    notes: DEFAULT_ABOUT_NOTES,
-    videos: DEFAULT_VIDEOS,
-  });
-
-  useEffect(() => {
-    let alive = true;
-    getAboutPageData().then((data) => {
-      if (alive) setCms(data);
-    });
-    return () => {
-      alive = false;
-    };
-  }, []);
-
+  const cms = useAboutPageCms();
   const founders = cms?.founders || [];
   const notes = cms?.notes || [];
   const videos = cms?.videos || [];

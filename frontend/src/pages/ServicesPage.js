@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone, Twitter, Youtube } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import BackgroundLayers from "@/components/shared/BackgroundLayers";
 import { Card3D, RevealOnScroll } from "@/components/shared/Animations";
-import { DEFAULT_SERVICES_DETAIL, DEFAULT_SERVICES_PAGE, getServicesPageData } from "@/lib/cms";
+import { useServicesPageCms } from "@/lib/cms";
 
 const SERVICE_ANCHORS = [
   ["content-creation", "website-development"],
@@ -24,20 +24,7 @@ const SOCIAL_LINKS = [
 
 const ServicesPage = () => {
   const location = useLocation();
-  const [cms, setCms] = useState({
-    page: DEFAULT_SERVICES_PAGE,
-    services: DEFAULT_SERVICES_DETAIL,
-  });
-
-  useEffect(() => {
-    let alive = true;
-    getServicesPageData().then((data) => {
-      if (alive) setCms(data);
-    });
-    return () => {
-      alive = false;
-    };
-  }, []);
+  const cms = useServicesPageCms();
 
   useEffect(() => {
     const hash = location.hash?.replace("#", "");

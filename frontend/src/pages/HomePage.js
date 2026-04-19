@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useSpring } from "framer-motion";
 import BackgroundLayers from "@/components/shared/BackgroundLayers";
@@ -7,31 +7,15 @@ import { Card3D, RevealOnScroll } from "@/components/shared/Animations";
 import Footer from "@/components/shared/Footer";
 import Ethereal from "@/components/ui/ethereal";
 import { useSiteActions } from "@/context/site-actions";
-import { DEFAULT_HOME, DEFAULT_SERVICES_HOMEPAGE, DEFAULT_TESTIMONIAL_PAGE, formatCmsTitle, getHomePageData } from "@/lib/cms";
+import { formatCmsTitle, useHomePageCms } from "@/lib/cms";
 
 const HomePage = () => {
   const { openContactInfo } = useSiteActions();
   const heroVideoRef = useRef(null);
   const [heroSoundOn, setHeroSoundOn] = useState(false);
-  const [content, setContent] = useState({
-    home: DEFAULT_HOME,
-    services: DEFAULT_SERVICES_HOMEPAGE,
-    testimonials: DEFAULT_TESTIMONIAL_PAGE,
-  });
+  const content = useHomePageCms();
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
-
-  useEffect(() => {
-    let alive = true;
-
-    getHomePageData().then((data) => {
-      if (alive) setContent(data);
-    });
-
-    return () => {
-      alive = false;
-    };
-  }, []);
 
   const home = content?.home || {};
   const services = content?.services || [];

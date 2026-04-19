@@ -1,3 +1,5 @@
+import { useEffect, useMemo, useState } from "react";
+import { useLiveQuery } from "@sanity/preview-kit";
 import { sanityFetch, sanityImage, splitHeadline } from "@/lib/sanity";
 
 const DEFAULT_HOME = {
@@ -450,6 +452,205 @@ export async function getAboutPageData() {
       normalizeVideo(video, DEFAULT_VIDEOS[index] || DEFAULT_VIDEOS[0]),
     ),
   };
+}
+
+export function useHomePageCms() {
+  const [initial, setInitial] = useState({
+    home: DEFAULT_HOME,
+    services: DEFAULT_SERVICES_HOMEPAGE,
+    testimonials: DEFAULT_TESTIMONIAL_PAGE,
+  });
+
+  useEffect(() => {
+    let alive = true;
+    getHomePageData().then((data) => {
+      if (alive) setInitial(data);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  const [homeRaw] = useLiveQuery(initial.home, HOME_QUERY);
+  const [servicesRaw] = useLiveQuery(initial.services, SERVICES_QUERY);
+  const [testimonialsRaw] = useLiveQuery(initial.testimonials, TESTIMONIALS_QUERY);
+
+  return useMemo(() => {
+    const normalizedServices = (servicesRaw?.length ? servicesRaw : DEFAULT_SERVICES_HOMEPAGE).map((service, index) =>
+      normalizeService(service, DEFAULT_SERVICES_HOMEPAGE[index] || DEFAULT_SERVICES_HOMEPAGE[0]),
+    );
+    const featuredServices = normalizedServices.filter((service) => service.featured);
+
+    return {
+      home: {
+        ...DEFAULT_HOME,
+        ...(homeRaw || {}),
+      },
+      services: (featuredServices.length ? featuredServices : normalizedServices).slice(0, 3),
+      testimonials: (testimonialsRaw?.length ? testimonialsRaw : DEFAULT_TESTIMONIAL_PAGE).map((item, index) => {
+        const fallbackTestimonial = DEFAULT_TESTIMONIAL_PAGE[index] || DEFAULT_TESTIMONIAL_PAGE[0];
+
+        return {
+          ...fallbackTestimonial,
+          company: item?.company || fallbackTestimonial?.title || fallbackTestimonial?.company || "",
+          title: item?.company || fallbackTestimonial?.title || fallbackTestimonial?.company || "",
+          location: item?.location || fallbackTestimonial?.location || "",
+          quote: item?.quote || fallbackTestimonial?.quote || "",
+          rating: Number(item?.rating || fallbackTestimonial?.rating || 5),
+        };
+      }),
+    };
+  }, [homeRaw, servicesRaw, testimonialsRaw]);
+}
+
+export function useServicesPageCms() {
+  const [initial, setInitial] = useState({
+    page: DEFAULT_SERVICES_PAGE,
+    services: DEFAULT_SERVICES_DETAIL,
+  });
+
+  useEffect(() => {
+    let alive = true;
+    getServicesPageData().then((data) => {
+      if (alive) setInitial(data);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  const [pageRaw] = useLiveQuery(initial.page, SERVICES_PAGE_QUERY);
+  const [servicesRaw] = useLiveQuery(initial.services, SERVICES_QUERY);
+
+  return useMemo(() => {
+    const services = (servicesRaw?.length ? servicesRaw : DEFAULT_SERVICES_DETAIL).map((service, index) =>
+      normalizeService(service, DEFAULT_SERVICES_DETAIL[index] || DEFAULT_SERVICES_DETAIL[0]),
+    );
+
+    return {
+      page: {
+        ...DEFAULT_SERVICES_PAGE,
+        ...(pageRaw || {}),
+      },
+      services,
+    };
+  }, [pageRaw, servicesRaw]);
+}
+
+export function useBlogsPageCms() {
+  const [initial, setInitial] = useState({
+    bannerImage: DEFAULT_BLOG_BANNER,
+    blogs: DEFAULT_BLOGS,
+  });
+
+  useEffect(() => {
+    let alive = true;
+    getBlogsPageData().then((data) => {
+      if (alive) setInitial(data);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  const [blogsRaw] = useLiveQuery(initial.blogs, BLOGS_QUERY);
+
+  return useMemo(() => ({
+    bannerImage: DEFAULT_BLOG_BANNER,
+    blogs: (blogsRaw?.length ? blogsRaw : DEFAULT_BLOGS).map((blog, index) =>
+      normalizeBlog(blog, DEFAULT_BLOGS[index] || DEFAULT_BLOGS[0]),
+    ),
+  }), [blogsRaw]);
+}
+
+export function useAboutPageCms() {
+  const [initial, setInitial] = useState({
+    founders: DEFAULT_FOUNDERS,
+    notes: DEFAULT_ABOUT_NOTES,
+    videos: DEFAULT_VIDEOS,
+  });
+
+  useEffect(() => {
+    let alive = true;
+    getAboutPageData().then((data) => {
+      if (alive) setInitial(data);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  const [foundersRaw] = useLiveQuery(initial.founders, FOUNDERS_QUERY);
+  const [videosRaw] = useLiveQuery(initial.videos, VIDEO_QUERY);
+
+  return useMemo(() => ({
+    founders: (foundersRaw?.length ? foundersRaw : DEFAULT_FOUNDERS).map((founder, index) =>
+      normalizeFounder(founder, DEFAULT_FOUNDERS[index] || DEFAULT_FOUNDERS[0]),
+    ),
+    notes: (foundersRaw?.length ? foundersRaw : DEFAULT_ABOUT_NOTES).map((founder, index) => ({
+      name: founder?.name || DEFAULT_ABOUT_NOTES[index]?.name || "",
+      role: founder?.role || DEFAULT_ABOUT_NOTES[index]?.role || "Co-Founder",
+      image: toImageUrl(founder?.image, DEFAULT_ABOUT_NOTES[index]?.image || ""),
+      text: founder?.bio || DEFAULT_ABOUT_NOTES[index]?.text || "",
+    })),
+    videos: (videosRaw?.length ? videosRaw : DEFAULT_VIDEOS.slice(0, 2)).map((video, index) =>
+      normalizeVideo(video, DEFAULT_VIDEOS[index] || DEFAULT_VIDEOS[0]),
+    ),
+  }), [foundersRaw, videosRaw]);
+}
+
+export function useVideosPageCms() {
+  const [initial, setInitial] = useState({
+    videos: DEFAULT_VIDEOS,
+  });
+
+  useEffect(() => {
+    let alive = true;
+    getVideosPageData().then((data) => {
+      if (alive) setInitial(data);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  const [videosRaw] = useLiveQuery(initial.videos, VIDEO_QUERY);
+
+  return useMemo(() => ({
+    videos: (videosRaw?.length ? videosRaw : DEFAULT_VIDEOS).map((video, index) =>
+      normalizeVideo(video, DEFAULT_VIDEOS[index] || DEFAULT_VIDEOS[0]),
+    ),
+  }), [videosRaw]);
+}
+
+export function useBlogPostCms(slug) {
+  const [initial, setInitial] = useState(DEFAULT_BLOGS.find((blog) => blog.slug === slug) || null);
+
+  useEffect(() => {
+    let alive = true;
+    getBlogPostData(slug).then((data) => {
+      if (alive) setInitial(data);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [slug]);
+
+  const [postRaw] = useLiveQuery(initial, `*[_type == "blog" && slug.current == $slug][0]{
+      title,
+      "slug": slug.current,
+      excerpt,
+      author,
+      publishedAt,
+      readTime,
+      image,
+      content
+    }`, { slug });
+
+  return useMemo(() => {
+    if (!postRaw) return initial;
+    return normalizeBlog(postRaw, DEFAULT_BLOGS.find((blog) => blog.slug === slug) || DEFAULT_BLOGS[0]);
+  }, [initial, postRaw, slug]);
 }
 
 export {

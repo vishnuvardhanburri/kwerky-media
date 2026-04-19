@@ -1,25 +1,11 @@
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import BackgroundLayers from "@/components/shared/BackgroundLayers";
 import { RevealOnScroll } from "@/components/shared/Animations";
 import Footer from "@/components/shared/Footer";
-import { DEFAULT_VIDEOS, getVideosPageData } from "@/lib/cms";
+import { useVideosPageCms } from "@/lib/cms";
 
 const VideosPage = () => {
-  const [cms, setCms] = useState({
-    videos: DEFAULT_VIDEOS,
-  });
-
-  useEffect(() => {
-    let alive = true;
-    getVideosPageData().then((data) => {
-      if (alive) setCms(data);
-    });
-    return () => {
-      alive = false;
-    };
-  }, []);
-
+  const cms = useVideosPageCms();
   const videos = cms?.videos || [];
 
   return (

@@ -1,13 +1,15 @@
-import { createClient } from "@sanity/client";
+import { createClient as createPreviewClient } from "@sanity/preview-kit/client";
 import imageUrlBuilder from "@sanity/image-url";
 
-const projectId = process.env.REACT_APP_SANITY_PROJECT_ID;
+const projectId = process.env.REACT_APP_SANITY_PROJECT_ID || process.env.VITE_SANITY_PROJECT_ID;
 const dataset = process.env.REACT_APP_SANITY_DATASET || "production";
 const apiVersion = process.env.REACT_APP_SANITY_API_VERSION || "2024-01-01";
+const token = process.env.REACT_APP_SANITY_API_TOKEN || process.env.VITE_SANITY_API_TOKEN || "";
+const previewEnabled = typeof window !== "undefined" && window.location.search.includes("preview=true");
 const configured = Boolean(projectId);
 
-const client = configured
-  ? createClient({
+const baseClient = configured
+  ? createPreviewClient({
       projectId,
       dataset,
       apiVersion,
@@ -15,10 +17,23 @@ const client = configured
     })
   : null;
 
-const builder = client ? imageUrlBuilder(client) : null;
+const previewClient = configured && token
+  ? baseClient.withConfig({
+      token,
+      useCdn: false,
+      perspective: "drafts",
+      ignoreBrowserTokenWarning: true,
+    })
+  : baseClient;
+
+const builder = baseClient ? imageUrlBuilder(baseClient) : null;
+
+export const sanityClient = previewEnabled && previewClient ? previewClient : baseClient;
+export const sanityToken = token;
+export const isPreviewMode = previewEnabled && Boolean(token);
 
 export function isSanityConfigured() {
-  return Boolean(client);
+  return Boolean(baseClient);
 }
 
 export function sanityImage(source, options = {}) {
@@ -34,14 +49,13 @@ export function sanityImage(source, options = {}) {
 }
 
 export async function sanityFetch(query, params = {}, fallback = null) {
-  if (!client) return fallback;
+  if (!sanityClient) return fallback;
 
   try {
-    const data = await client.fetch(query, params);
+    const data = await sanityClient.fetch(query, params);
     return data ?? fallback;
   } catch (error) {
     if (process.env.NODE_ENV !== "production") {
-      // Keep the app resilient when Sanity is misconfigured or offline.
       console.warn("Sanity fetch failed:", error);
     }
     return fallback;
@@ -59,4 +73,3 @@ export function splitHeadline(text) {
   const splitIndex = Math.ceil(words.length / 2);
   return `${words.slice(0, splitIndex).join(" ")}\n${words.slice(splitIndex).join(" ")}`;
 }
-

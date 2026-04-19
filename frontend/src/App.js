@@ -16,6 +16,7 @@ import WhatsAppButton from "@/components/shared/WhatsAppButton";
 import KwerkyAssistant from "@/components/shared/KwerkyAssistant";
 import ContactDrawer from "@/components/shared/ContactDrawer";
 import { SiteActionsProvider, useSiteActions } from "@/context/site-actions";
+import PreviewProvider from "@/components/PreviewProvider";
 
 const NAV_LINKS = [
   { path: "/", label: "Home" },
@@ -320,21 +321,23 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <SiteActionsProvider>
-          <CursorAura />
-          <Navigation />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/blogs" element={<BlogsPage />} />
-            <Route path="/videos" element={<VideosPage />} />
-            <Route path="/blogs/:slug" element={<BlogPostPage />} />
-          </Routes>
-          <WhatsAppButton />
-          <ContactDrawer />
-          <KwerkyAssistant />
-        </SiteActionsProvider>
+        <PreviewProvider>
+          <SiteActionsProvider>
+            <CursorAura />
+            <Navigation />
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/blogs" element={<BlogsPage />} />
+              <Route path="/videos" element={<VideosPage />} />
+              <Route path="/blogs/:slug" element={<BlogPostPage />} />
+            </Routes>
+            <WhatsAppButton />
+            <ContactDrawer />
+            <KwerkyAssistant />
+          </SiteActionsProvider>
+        </PreviewProvider>
       </BrowserRouter>
       <Toaster position="top-right" richColors />
     </div>
