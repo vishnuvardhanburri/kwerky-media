@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Sparkles, Send, X, Home, Briefcase, Info, BookOpen, PlayCircle, MessageCircleMore } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription } from "@/components/ui/drawer";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -60,6 +59,7 @@ const KwerkyAssistant = () => {
   const [lead, setLead] = useState(defaultLead);
   const [isSending, setIsSending] = useState(false);
   const viewportRef = useRef(null);
+  const prevMessageCountRef = useRef(0);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -199,8 +199,11 @@ const KwerkyAssistant = () => {
 
   useEffect(() => {
     if (!viewportRef.current) return;
-    viewportRef.current.scrollTop = viewportRef.current.scrollHeight;
-  }, [messages, open]);
+    if (messages.length > prevMessageCountRef.current) {
+      viewportRef.current.scrollTop = viewportRef.current.scrollHeight;
+    }
+    prevMessageCountRef.current = messages.length;
+  }, [messages.length]);
 
   const sendMessage = async (messageText) => {
     const text = messageText.trim();
@@ -278,63 +281,63 @@ const KwerkyAssistant = () => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.97 }}
         onClick={() => setOpen(true)}
-        className="fixed bottom-4 left-4 z-50 flex items-center gap-3 rounded-[1.15rem] border border-white/10 bg-black/76 px-2 py-1.75 text-left text-white shadow-[0_20px_50px_rgba(37,99,235,0.18)] backdrop-blur-xl transition-colors hover:border-blue-400/30 hover:bg-black/84 sm:bottom-6 sm:left-6 sm:px-3 sm:py-2.5"
+        className="fixed bottom-5 left-5 z-50 flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-[#020508]/95 text-white shadow-[0_25px_70px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-all hover:border-blue-400/30 hover:bg-[#081427]/95"
         aria-label="Open AI assistant"
         data-testid="assistant-toggle"
       >
-        <div className="h-9 w-9 overflow-hidden rounded-2xl border border-white/10 bg-[#050b16] sm:h-12 sm:w-12">
-          <KwerkyRobotArt compact className="h-full w-full scale-[1.1]" />
-        </div>
-        <div className="hidden sm:block">
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.28em] text-blue-300/80">
-            <Sparkles className="h-3.5 w-3.5" />
-            Kwerky AI
-          </div>
-          <div className="mt-1 text-sm text-white/72">Ask me anything</div>
+        <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-[#050b16]">
+          <KwerkyRobotArt compact className="h-10 w-10" />
         </div>
       </motion.button>
 
-      <Drawer open={open} onOpenChange={setOpen}>
-        <DrawerContent className="h-[86vh] w-[calc(100vw-0.75rem)] max-w-[24rem] border-white/10 bg-[#02040b] text-white md:mx-auto md:max-w-[23rem]">
-          <DrawerHeader className="border-b border-white/10 px-4 pb-3 pt-3 text-left sm:px-5">
-            <div className="flex items-center gap-3 sm:gap-4">
-              <div className="h-12 w-12 shrink-0 overflow-hidden rounded-[1.35rem] border border-white/10 bg-[#050b16] sm:h-14 sm:w-14">
-                <KwerkyRobotArt compact className="h-full w-full scale-[1.05]" />
+      {open && (
+        <div className="fixed bottom-24 left-5 z-50 w-[22rem] max-w-[92vw] rounded-[2rem] border border-white/10 bg-[#02040b]/95 p-3 shadow-[0_30px_80px_rgba(0,0,0,0.45)] backdrop-blur-xl">
+          <div className="flex items-center justify-between gap-3 pb-3">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-[#050b16]">
+                <KwerkyRobotArt compact className="h-10 w-10" />
               </div>
-              <div className="min-w-0">
-                <DrawerTitle className="flex items-center gap-2 text-white">
-                  <Sparkles className="h-5 w-5 text-blue-300" />
+              <div>
+                <div className="flex items-center gap-2 text-sm font-semibold text-white">
+                  <Sparkles className="h-4 w-4 text-blue-300" />
                   Kwerky AI
-                </DrawerTitle>
-                <DrawerDescription className="text-white/45">
-                  Short answers. Clear guidance. Project-focused.
-                </DrawerDescription>
+                </div>
+                <div className="text-xs text-white/55">Short answers. Clear guidance.</div>
               </div>
             </div>
-            <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
-              {SITE_SECTIONS.map((section) => (
-                <button
-                  key={section.label}
-                  type="button"
-                  onClick={() => navigateTo(section.path, section.hash)}
-                  className="shrink-0 rounded-full border border-white/10 px-3 py-1.5 text-xs text-white/65 transition-colors hover:border-blue-400/30 hover:text-blue-300"
-                >
-                  {section.label}
-                </button>
-              ))}
-            </div>
-          </DrawerHeader>
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-colors hover:bg-white/10"
+              aria-label="Close AI assistant"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
 
-          <div className="flex h-full min-h-0 flex-col px-2 pb-2 sm:px-3 sm:pb-3">
-            <ScrollArea className="min-h-0 flex-1 pr-2">
+          <div className="mb-3 flex flex-wrap gap-2">
+            {SITE_SECTIONS.map((section) => (
+              <button
+                key={section.label}
+                type="button"
+                onClick={() => navigateTo(section.path, section.hash)}
+                className="rounded-full border border-white/10 px-3 py-1.5 text-xs text-white/65 transition-colors hover:border-blue-400/30 hover:text-blue-300"
+              >
+                {section.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex h-[360px] min-h-[240px] flex-col overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#02060f]">
+            <ScrollArea className="flex-1 p-3">
               <div
                 ref={viewportRef}
-                className="flex h-full flex-col gap-2 py-2 sm:gap-2.5 sm:py-3"
+                className="flex h-full flex-col gap-2"
               >
                 {messages.map((message, index) => (
                   <div
                     key={`${message.role}-${index}`}
-                    className={`max-w-[84%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed sm:max-w-[88%] sm:px-4 sm:py-3 ${
+                    className={`max-w-[84%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
                       message.role === "user"
                         ? "ml-auto bg-blue-600 text-white"
                         : "mr-auto bg-white/[0.04] text-white/80"
@@ -346,39 +349,21 @@ const KwerkyAssistant = () => {
               </div>
             </ScrollArea>
 
-            <div className="mt-2.5 space-y-2 sm:mt-3 sm:space-y-2.5">
-              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+            <div className="space-y-2 border-t border-white/10 p-3">
+              <div className="flex flex-wrap gap-1.5">
                 {SUGGESTIONS.map((item) => (
                   <button
                     key={item}
                     type="button"
-                    onClick={() => {
-                      if (item === "What services?") {
-                        sendMessage(item);
-                        return;
-                      }
-                      if (item === "Pricing?") {
-                        sendMessage(item);
-                        return;
-                      }
-                      if (item === "Why Kwerky?") {
-                        sendMessage(item);
-                        return;
-                      }
-                      if (item === "What do you do?") {
-                        sendMessage(item);
-                        return;
-                      }
-                      sendMessage(item);
-                    }}
-                    className="rounded-full border border-white/10 px-2.5 py-1.5 text-[11px] text-white/70 transition-colors hover:border-blue-400/30 hover:text-blue-300 sm:px-3 sm:py-2 sm:text-xs"
+                    onClick={() => sendMessage(item)}
+                    className="rounded-full border border-white/10 px-2.5 py-1.5 text-[11px] text-white/70 transition-colors hover:border-blue-400/30 hover:text-blue-300"
                   >
                     {item}
                   </button>
                 ))}
               </div>
 
-              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+              <div className="flex flex-wrap gap-1.5">
                 {SITE_ACTIONS.map((item) => {
                   const Icon = item.icon;
                   return (
@@ -386,7 +371,7 @@ const KwerkyAssistant = () => {
                       key={item.label}
                       type="button"
                       onClick={() => navigateTo(item.path, item.hash)}
-                      className="inline-flex items-center gap-2 rounded-full border border-white/10 px-2.5 py-1.5 text-[11px] text-white/70 transition-colors hover:border-blue-400/30 hover:text-blue-300 sm:px-3 sm:py-2 sm:text-xs"
+                      className="inline-flex items-center gap-2 rounded-full border border-white/10 px-2.5 py-1.5 text-[11px] text-white/70 transition-colors hover:border-blue-400/30 hover:text-blue-300"
                     >
                       <Icon className="h-3.5 w-3.5" />
                       {item.label}
@@ -400,7 +385,7 @@ const KwerkyAssistant = () => {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Type your question..."
-                  className="min-h-[72px] border-0 bg-transparent px-1 text-white placeholder:text-white/30 focus-visible:ring-0 sm:min-h-[82px]"
+                  className="min-h-[72px] border-0 bg-transparent px-1 text-white placeholder:text-white/30 focus-visible:ring-0"
                   onKeyDown={(e) => {
                     if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
                       sendMessage(input);
@@ -414,7 +399,7 @@ const KwerkyAssistant = () => {
                       setMessages(starterMessages);
                       setLead(defaultLead);
                     }}
-                    className="inline-flex items-center gap-2 text-[11px] text-white/35 transition-colors hover:text-white/60 sm:text-xs"
+                    className="inline-flex items-center gap-2 text-[11px] text-white/35 transition-colors hover:text-white/60"
                   >
                     <X className="h-3.5 w-3.5" />
                     Reset
@@ -424,7 +409,7 @@ const KwerkyAssistant = () => {
                     type="button"
                     onClick={() => sendMessage(input)}
                     disabled={!canSend}
-                    className="rounded-full bg-blue-600 px-4 text-white hover:bg-blue-500 sm:px-5"
+                    className="rounded-full bg-blue-600 px-4 text-white hover:bg-blue-500"
                   >
                     {isSending ? "Thinking..." : (
                       <>
@@ -437,8 +422,8 @@ const KwerkyAssistant = () => {
               </div>
             </div>
           </div>
-        </DrawerContent>
-      </Drawer>
+        </div>
+      )}
     </>
   );
 };

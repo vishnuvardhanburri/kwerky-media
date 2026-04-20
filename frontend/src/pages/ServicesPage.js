@@ -1,11 +1,8 @@
-import { useState } from "react";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import axios from "axios";
-import { toast } from "sonner";
 import BackgroundLayers from "@/components/shared/BackgroundLayers";
 import { Card3D, RevealOnScroll } from "@/components/shared/Animations";
-
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const VIDEO_URLS = {
   services: "https://www.youtube.com/embed/nXaoAh2DVpo",
@@ -13,6 +10,7 @@ const VIDEO_URLS = {
 
 const SERVICES = [
   {
+    id: "website-content",
     title: "Website Content",
     desc: "Populate your website with content that:",
     points: [
@@ -26,6 +24,7 @@ const SERVICES = [
     icon: "M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
   },
   {
+    id: "blogs",
     title: "Blogs",
     desc: "Blogs build brand authority by providing deeper insights into a company and its products.",
     points: [
@@ -37,6 +36,7 @@ const SERVICES = [
     icon: "M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2"
   },
   {
+    id: "social-media",
     title: "Social Media Posts and Marketing Campaigns",
     desc: "Out of sight, out of cart. What’s seen is what sells.",
     points: [
@@ -48,6 +48,7 @@ const SERVICES = [
     icon: "M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"
   },
   {
+    id: "slide-decks",
     title: "Slide Decks",
     desc: "A killer presentation says more with less.",
     points: [
@@ -64,6 +65,7 @@ const SERVICES = [
     icon: "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
   },
   {
+    id: "videos",
     title: "Videos",
     desc: "A picture speaks a thousand words.",
     points: [
@@ -77,23 +79,20 @@ const SERVICES = [
 ];
 
 const ServicesPage = () => {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const location = useLocation();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  useEffect(() => {
+    if (!location.hash) return;
+    const id = location.hash.replace("#", "");
+    const element = document.getElementById(id);
+    if (!element) return;
 
-    try {
-      await axios.post(`${API}/contact`, formData);
-      toast.success("Message sent! We'll get back to you soon.");
-      setFormData({ name: "", email: "", message: "" });
-    } catch {
-      toast.error("Failed to send. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    const timer = window.setTimeout(() => {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 80);
+
+    return () => window.clearTimeout(timer);
+  }, [location.hash]);
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }} className="min-h-screen pt-20 relative bg-black">
@@ -153,11 +152,11 @@ const ServicesPage = () => {
           <div className="grid gap-6">
             {SERVICES.map((service, index) => (
               <Card3D key={service.title} delay={index * 0.06} testId={`service-detail-${index}`}>
-                <div className="rounded-[1.75rem] border border-white/10 bg-[#050b16] p-7 shadow-[0_18px_60px_rgba(0,0,0,0.35)] md:p-9">
+                <section id={service.id} className="relative z-[1] rounded-[1.75rem] border border-white/10 bg-[#050b16] p-7 shadow-[0_18px_60px_rgba(0,0,0,0.35)] md:p-9">
                   <div className="flex flex-col gap-7 md:flex-row md:items-start md:gap-10">
                     <div className="flex-shrink-0">
                       <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-blue-400/20 bg-blue-500/10">
-                        <svg className="h-8 w-8 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg aria-hidden="true" className="h-8 w-8 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={service.icon} />
                         </svg>
                       </div>
@@ -168,7 +167,7 @@ const ServicesPage = () => {
                       <ul className="mt-6 grid gap-2">
                         {service.points.map((point) => (
                           <li key={point} className="flex items-start gap-2 text-white/45 text-sm leading-relaxed">
-                            <svg className="mt-0.5 h-4 w-4 text-blue-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <svg aria-hidden="true" className="mt-0.5 h-4 w-4 text-blue-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                             </svg>
                             <span>{point}</span>
@@ -177,7 +176,7 @@ const ServicesPage = () => {
                       </ul>
                     </div>
                   </div>
-                </div>
+                </section>
               </Card3D>
             ))}
           </div>
@@ -210,71 +209,18 @@ const ServicesPage = () => {
       </section>
 
       <section id="contact-section" className="px-6 py-24 relative section-blue" data-testid="contact-section">
-        <div className="container mx-auto max-w-3xl relative z-10">
+        <div className="container mx-auto max-w-4xl relative z-10">
           <RevealOnScroll>
-            <div className="text-center mb-12">
+            <div className="rounded-[2rem] border border-white/10 bg-[#050b16] p-10 text-center shadow-[0_24px_90px_rgba(0,0,0,0.45)]">
               <p className="mb-5 text-xs font-semibold uppercase tracking-[0.34em] text-blue-300/80">Contact</p>
-              <h2 className="text-5xl font-bold leading-[0.96] text-white md:text-6xl">
-                Let&apos;s discuss your project
-              </h2>
+              <h2 className="text-5xl font-bold leading-[0.96] text-white md:text-6xl">Let&apos;s discuss your project</h2>
+              <p className="mt-6 text-white/70 text-lg md:text-xl">
+                Email us at <a className="text-[#FF9B30] hover:text-[#ffc680]" href="mailto:hello@kwerkymedia.com">hello@kwerkymedia.com</a> or call <a className="text-[#FF9B30] hover:text-[#ffc680]" href="tel:08031548088">08031548088</a>.
+              </p>
+              <p className="mt-4 text-white/55">
+                We&apos;re ready to turn your tech story into a growth engine.
+              </p>
             </div>
-          </RevealOnScroll>
-
-          <RevealOnScroll delay={0.1}>
-            <form
-              onSubmit={handleSubmit}
-              className="rounded-[2rem] border border-white/10 bg-[#050b16] p-6 shadow-[0_24px_90px_rgba(0,0,0,0.45)] md:p-8"
-              data-testid="contact-form"
-            >
-              <div className="grid gap-5">
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-white/60">Name</label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-white placeholder-white/30 outline-none transition-colors focus:border-blue-400"
-                    placeholder="Enter your name"
-                    data-testid="contact-name"
-                  />
-                </div>
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-white/60">Email</label>
-                  <input
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-white placeholder-white/30 outline-none transition-colors focus:border-blue-400"
-                    placeholder="Enter your email"
-                    data-testid="contact-email"
-                  />
-                </div>
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-white/60">Message</label>
-                  <textarea
-                    required
-                    rows={6}
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full resize-none rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-white placeholder-white/30 outline-none transition-colors focus:border-blue-400"
-                    placeholder="Type your message"
-                    data-testid="contact-message"
-                  />
-                </div>
-                <motion.button
-                  type="submit"
-                  disabled={isSubmitting}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full rounded-full bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-[0_18px_50px_rgba(37,99,235,0.3)] transition-colors hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
-                  data-testid="contact-submit"
-                >
-                  {isSubmitting ? "Sending..." : "Let's discuss your project"}
-                </motion.button>
-              </div>
-            </form>
           </RevealOnScroll>
         </div>
       </section>

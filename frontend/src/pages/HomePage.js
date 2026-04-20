@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useSpring } from "framer-motion";
 import BackgroundLayers from "@/components/shared/BackgroundLayers";
@@ -38,8 +39,24 @@ const PROOF = [
 ];
 
 const HomePage = () => {
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
+  const [videoMuted, setVideoMuted] = useState(true);
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+
+  const handleNewsletterSubmit = (event) => {
+    event.preventDefault();
+    if (!newsletterEmail.trim()) return;
+
+    setNewsletterSubmitted(true);
+    setNewsletterEmail("");
+    window.setTimeout(() => setNewsletterSubmitted(false), 2400);
+  };
+
+  const toggleVideoAudio = () => {
+    setVideoMuted(!videoMuted);
+  };
 
   return (
     <div className="min-h-screen relative bg-black">
@@ -51,43 +68,71 @@ const HomePage = () => {
 
       <section id="hero-section" className="relative min-h-screen overflow-hidden px-6 pt-24" data-testid="hero-section">
         <Ethereal />
-        <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.14),transparent_42%),linear-gradient(180deg,rgba(0,0,0,0.25),rgba(0,0,0,0.92))]" />
 
-        <div className="container mx-auto min-h-[calc(100vh-6rem)] max-w-6xl py-20 relative z-10">
-          <div className="max-w-4xl lg:pt-12">
-            <RevealOnScroll>
-              <p className="mb-6 text-xs font-semibold uppercase tracking-[0.52em] text-blue-300/80">
-                Kwerky Media
-              </p>
-            </RevealOnScroll>
+        <div className="container mx-auto min-h-[calc(100vh-6rem)] max-w-6xl py-20 relative z-20">
+          <div className="grid items-center gap-12 lg:grid-cols-[0.95fr_0.9fr]">
+            <div className="max-w-3xl lg:max-w-2xl">
+              <RevealOnScroll>
+                <p className="mb-6 text-xs font-semibold uppercase tracking-[0.52em] text-[#FF9B30]">Kwerky Media</p>
+              </RevealOnScroll>
 
-            <RevealOnScroll delay={0.05}>
-              <h1 className="max-w-3xl text-6xl font-bold leading-[0.88] tracking-[-0.04em] text-white md:text-7xl lg:text-[7.4rem]">
-                <span className="block">Content and growth partner</span>
-                <span className="block text-blue-300">for tech companies</span>
-              </h1>
-            </RevealOnScroll>
+              <RevealOnScroll delay={0.05}>
+                <div className="torch-text">
+                  <h1 className="text-5xl font-bold leading-[0.92] tracking-[-0.03em] text-white md:text-6xl lg:text-[5.8rem]">
+                    <span className="block bg-gradient-to-r from-blue-400 via-sky-300 to-[#FF9B30] bg-clip-text text-transparent">Kwerky Media</span>
+                    <span className="block bg-gradient-to-r from-blue-400 via-sky-300 to-[#FF9B30] bg-clip-text text-transparent">Content and growth partner for tech companies</span>
+                  </h1>
+                </div>
+              </RevealOnScroll>
 
-            <RevealOnScroll delay={0.12}>
-              <p className="mt-8 max-w-lg text-base leading-relaxed text-white/55 md:text-lg">
-                Kwerky Media is a dynamic content and growth partner for tech companies. With over a decade of expertise in strategic storytelling and technology content creation, we help businesses gain the spotlight they deserve.
-              </p>
-            </RevealOnScroll>
+              <RevealOnScroll delay={0.12}>
+                <p className="mt-8 text-lg leading-relaxed text-white">
+                  We help tech brands tell their story clearly, creatively, and consistently — from videos and posts to growth-driven campaigns.
+                </p>
+              </RevealOnScroll>
 
-            <RevealOnScroll delay={0.2}>
-              <div className="mt-12 flex flex-col gap-4 sm:flex-row sm:items-center">
-                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                  <Link
-                    to="/services"
-                    className="inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-4 font-semibold text-white shadow-[0_12px_30px_rgba(37,99,235,0.22)] transition-colors hover:bg-blue-500"
-                    data-testid="hero-cta"
-                  >
-                    Connect with us!
-                  </Link>
-                </motion.div>
-                <span className="text-sm text-white/45">Get your spotlight.</span>
-              </div>
-            </RevealOnScroll>
+              <RevealOnScroll delay={0.2}>
+                <div className="mt-12 flex flex-col gap-4 sm:flex-row sm:items-center">
+                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                    <Link
+                      to="/services"
+                      className="inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-4 font-semibold text-white shadow-[0_12px_30px_rgba(37,99,235,0.22)] transition-colors hover:bg-blue-500"
+                      data-testid="hero-cta"
+                    >
+                      Connect with us!
+                    </Link>
+                  </motion.div>
+                  <span className="text-sm text-white/70">Ready for brand stories that convert?</span>
+                </div>
+              </RevealOnScroll>
+            </div>
+
+            <div className="relative hidden overflow-hidden rounded-[2rem] border border-white/10 bg-[#02080f] p-4 shadow-[0_32px_90px_rgba(59,130,246,0.16)] md:block">
+              <video
+                src="/brand/aurora.mp4"
+                alt="Animated hero content for Kwerky Media"
+                className="h-full w-full rounded-[1.5rem] object-cover opacity-75"
+                autoPlay
+                muted={videoMuted}
+                loop
+                playsInline
+              />
+              <button
+                onClick={toggleVideoAudio}
+                className="absolute bottom-6 right-6 z-10 rounded-full bg-black/50 p-3 text-white/70 transition-all hover:bg-black/70 hover:text-white"
+                aria-label={videoMuted ? "Unmute video" : "Mute video"}
+              >
+                {videoMuted ? (
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+                  </svg>
+                ) : (
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                  </svg>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </section>
@@ -113,7 +158,7 @@ const HomePage = () => {
           <div className="mt-14 grid gap-6 md:grid-cols-3">
             {SERVICES.map((service, index) => (
               <Card3D key={service.title} delay={index * 0.08} testId={`service-card-${index}`}>
-                <div className="h-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#030712]">
+                <div className="relative z-[1] h-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#030712]">
                   <div className="relative aspect-[4/3] overflow-hidden bg-[#040816]">
                     <img
                       src={service.image}
@@ -149,7 +194,7 @@ const HomePage = () => {
           <div className="mt-14 grid gap-6 md:grid-cols-2">
             {PROOF.map((item, index) => (
               <Card3D key={item.title} delay={index * 0.08} testId={`proof-card-${index}`}>
-                <div className="h-full rounded-[1.75rem] border border-white/10 bg-[#030712] p-8 md:p-10">
+                <div className="relative z-[1] h-full rounded-[1.75rem] border border-white/10 bg-[#030712] p-8 md:p-10">
                   <p className="text-lg leading-relaxed text-white/70">★★★★★</p>
                   <p className="mt-4 text-white/70 text-lg leading-relaxed">&quot;{item.quote}&quot;</p>
                   <div className="mt-8 h-px w-full bg-gradient-to-r from-blue-400/30 via-white/10 to-transparent" />
@@ -180,6 +225,45 @@ const HomePage = () => {
               </Link>
             </motion.div>
           </RevealOnScroll>
+        </div>
+      </section>
+
+      <section id="newsletter-section" className="relative px-6 py-24 section-deep" data-testid="newsletter-section">
+        <div className="container mx-auto max-w-4xl">
+          <div className="rounded-[2rem] border border-white/10 bg-[#040811] p-8 shadow-[0_24px_90px_rgba(59,130,246,0.16)]">
+            <div className="grid gap-8 lg:grid-cols-[0.75fr_1fr] lg:items-center">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.32em] text-[#FF9B30]">Newsletter</p>
+                <h2 className="mt-4 text-4xl font-bold text-white md:text-5xl">
+                  Stay ahead with Kwerky insights
+                </h2>
+                <p className="mt-4 max-w-xl text-white">
+                  No spam. Only high-impact content ideas.
+                </p>
+              </div>
+
+              <form className="grid gap-4 sm:grid-cols-[1fr_auto]" onSubmit={handleNewsletterSubmit}>
+                <label className="sr-only" htmlFor="newsletter-email">Email address</label>
+                <input
+                  id="newsletter-email"
+                  type="email"
+                  placeholder="Your email"
+                  value={newsletterEmail}
+                  onChange={(event) => setNewsletterEmail(event.target.value)}
+                  className="w-full rounded-2xl border border-white/10 bg-white/[0.05] px-5 py-4 text-white outline-none transition-colors focus:border-blue-400"
+                />
+                <button
+                  type="submit"
+                  className="rounded-2xl bg-blue-600 px-6 py-4 text-sm font-semibold text-white transition-colors hover:bg-blue-500"
+                >
+                  Subscribe
+                </button>
+              </form>
+            </div>
+            {newsletterSubmitted && (
+              <p className="mt-6 text-sm text-blue-300">Thanks, you’re subscribed for updates.</p>
+            )}
+          </div>
         </div>
       </section>
 

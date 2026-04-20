@@ -3,7 +3,7 @@ const WhatsAppButton = () => (
     href="https://wa.me/919972456300?text=Hi%20there!%20Let%20me%20know%20how%20I%20can%20be%20of%20service%20to%20you."
     target="_blank"
     rel="noopener noreferrer"
-    className="fixed bottom-20 right-6 z-50 w-14 h-14 bg-blue-600 hover:bg-blue-500 rounded-full flex items-center justify-center shadow-lg shadow-blue-500/30 transition-all hover:scale-110"
+    className="fixed bottom-20 right-6 z-50 w-14 h-14 bg-green-600 hover:bg-green-500 rounded-full flex items-center justify-center shadow-lg shadow-green-500/30 transition-all hover:scale-110"
     data-testid="whatsapp-button"
     aria-label="Chat on WhatsApp"
   >

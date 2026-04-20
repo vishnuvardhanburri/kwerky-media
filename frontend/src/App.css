@@ -6,6 +6,53 @@ html {
 
 body {
   overflow-x: hidden;
+  cursor: none;
+}
+
+@media (pointer: coarse), (hover: none), (prefers-reduced-motion: reduce) {
+  body {
+    cursor: auto;
+  }
+}
+
+.premium-cursor {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  background: rgba(29,106,245,0.8);
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+  transition: width 180ms ease, height 180ms ease, background 180ms ease, filter 180ms ease;
+  will-change: transform, width, height, background;
+  opacity: 0;
+}
+
+.premium-cursor--hover {
+  width: 60px;
+  height: 60px;
+  background: rgba(245,166,35,0.6);
+  filter: blur(0.5px);
+}
+
+.premium-cursor-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.28);
+  pointer-events: none;
+  z-index: 9990;
+  mask-image: radial-gradient(circle 140px at var(--cursor-x, 50%) var(--cursor-y, 50%), transparent 0%, black 100%);
+  -webkit-mask-image: radial-gradient(circle 140px at var(--cursor-x, 50%) var(--cursor-y, 50%), transparent 0%, black 100%);
+  transition: background 180ms ease;
+}
+
+@media (pointer: coarse), (hover: none), (prefers-reduced-motion: reduce) {
+  .premium-cursor,
+  .premium-cursor-overlay {
+    display: none;
+  }
 }
 
 .App {
@@ -228,6 +275,19 @@ body > div:last-child a[href*="emergent.sh"] {
 }
 
 /* Section color themes */
+.torch-text h1 {
+  text-shadow: 0 0 28px rgba(59, 130, 246, 0.18), 0 0 32px rgba(255, 155, 48, 0.14);
+}
+
+.button-saffron {
+  background-color: #ff9b30;
+  color: white;
+}
+
+.button-saffron:hover {
+  background-color: #ffb05e;
+}
+
 .section-blue {
   background:
     radial-gradient(circle at 12% 0%, rgba(59, 130, 246, 0.12), transparent 0 26%),
