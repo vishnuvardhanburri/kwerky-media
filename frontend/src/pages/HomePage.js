@@ -111,7 +111,7 @@ const HomePage = () => {
               <video
                 src="/brand/aurora.mp4"
                 alt="Animated hero content for Kwerky Media"
-                className="h-full w-full rounded-[1.5rem] object-cover opacity-75"
+                className="h-full w-full rounded-[1.5rem] object-cover opacity-95"
                 autoPlay
                 muted={videoMuted}
                 loop
