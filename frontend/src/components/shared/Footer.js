@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { Facebook, Instagram, Linkedin, Twitter, Youtube } from "lucide-react";
+import { EMAIL_ADDRESS, buildMailto } from "@/lib/contact";
 
 const SOCIAL_LINKS = [
   { label: "YouTube", href: "https://www.youtube.com/@kwerkymedia25", icon: Youtube, testId: "footer-youtube" },
@@ -84,8 +85,8 @@ const Footer = () => {
           <div>
             <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white">Get in Touch</h4>
             <div className="space-y-3">
-              <a href="mailto:hello@kwerkymedia.com" className="block text-sm text-white/65 transition-colors hover:text-blue-300">
-                hello@kwerkymedia.com
+              <a href={buildMailto()} className="block text-sm text-white/65 transition-colors hover:text-blue-300">
+                {EMAIL_ADDRESS}
               </a>
               <a href="tel:08031548088" className="block text-sm text-white/65 transition-colors hover:text-blue-300">
                 08031548088

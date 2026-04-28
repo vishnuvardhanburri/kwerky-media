@@ -1,8 +1,9 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
 import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone, Twitter, Youtube } from "lucide-react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useSiteActions } from "@/context/site-actions";
 import { motion } from "framer-motion";
+import { EMAIL_ADDRESS, buildMailto } from "@/lib/contact";
 
 const SOCIAL_LINKS = [
   { label: "YouTube", href: "https://www.youtube.com/@kwerkymedia25", icon: Youtube },
@@ -14,23 +15,53 @@ const SOCIAL_LINKS = [
 
 const ContactDrawer = () => {
   const { isContactOpen, closeContactInfo } = useSiteActions();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const contentRef = useRef(null);
+  const scheduleMailTo = buildMailto({
+    subject: "Schedule a call with Kwerky Media",
+    body: "Hi Kwerky Media,%0D%0A%0D%0AI would like to schedule a call to discuss my project.%0D%0A%0D%0AName:%0D%0ACompany:%0D%0AProduct:%0D%0AChallenge:%0D%0APreferred time:%0D%0A%0D%0AThanks,"
+  });
 
-  const goToServicesContact = () => {
-    closeContactInfo();
-    if (location.pathname !== "/services") {
-      navigate("/services#contact-info-section");
-      return;
-    }
-    window.requestAnimationFrame(() => {
-      document.getElementById("contact-info-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-  };
+  useEffect(() => {
+    if (!isContactOpen) return undefined;
+
+    const handlePointerDown = (event) => {
+      if (!contentRef.current) return;
+      if (!contentRef.current.contains(event.target)) {
+        closeContactInfo();
+      }
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown, true);
+    return () => document.removeEventListener("pointerdown", handlePointerDown, true);
+  }, [closeContactInfo, isContactOpen]);
 
   return (
     <Sheet open={isContactOpen} onOpenChange={(open) => (open ? undefined : closeContactInfo())}>
-      <SheetContent side="right" className="w-[min(100vw-0.5rem,27rem)] border-white/10 bg-[#111111] p-0 text-white shadow-[0_30px_90px_rgba(0,0,0,0.7)]">
+      {isContactOpen ? (
+        <button
+          type="button"
+          aria-label="Close contact drawer"
+          data-testid="contact-drawer-dismiss-surface"
+          onMouseDown={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            closeContactInfo();
+          }}
+          onPointerDown={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            closeContactInfo();
+          }}
+          className="fixed inset-0 z-[55] bg-black/78"
+        />
+      ) : null}
+      <SheetContent
+        ref={contentRef}
+        side="right"
+        onInteractOutside={closeContactInfo}
+        onPointerDownOutside={closeContactInfo}
+        className="z-[60] w-[min(100vw-0.5rem,27rem)] border-white/10 bg-[#111111] p-0 text-white shadow-[0_30px_90px_rgba(0,0,0,0.7)]"
+      >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(37,99,235,0.16),transparent_34%),radial-gradient(circle_at_top_left,rgba(37,99,235,0.2),transparent_30%)]" />
         <div className="relative h-full overflow-y-auto px-5 py-6 sm:px-6">
           <SheetHeader className="border-b border-white/10 pb-5 text-left">
@@ -69,8 +100,8 @@ const ContactDrawer = () => {
                   </div>
                   <div>
                     <p className="text-lg font-semibold text-white">Email</p>
-                    <a href="mailto:hello@kwerkymedia.com" className="mt-1 block break-words text-white/68 hover:text-blue-300">
-                      hello@kwerkymedia.com
+                    <a href={buildMailto()} className="mt-1 block break-words text-white/68 hover:text-blue-300">
+                      {EMAIL_ADDRESS}
                     </a>
                   </div>
                 </div>
@@ -112,15 +143,14 @@ const ContactDrawer = () => {
               </div>
             </div>
 
-            <motion.button
-              type="button"
+            <motion.a
+              href={scheduleMailTo}
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.98 }}
-              onClick={goToServicesContact}
-              className="w-full rounded-full bg-blue-600 px-5 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-blue-500"
+              className="block w-full rounded-full bg-blue-600 px-5 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-blue-500"
             >
               Schedule a call
-            </motion.button>
+            </motion.a>
           </div>
         </div>
       </SheetContent>

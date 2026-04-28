@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import BackgroundLayers from "@/components/shared/BackgroundLayers";
 import { Card3D, RevealOnScroll } from "@/components/shared/Animations";
 import { useServicesPageCms } from "@/lib/cms";
+import { EMAIL_ADDRESS, buildMailto } from "@/lib/contact";
 
 const SERVICE_ANCHORS = [
   ["content-creation", "website-development"],
@@ -216,8 +217,8 @@ const ServicesPage = () => {
                   <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-5">
                     <Mail className="h-5 w-5 text-blue-300" />
                     <p className="mt-4 text-xs uppercase tracking-[0.28em] text-white/45">Email</p>
-                    <a href="mailto:hello@kwerkymedia.com" className="mt-2 block text-lg font-semibold text-white break-words">
-                      hello@kwerkymedia.com
+                    <a href={buildMailto()} className="mt-2 block text-lg font-semibold text-white break-words">
+                      {EMAIL_ADDRESS}
                     </a>
                   </div>
                   <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-5">
