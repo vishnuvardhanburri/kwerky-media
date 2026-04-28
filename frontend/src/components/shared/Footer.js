@@ -19,9 +19,9 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative z-10 border-t border-white/10 px-6 py-16">
+    <footer id="site-footer" className="relative z-10 border-t border-white/10 px-6 py-16">
       <div className="container mx-auto max-w-6xl">
-        <div className="mb-14 rounded-[2rem] border border-white/10 bg-[#050b16] p-6 shadow-[0_24px_90px_rgba(0,0,0,0.35)] md:p-8">
+        <div className="surface-panel mb-14 rounded-[2rem] border border-white/10 bg-[#050b16] p-6 shadow-[0_24px_90px_rgba(0,0,0,0.35)] md:p-8">
           <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.34em] text-blue-300/80">Newsletter</p>

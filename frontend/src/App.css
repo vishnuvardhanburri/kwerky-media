@@ -62,6 +62,16 @@ body {
   overflow-x: hidden;
 }
 
+.theme-dark {
+  background-color: #000;
+  color: #ffffff;
+}
+
+.theme-light {
+  background-color: #ffffff;
+  color: #08111f;
+}
+
 .cursor-aura {
   position: fixed;
   left: 0;
@@ -189,6 +199,18 @@ body {
   z-index: 2;
   pointer-events: none;
   opacity: 0.26;
+}
+
+.nav-shell {
+  transition: background 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.theme-switch {
+  transition: color 220ms ease, border-color 220ms ease, background 220ms ease;
+}
+
+.theme-navbar-solid {
+  transition: background 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
 }
 
 /* 3D Card */
@@ -347,6 +369,147 @@ body > div:last-child a[href*="emergent.sh"] {
 
 .torch-text:hover::after {
   opacity: 1;
+}
+
+.hero-stage-media {
+  z-index: 0;
+}
+
+.hero-stage-overlay {
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.84) 0%, rgba(0, 0, 0, 0.44) 36%, rgba(0, 0, 0, 0.72) 100%);
+}
+
+.surface-card,
+.surface-panel {
+  transition: background 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.theme-light .App,
+.theme-light .section-blue,
+.theme-light .section-deep,
+.theme-light .section-midnight,
+.theme-light .section-warm {
+  color: #08111f;
+}
+
+.theme-light ::selection {
+  background-color: rgba(59, 130, 246, 0.18);
+  color: #08111f;
+}
+
+.theme-light .bg-aurora {
+  background:
+    radial-gradient(circle at 18% 14%, rgba(59, 130, 246, 0.1), transparent 0 24%),
+    radial-gradient(circle at 86% 22%, rgba(255, 179, 71, 0.08), transparent 0 22%),
+    radial-gradient(circle at 70% 78%, rgba(96, 165, 250, 0.05), transparent 0 20%),
+    radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.04), transparent 0 34%),
+    #ffffff;
+}
+
+.theme-light .bg-aurora-video {
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  filter: saturate(0.78) brightness(1.12) contrast(0.88);
+}
+
+.theme-light .bg-grid {
+  opacity: 0.34;
+  background-image:
+    linear-gradient(rgba(8, 17, 31, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8, 17, 31, 0.035) 1px, transparent 1px);
+}
+
+.theme-light .bg-stars {
+  opacity: 0.12;
+}
+
+.theme-light .bg-noise {
+  opacity: 0.08;
+}
+
+.theme-light .section-blue {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(59, 130, 246, 0.08), transparent 0 26%),
+    radial-gradient(circle at 88% 18%, rgba(255, 179, 71, 0.05), transparent 0 22%),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 52%, #ffffff 100%);
+}
+
+.theme-light .section-warm,
+.theme-light .section-deep,
+.theme-light .section-midnight {
+  background:
+    radial-gradient(circle at 22% 12%, rgba(255, 179, 71, 0.04), transparent 0 24%),
+    radial-gradient(circle at 72% 0%, rgba(59, 130, 246, 0.05), transparent 0 22%),
+    linear-gradient(180deg, #ffffff 0%, #f7faff 52%, #ffffff 100%);
+}
+
+.theme-light .theme-navbar-solid,
+.theme-light .nav-shell,
+.theme-light .surface-card,
+.theme-light .surface-panel {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(8, 17, 31, 0.08) !important;
+  box-shadow: 0 18px 48px rgba(15, 23, 42, 0.08);
+}
+
+.theme-light .surface-card,
+.theme-light .surface-panel {
+  color: #08111f;
+}
+
+.theme-light .theme-switch {
+  border-color: rgba(8, 17, 31, 0.08);
+  color: rgba(8, 17, 31, 0.72);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.theme-light .theme-switch:hover {
+  color: #ff9b30;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.theme-light .hero-stage-overlay {
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.5) 36%, rgba(255, 255, 255, 0.68) 100%);
+}
+
+.theme-light .torch-text {
+  color: #08111f;
+}
+
+.theme-light .torch-text::after {
+  background: radial-gradient(circle at var(--torch-x, 50%) var(--torch-y, 50%), rgba(255, 179, 71, 0.12), rgba(59, 130, 246, 0.08) 28%, transparent 58%);
+}
+
+.theme-light .text-white,
+.theme-light .text-white\/82,
+.theme-light .text-white\/78,
+.theme-light .text-white\/75,
+.theme-light .text-white\/72,
+.theme-light .text-white\/70,
+.theme-light .text-white\/68,
+.theme-light .text-white\/65,
+.theme-light .text-white\/60,
+.theme-light .text-white\/55,
+.theme-light .text-white\/50,
+.theme-light .text-white\/45,
+.theme-light .text-white\/40,
+.theme-light .text-white\/30 {
+  color: #08111f !important;
+}
+
+.theme-light .text-blue-300 {
+  color: #2563eb !important;
+}
+
+.theme-light .premium-cursor {
+  mix-blend-mode: normal;
+  background: rgba(37, 99, 235, 0.75);
+}
+
+.theme-light .premium-cursor-overlay {
+  background: rgba(255, 255, 255, 0.16);
 }
 
 @keyframes logoScroll {

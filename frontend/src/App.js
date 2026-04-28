@@ -130,7 +130,7 @@ const PremiumCursor = () => {
   );
 };
 
-const Navigation = () => {
+const Navigation = ({ theme, onToggleTheme }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
@@ -166,7 +166,7 @@ const Navigation = () => {
       animate={{ y: 0 }}
       transition={{ duration: 0.45 }}
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        scrolled ? "border-b border-white/10 bg-black/94 backdrop-blur-sm" : "bg-transparent"
+        scrolled ? "border-b border-white/10 bg-black/94 backdrop-blur-sm theme-navbar-solid" : "bg-transparent"
       }`}
       data-testid="navigation"
     >
@@ -192,7 +192,7 @@ const Navigation = () => {
         </motion.button>
 
         <div className="ml-auto hidden min-w-0 flex-1 items-center justify-end gap-5 md:flex">
-          <div className="flex items-center gap-5 rounded-full border border-white/10 bg-[#050816]/92 px-6 py-3 shadow-[0_14px_40px_rgba(0,0,0,0.3)]">
+          <div className="nav-shell flex items-center gap-5 rounded-full border border-white/10 bg-[#050816]/92 px-6 py-3 shadow-[0_14px_40px_rgba(0,0,0,0.3)]">
             {NAV_LINKS.slice(0, 1).map((link) => {
               const Icon = link.icon;
               return (
@@ -261,6 +261,14 @@ const Navigation = () => {
             })}
           </div>
 
+          <button
+            type="button"
+            onClick={onToggleTheme}
+            className="theme-switch inline-flex items-center rounded-full border border-white/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-white/72 transition-colors hover:text-[#ffb347]"
+          >
+            {theme === "light" ? "White" : "Black"}
+          </button>
+
           <div className="flex items-center gap-3">
             {SOCIAL_LINKS.map((item) => {
               const Icon = item.icon;
@@ -307,6 +315,13 @@ const Navigation = () => {
             className="border-t border-white/5 bg-black/92 backdrop-blur-sm md:hidden"
           >
             <div className="space-y-3 px-5 py-4">
+              <button
+                type="button"
+                onClick={onToggleTheme}
+                className="w-full rounded-full border border-white/10 bg-white/[0.03] px-5 py-3 text-sm font-semibold text-white/85"
+              >
+                Switch to {theme === "light" ? "black" : "white"} theme
+              </button>
               <button
                 type="button"
                 onClick={() => {
@@ -372,13 +387,26 @@ const Navigation = () => {
 };
 
 function App() {
+  const [theme, setTheme] = useState(() => {
+    if (typeof window === "undefined") return "dark";
+    return window.localStorage.getItem("kwerky-theme") || "dark";
+  });
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    window.localStorage.setItem("kwerky-theme", theme);
+  }, [theme]);
+
   return (
-    <div className="App">
+    <div className={`App ${theme === "light" ? "theme-light" : "theme-dark"}`}>
       <BrowserRouter>
         <PreviewProvider>
           <SiteActionsProvider>
             <PremiumCursor />
-            <Navigation />
+            <Navigation
+              theme={theme}
+              onToggleTheme={() => setTheme((current) => (current === "light" ? "dark" : "light"))}
+            />
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/services" element={<ServicesPage />} />

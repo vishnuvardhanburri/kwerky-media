@@ -47,9 +47,30 @@ const HomePage = () => {
       />
 
       <section id="hero-section" className="relative min-h-screen overflow-hidden px-6 pt-24" data-testid="hero-section">
+        <div className="hero-stage-media absolute inset-0 overflow-hidden">
+          <video
+            ref={heroVideoRef}
+            className="h-full w-full object-cover object-center"
+            src="/brand/stage-reveal.mp4"
+            poster="/brand/hero.jpg"
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
+          <div className="hero-stage-overlay absolute inset-0" />
+          <button
+            type="button"
+            onClick={enableHeroAudio}
+            className="absolute right-6 top-28 z-20 rounded-full border border-blue-400/30 bg-black/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-white/85 backdrop-blur-sm transition-colors hover:bg-blue-500 hover:text-white"
+          >
+            {heroSoundOn ? "Sound on" : "Play with sound"}
+          </button>
+        </div>
+
         <div className="container relative z-10 mx-auto min-h-[calc(100vh-6rem)] max-w-6xl py-20">
-          <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:pt-8">
-            <div className="max-w-4xl">
+          <div className="grid items-center gap-14 lg:pt-10">
+            <div className="max-w-3xl">
               <RevealOnScroll>
                 <div className="mb-6 inline-flex items-center gap-2 text-xs font-semibold tracking-[0.22em]">
                   <span className="text-blue-300">Kwerky</span>
@@ -60,7 +81,7 @@ const HomePage = () => {
               </RevealOnScroll>
 
               <RevealOnScroll delay={0.05}>
-                <h1 className="torch-text max-w-3xl text-6xl font-bold leading-[0.88] tracking-[-0.04em] text-white md:text-7xl lg:text-[7.2rem]">
+                <h1 className="torch-text max-w-3xl text-5xl font-bold leading-[0.9] tracking-[-0.04em] text-white md:text-6xl lg:text-[5.8rem]">
                   {heroLines.map((line, index) => (
                     <span key={`${line}-${index}`} className={`block ${index === heroLines.length - 1 ? "text-blue-300" : "text-white"}`}>
                       {line}
@@ -92,45 +113,6 @@ const HomePage = () => {
                 </div>
               </RevealOnScroll>
             </div>
-
-            <RevealOnScroll delay={0.15}>
-              <div className="relative mx-auto w-full max-w-[31rem]">
-                <motion.div
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-                  className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#030712] p-3 shadow-[0_30px_100px_rgba(0,0,0,0.5)]"
-                >
-                  <div className="relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-black">
-                    <video
-                      ref={heroVideoRef}
-                      className="h-full w-full object-cover"
-                      src="/brand/stage-reveal.mp4"
-                      poster="/brand/hero.jpg"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                    />
-                    <button
-                      type="button"
-                      onClick={enableHeroAudio}
-                      className="absolute right-4 top-4 rounded-full border border-blue-400/30 bg-black/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-white/85 backdrop-blur-sm transition-colors hover:bg-blue-500 hover:text-white"
-                    >
-                      {heroSoundOn ? "Sound on" : "Play with sound"}
-                    </button>
-                  </div>
-                  <div className="mt-4 flex items-center justify-between gap-4 px-2 pb-2">
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-blue-300/80">Kwerky Media</p>
-                      <p className="mt-1 text-sm text-white/72">Content, growth, and clarity for tech brands.</p>
-                    </div>
-                    <div className="hidden rounded-full border border-blue-400/30 bg-blue-400/10 px-3 py-2 text-xs font-medium text-blue-300 sm:block">
-                      Stage reveal
-                    </div>
-                  </div>
-                </motion.div>
-              </div>
-            </RevealOnScroll>
           </div>
         </div>
       </section>
@@ -156,7 +138,7 @@ const HomePage = () => {
           <div className="mt-14 grid gap-6 md:grid-cols-3">
             {services.map((service, index) => (
               <Card3D key={service.title} delay={index * 0.08} testId={`service-card-${index}`}>
-                <div className="relative z-[1] h-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#030712]">
+                <div className="surface-card relative z-[1] h-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#030712]">
                   <div className="relative aspect-[4/3] overflow-hidden bg-[#040816]">
                     <img src={service.image} alt={service.title} className="h-full w-full object-cover object-center" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
@@ -186,7 +168,7 @@ const HomePage = () => {
           <div className="mt-14 grid gap-6 md:grid-cols-2">
             {proof.map((item, index) => (
               <Card3D key={item.title || item.company} delay={index * 0.08} testId={`proof-card-${index}`}>
-                <div className="relative z-[1] h-full rounded-[1.75rem] border border-white/10 bg-[#030712] p-8 md:p-10">
+                <div className="surface-card relative z-[1] h-full rounded-[1.75rem] border border-white/10 bg-[#030712] p-8 md:p-10">
                   <p className="text-lg leading-relaxed text-white/70">★★★★★</p>
                   <p className="mt-4 text-lg leading-relaxed text-white/70">&quot;{item.quote}&quot;</p>
                   <div className="mt-8 h-px w-full bg-gradient-to-r from-blue-400/30 via-white/10 to-transparent" />
