@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   BookOpen,
+  Briefcase,
   ChevronDown,
   Facebook,
   Home,
@@ -216,8 +217,8 @@ const Navigation = () => {
                   activePath === "/services" ? "text-white" : "text-white/75 hover:text-[#ffb347]"
                 }`}
               >
-                <Info className="h-4 w-4 opacity-0" />
-                <span className="-ml-6">Services</span>
+                <Briefcase className="h-4 w-4" />
+                <span>Services</span>
               </button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>

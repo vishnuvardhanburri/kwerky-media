@@ -33,7 +33,7 @@ const Ethereal = ({
       fallback.style.position = "absolute";
       fallback.style.inset = "0";
       fallback.style.background =
-        "radial-gradient(circle at 68% 30%, rgba(59,130,246,0.22), transparent 0 34%), radial-gradient(circle at 22% 22%, rgba(96,165,250,0.1), transparent 0 26%), linear-gradient(180deg, rgba(2,8,22,1), rgba(2,8,22,0.84))";
+        "radial-gradient(circle at 68% 30%, rgba(59,130,246,0.1), transparent 0 28%), radial-gradient(circle at 22% 22%, rgba(96,165,250,0.05), transparent 0 22%), linear-gradient(180deg, rgba(2,8,22,0.82), rgba(2,8,22,0.7))";
       fallback.style.pointerEvents = "none";
       container.appendChild(fallback);
 
@@ -86,7 +86,7 @@ const Ethereal = ({
     const glowMaterial = new THREE.MeshBasicMaterial({
       color: new THREE.Color(colorPalette.secondary),
       transparent: true,
-      opacity: 0.14,
+      opacity: 0.08,
     });
     const glow = new THREE.Mesh(glowGeometry, glowMaterial);
     group.add(glow);
@@ -95,8 +95,8 @@ const Ethereal = ({
     const coreMaterial = new THREE.MeshStandardMaterial({
       color: new THREE.Color(colorPalette.primary),
       emissive: new THREE.Color(colorPalette.secondary),
-      emissiveIntensity: 0.55,
-      roughness: 0.35,
+      emissiveIntensity: 0.24,
+      roughness: 0.5,
       metalness: 0.16,
     });
     const core = new THREE.Mesh(coreGeometry, coreMaterial);
@@ -106,7 +106,7 @@ const Ethereal = ({
     const shellMaterial = new THREE.MeshStandardMaterial({
       color: new THREE.Color("#07172f"),
       emissive: new THREE.Color(colorPalette.tertiary),
-      emissiveIntensity: 0.26,
+      emissiveIntensity: 0.1,
       roughness: 0.2,
       metalness: 0.44,
     });
@@ -119,7 +119,7 @@ const Ethereal = ({
     const ringMaterial = new THREE.MeshBasicMaterial({
       color: new THREE.Color(colorPalette.accent),
       transparent: true,
-      opacity: 0.24,
+      opacity: 0.12,
     });
     const ring = new THREE.Mesh(ringGeometry, ringMaterial);
     ring.rotation.x = Math.PI / 2.4;
@@ -148,18 +148,18 @@ const Ethereal = ({
     const particles = new THREE.Points(particlesGeometry, particlesMaterial);
     group.add(particles);
 
-    const ambient = new THREE.AmbientLight(0x6aa6ff, 1.7);
+    const ambient = new THREE.AmbientLight(0x6aa6ff, 1.05);
     scene.add(ambient);
 
-    const keyLight = new THREE.DirectionalLight(0x8dc2ff, 3.2);
+    const keyLight = new THREE.DirectionalLight(0x8dc2ff, 1.8);
     keyLight.position.set(4, 5, 6);
     scene.add(keyLight);
 
-    const fillLight = new THREE.PointLight(0x1457b6, 14, 24);
+    const fillLight = new THREE.PointLight(0x1457b6, 7, 24);
     fillLight.position.set(-4, -1, 5);
     scene.add(fillLight);
 
-    const accentLight = new THREE.PointLight(0x1d4ed8, 10, 20);
+    const accentLight = new THREE.PointLight(0x1d4ed8, 4, 20);
     accentLight.position.set(0, 3, 2);
     scene.add(accentLight);
 
@@ -231,7 +231,7 @@ const Ethereal = ({
     composer.addPass(new RenderPass(scene, camera));
     const bloom = new UnrealBloomPass(
       new THREE.Vector2(container.clientWidth, container.clientHeight),
-      isSmallScreen ? 0.42 : 0.58,
+      isSmallScreen ? 0.18 : 0.24,
       0.34,
       0.9,
     );
@@ -244,12 +244,12 @@ const Ethereal = ({
       frameId = window.requestAnimationFrame(animate);
       const elapsed = clock.getElapsedTime();
 
-      group.rotation.y = elapsed * 0.03 + pointer.x * 0.14 + scrollState.progress * 0.12;
-      group.rotation.x = Math.sin(elapsed * 0.24) * 0.04 + pointer.y * 0.08;
-      glow.scale.setScalar(1 + Math.sin(elapsed * 0.35) * 0.03);
-      shell.rotation.z = Math.PI * 0.18 + Math.sin(elapsed * 0.12) * 0.045;
-      particles.rotation.y = elapsed * 0.014;
-      particles.rotation.x = elapsed * 0.008;
+      group.rotation.y = elapsed * 0.012 + pointer.x * 0.06 + scrollState.progress * 0.06;
+      group.rotation.x = Math.sin(elapsed * 0.18) * 0.018 + pointer.y * 0.035;
+      glow.scale.setScalar(1 + Math.sin(elapsed * 0.22) * 0.015);
+      shell.rotation.z = Math.PI * 0.18 + Math.sin(elapsed * 0.09) * 0.02;
+      particles.rotation.y = elapsed * 0.008;
+      particles.rotation.x = elapsed * 0.004;
 
       composer.render();
     };
@@ -296,7 +296,7 @@ const Ethereal = ({
   }, [colorPalette]);
 
   return (
-    <div ref={mountRef} className="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+    <div ref={mountRef} className="absolute inset-0 z-0 overflow-hidden opacity-45 pointer-events-none" aria-hidden="true">
       <div ref={sparkLayerRef} className="absolute inset-0 overflow-hidden" />
     </div>
   );

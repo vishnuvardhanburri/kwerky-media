@@ -4,7 +4,6 @@ import BackgroundLayers from "@/components/shared/BackgroundLayers";
 import TextParallaxSection from "@/components/shared/TextParallaxSection";
 import { Card3D, RevealOnScroll } from "@/components/shared/Animations";
 import Footer from "@/components/shared/Footer";
-import Ethereal from "@/components/ui/ethereal";
 import { useSiteActions } from "@/context/site-actions";
 import { formatCmsTitle, useHomePageCms } from "@/lib/cms";
 
@@ -48,8 +47,6 @@ const HomePage = () => {
       />
 
       <section id="hero-section" className="relative min-h-screen overflow-hidden px-6 pt-24" data-testid="hero-section">
-        <Ethereal />
-
         <div className="container relative z-10 mx-auto min-h-[calc(100vh-6rem)] max-w-6xl py-20">
           <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:pt-8">
             <div className="max-w-4xl">
