@@ -30,13 +30,14 @@ const BackgroundLayers = () => {
   return (
     <>
       <motion.div className="bg-aurora" style={{ opacity: auroraOpacity, scale: auroraScale }} />
-      <motion.div
-        className="bg-aurora-media"
-        style={{
-          opacity: auroraOpacity,
-          backgroundImage: "url(/brand/aurora.gif)",
-          scale: auroraScale,
-        }}
+      <motion.video
+        className="bg-aurora-video"
+        style={{ opacity: auroraOpacity, scale: auroraScale }}
+        src="/brand/aurora.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
       />
       <motion.div className="bg-grid" style={{ opacity: gridOpacity }} />
       <motion.div className="bg-stars" style={{ opacity: starsOpacity }} />
