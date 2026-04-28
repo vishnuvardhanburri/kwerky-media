@@ -23,10 +23,10 @@ body {
   height: 180px;
   border-radius: 9999px;
   pointer-events: none;
-  z-index: 4;
+  z-index: 90;
   opacity: 0;
   transition: opacity 220ms ease;
-  background: radial-gradient(circle, rgba(255, 179, 71, 0.24) 0%, rgba(59, 130, 246, 0.16) 20%, rgba(37, 99, 235, 0.08) 36%, rgba(3, 7, 18, 0) 72%);
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(59, 130, 246, 0.18) 24%, rgba(255, 179, 71, 0.1) 42%, rgba(3, 7, 18, 0) 72%);
   filter: blur(28px) saturate(1.15);
   mix-blend-mode: screen;
   will-change: transform, opacity;
@@ -36,9 +36,9 @@ body {
   position: absolute;
   inset: 34px;
   border-radius: 9999px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 179, 71, 0.18) 26%, rgba(59, 130, 246, 0.14) 54%, rgba(59, 130, 246, 0) 78%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.34) 0%, rgba(59, 130, 246, 0.22) 28%, rgba(255, 179, 71, 0.12) 52%, rgba(59, 130, 246, 0) 78%);
   filter: blur(8px);
-  box-shadow: 0 0 36px rgba(255, 179, 71, 0.12);
+  box-shadow: 0 0 36px rgba(59, 130, 246, 0.18);
 }
 
 @media (pointer: coarse), (prefers-reduced-motion: reduce) {
@@ -263,14 +263,16 @@ body > div:last-child a[href*="emergent.sh"] {
 
 .logo-mark {
   filter:
-    drop-shadow(0 0 10px rgba(255, 179, 71, 0.18))
-    drop-shadow(0 0 18px rgba(59, 130, 246, 0.16))
-    contrast(1.12);
+    drop-shadow(0 0 12px rgba(255, 179, 71, 0.22))
+    drop-shadow(0 0 24px rgba(59, 130, 246, 0.22))
+    contrast(1.18)
+    saturate(1.06);
 }
 
 .torch-text {
   position: relative;
   isolation: isolate;
+  color: #ffffff;
 }
 
 .torch-text::after {

@@ -119,7 +119,7 @@ const ContactDrawer = () => {
               onClick={goToServicesContact}
               className="w-full rounded-full bg-blue-600 px-5 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-blue-500"
             >
-              Let&apos;s discuss your project
+              Schedule a call
             </motion.button>
           </div>
         </div>

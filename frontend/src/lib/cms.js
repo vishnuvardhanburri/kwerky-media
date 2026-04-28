@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLiveQuery } from "@sanity/preview-kit";
-import { sanityFetch, sanityImage, splitHeadline } from "@/lib/sanity";
+import { sanityFetch, sanityImage, splitHeadline, homepageQuery } from "@/lib/sanity";
 
 const DEFAULT_HOME = {
   heroTitle: "Content and growth partner for tech companies",
@@ -221,63 +221,44 @@ const DEFAULT_TESTIMONIAL_PAGE = [
 
 const DEFAULT_BLOG_BANNER = "/brand/blog-banner.png";
 
-const HOME_QUERY = `*[_type == "homepage"][0]{
-  heroTitle,
-  heroSub,
-  ctaText,
-  valueTitle,
-  valueSub
-}`;
-
-const SERVICES_QUERY = `*[_type == "service"]|order(coalesce(order, 0) asc, _createdAt asc){
-  title,
-  description,
-  image,
-  points,
-  featured,
-  order
-}`;
-
-const TESTIMONIALS_QUERY = `*[_type == "testimonial"]|order(coalesce(order, 0) asc, _createdAt asc){
-  company,
-  quote,
-  rating,
-  location
-}`;
-
 const SERVICES_PAGE_QUERY = `*[_type == "servicesPage"][0]{
-  heroTitle,
-  heroSub,
-  reasons,
-  contentTitle,
-  contentSub,
-  videoTitle,
-  contactTitle,
-  videoUrl
+  pageTitle,
+  introDescription,
+  "reasons": services[].description,
+  "contentTitle": "Content Solutions",
+  "contentSub": introDescription,
+  "videoTitle": "Explore our Kwerky videos",
+  "contactTitle": "Let's discuss your project",
+  "videoUrl": "https://www.youtube.com/embed/nXaoAh2DVpo",
+  services[]{
+    "title": serviceName,
+    description
+  }
 }`;
 
 const BLOGS_QUERY = `*[_type == "blog"]|order(publishedAt desc, _createdAt desc){
   title,
   "slug": slug.current,
-  excerpt,
-  author,
-  publishedAt,
-  readTime,
-  image,
+  shortDescription,
+  publishDate,
+  coverImage,
   content
 }`;
 
 const VIDEO_QUERY = `*[_type == "video"]|order(coalesce(order, 0) asc, _createdAt asc){
   title,
-  url
+  "url": coalesce(videoUrl, url)
 }`;
-
-const FOUNDERS_QUERY = `*[_type == "founder"]|order(coalesce(order, 0) asc, _createdAt asc){
-  name,
-  role,
-  bio,
-  image,
-  linkedinUrl
+const ABOUT_PAGE_QUERY = `*[_type == "aboutPage"][0]{
+  aboutTitle,
+  description,
+  founders[]{
+    name,
+    bio,
+    image,
+    role,
+    linkedinUrl
+  }
 }`;
 
 function normalizeTextArray(value, fallback = []) {
@@ -306,12 +287,12 @@ function normalizeBlog(item, fallback = {}) {
   return {
     slug: item?.slug || fallback.slug || "",
     title: item?.title || fallback.title || "",
-    desc: item?.excerpt || fallback.desc || "",
-    excerpt: item?.excerpt || fallback.desc || "",
+    desc: item?.shortDescription || item?.excerpt || fallback.desc || "",
+    excerpt: item?.shortDescription || item?.excerpt || fallback.desc || "",
     author: item?.author || fallback.author || "",
-    date: item?.publishedAt ? new Date(item.publishedAt).toLocaleDateString("en-IN") : fallback.date || "",
+    date: item?.publishDate || item?.publishedAt ? new Date(item.publishDate || item.publishedAt).toLocaleDateString("en-IN") : fallback.date || "",
     readTime: item?.readTime || fallback.readTime || "",
-    image: toImageUrl(item?.image, fallback.image || ""),
+    image: toImageUrl(item?.coverImage || item?.image, fallback.image || ""),
     content: normalizeTextArray(item?.content, fallback.content || []),
   };
 }
@@ -319,7 +300,7 @@ function normalizeBlog(item, fallback = {}) {
 function normalizeVideo(item, fallback = {}) {
   return {
     title: item?.title || fallback.title || "",
-    url: item?.url || fallback.url || "",
+    url: item?.url || item?.videoUrl || fallback.url || "",
   };
 }
 
@@ -339,13 +320,9 @@ export function formatCmsTitle(text) {
 }
 
 export async function getHomePageData() {
-  const [home, services, testimonials] = await Promise.all([
-    sanityFetch(HOME_QUERY, {}, null),
-    sanityFetch(SERVICES_QUERY, {}, []),
-    sanityFetch(TESTIMONIALS_QUERY, {}, []),
-  ]);
+  const home = await sanityFetch(homepageQuery, {}, null);
 
-  const normalizedServices = (services?.length ? services : DEFAULT_SERVICES_HOMEPAGE).map((service, index) =>
+  const normalizedServices = (home?.services?.length ? home.services : DEFAULT_SERVICES_HOMEPAGE).map((service, index) =>
     normalizeService(service, DEFAULT_SERVICES_HOMEPAGE[index] || DEFAULT_SERVICES_HOMEPAGE[0]),
   );
   const featuredServices = normalizedServices.filter((service) => service.featured);
@@ -353,10 +330,17 @@ export async function getHomePageData() {
   return {
     home: {
       ...DEFAULT_HOME,
-      ...(home || {}),
+      heroTitle: home?.mainHeading || DEFAULT_HOME.heroTitle,
+      heroSub: home?.tagline || DEFAULT_HOME.heroSub,
+      ctaText: home?.buttonText || DEFAULT_HOME.ctaText,
+      valueTitle: home?.valueTitle || DEFAULT_HOME.valueTitle,
+      valueSub: home?.valueSub || DEFAULT_HOME.valueSub,
+      heroMedia: home?.heroImage?.asset?.url || "",
+      ctaHeading: home?.ctaHeading || "",
+      ctaSubtext: home?.ctaSubtext || "",
     },
     services: (featuredServices.length ? featuredServices : normalizedServices).slice(0, 3),
-    testimonials: (testimonials?.length ? testimonials : DEFAULT_TESTIMONIAL_PAGE).map((item, index) => {
+    testimonials: (home?.testimonials?.length ? home.testimonials : DEFAULT_TESTIMONIAL_PAGE).map((item, index) => {
       const fallbackTestimonial = DEFAULT_TESTIMONIAL_PAGE[index] || DEFAULT_TESTIMONIAL_PAGE[0];
 
       return {
@@ -372,18 +356,28 @@ export async function getHomePageData() {
 }
 
 export async function getServicesPageData() {
-  const [page, services] = await Promise.all([
-    sanityFetch(SERVICES_PAGE_QUERY, {}, null),
-    sanityFetch(SERVICES_QUERY, {}, []),
-  ]);
+  const page = await sanityFetch(SERVICES_PAGE_QUERY, {}, null);
 
   return {
     page: {
       ...DEFAULT_SERVICES_PAGE,
-      ...(page || {}),
+      heroTitle: page?.pageTitle || DEFAULT_SERVICES_PAGE.heroTitle,
+      heroSub: page?.introDescription || DEFAULT_SERVICES_PAGE.heroSub,
+      reasons: page?.reasons || DEFAULT_SERVICES_PAGE.reasons,
+      contentTitle: page?.contentTitle || DEFAULT_SERVICES_PAGE.contentTitle,
+      contentSub: page?.contentSub || DEFAULT_SERVICES_PAGE.contentSub,
+      videoTitle: page?.videoTitle || DEFAULT_SERVICES_PAGE.videoTitle,
+      contactTitle: page?.contactTitle || DEFAULT_SERVICES_PAGE.contactTitle,
+      videoUrl: page?.videoUrl || DEFAULT_SERVICES_PAGE.videoUrl,
     },
-    services: (services?.length ? services : DEFAULT_SERVICES_DETAIL).map((service, index) =>
-      normalizeService(service, DEFAULT_SERVICES_DETAIL[index] || DEFAULT_SERVICES_DETAIL[0]),
+    services: (page?.services?.length ? page.services : DEFAULT_SERVICES_DETAIL).map((service, index) =>
+      normalizeService(
+        {
+          title: service?.title || service?.serviceName,
+          description: service?.description,
+        },
+        DEFAULT_SERVICES_DETAIL[index] || DEFAULT_SERVICES_DETAIL[0],
+      ),
     ),
   };
 }
@@ -404,11 +398,9 @@ export async function getBlogPostData(slug) {
     `*[_type == "blog" && slug.current == $slug][0]{
       title,
       "slug": slug.current,
-      excerpt,
-      author,
-      publishedAt,
-      readTime,
-      image,
+      shortDescription,
+      publishDate,
+      coverImage,
       content
     }`,
     { slug },
@@ -433,16 +425,22 @@ export async function getVideosPageData() {
 }
 
 export async function getAboutPageData() {
-  const [founders, videos] = await Promise.all([
-    sanityFetch(FOUNDERS_QUERY, {}, []),
+  const [about, videos] = await Promise.all([
+    sanityFetch(ABOUT_PAGE_QUERY, {}, null),
     sanityFetch(VIDEO_QUERY, {}, []),
   ]);
 
   return {
-    founders: (founders?.length ? founders : DEFAULT_FOUNDERS).map((founder, index) =>
+    about: {
+      aboutTitle: about?.aboutTitle || "Your Partner in Tech Storytelling",
+      description:
+        about?.description ||
+        "Kwerky Media is the result of more than a decade of tech storytelling—and a childlike excitement that’s stayed with us since we wrote our very first tech story.",
+    },
+    founders: (about?.founders?.length ? about.founders : DEFAULT_FOUNDERS).map((founder, index) =>
       normalizeFounder(founder, DEFAULT_FOUNDERS[index] || DEFAULT_FOUNDERS[0]),
     ),
-    notes: (founders?.length ? founders : DEFAULT_ABOUT_NOTES).map((founder, index) => ({
+    notes: (about?.founders?.length ? about.founders : DEFAULT_ABOUT_NOTES).map((founder, index) => ({
       name: founder?.name || DEFAULT_ABOUT_NOTES[index]?.name || "",
       role: founder?.role || DEFAULT_ABOUT_NOTES[index]?.role || "Co-Founder",
       image: toImageUrl(founder?.image, DEFAULT_ABOUT_NOTES[index]?.image || ""),
@@ -471,12 +469,10 @@ export function useHomePageCms() {
     };
   }, []);
 
-  const [homeRaw] = useLiveQuery(initial.home, HOME_QUERY);
-  const [servicesRaw] = useLiveQuery(initial.services, SERVICES_QUERY);
-  const [testimonialsRaw] = useLiveQuery(initial.testimonials, TESTIMONIALS_QUERY);
+  const [homeRaw] = useLiveQuery(initial.home, homepageQuery);
 
   return useMemo(() => {
-    const normalizedServices = (servicesRaw?.length ? servicesRaw : DEFAULT_SERVICES_HOMEPAGE).map((service, index) =>
+    const normalizedServices = (homeRaw?.services?.length ? homeRaw.services : DEFAULT_SERVICES_HOMEPAGE).map((service, index) =>
       normalizeService(service, DEFAULT_SERVICES_HOMEPAGE[index] || DEFAULT_SERVICES_HOMEPAGE[0]),
     );
     const featuredServices = normalizedServices.filter((service) => service.featured);
@@ -484,10 +480,17 @@ export function useHomePageCms() {
     return {
       home: {
         ...DEFAULT_HOME,
-        ...(homeRaw || {}),
+        heroTitle: homeRaw?.mainHeading || DEFAULT_HOME.heroTitle,
+        heroSub: homeRaw?.tagline || DEFAULT_HOME.heroSub,
+        ctaText: homeRaw?.buttonText || DEFAULT_HOME.ctaText,
+        valueTitle: homeRaw?.valueTitle || DEFAULT_HOME.valueTitle,
+        valueSub: homeRaw?.valueSub || DEFAULT_HOME.valueSub,
+        heroMedia: homeRaw?.heroImage?.asset?.url || "",
+        ctaHeading: homeRaw?.ctaHeading || "",
+        ctaSubtext: homeRaw?.ctaSubtext || "",
       },
       services: (featuredServices.length ? featuredServices : normalizedServices).slice(0, 3),
-      testimonials: (testimonialsRaw?.length ? testimonialsRaw : DEFAULT_TESTIMONIAL_PAGE).map((item, index) => {
+      testimonials: (homeRaw?.testimonials?.length ? homeRaw.testimonials : DEFAULT_TESTIMONIAL_PAGE).map((item, index) => {
         const fallbackTestimonial = DEFAULT_TESTIMONIAL_PAGE[index] || DEFAULT_TESTIMONIAL_PAGE[0];
 
         return {
@@ -500,7 +503,7 @@ export function useHomePageCms() {
         };
       }),
     };
-  }, [homeRaw, servicesRaw, testimonialsRaw]);
+  }, [homeRaw]);
 }
 
 export function useServicesPageCms() {
@@ -520,21 +523,33 @@ export function useServicesPageCms() {
   }, []);
 
   const [pageRaw] = useLiveQuery(initial.page, SERVICES_PAGE_QUERY);
-  const [servicesRaw] = useLiveQuery(initial.services, SERVICES_QUERY);
 
   return useMemo(() => {
-    const services = (servicesRaw?.length ? servicesRaw : DEFAULT_SERVICES_DETAIL).map((service, index) =>
-      normalizeService(service, DEFAULT_SERVICES_DETAIL[index] || DEFAULT_SERVICES_DETAIL[0]),
+    const services = (pageRaw?.services?.length ? pageRaw.services : DEFAULT_SERVICES_DETAIL).map((service, index) =>
+      normalizeService(
+        {
+          title: service?.title || service?.serviceName,
+          description: service?.description,
+        },
+        DEFAULT_SERVICES_DETAIL[index] || DEFAULT_SERVICES_DETAIL[0],
+      ),
     );
 
     return {
       page: {
         ...DEFAULT_SERVICES_PAGE,
-        ...(pageRaw || {}),
+        heroTitle: pageRaw?.pageTitle || DEFAULT_SERVICES_PAGE.heroTitle,
+        heroSub: pageRaw?.introDescription || DEFAULT_SERVICES_PAGE.heroSub,
+        reasons: pageRaw?.reasons || DEFAULT_SERVICES_PAGE.reasons,
+        contentTitle: pageRaw?.contentTitle || DEFAULT_SERVICES_PAGE.contentTitle,
+        contentSub: pageRaw?.contentSub || DEFAULT_SERVICES_PAGE.contentSub,
+        videoTitle: pageRaw?.videoTitle || DEFAULT_SERVICES_PAGE.videoTitle,
+        contactTitle: pageRaw?.contactTitle || DEFAULT_SERVICES_PAGE.contactTitle,
+        videoUrl: pageRaw?.videoUrl || DEFAULT_SERVICES_PAGE.videoUrl,
       },
       services,
     };
-  }, [pageRaw, servicesRaw]);
+  }, [pageRaw]);
 }
 
 export function useBlogsPageCms() {
@@ -565,6 +580,11 @@ export function useBlogsPageCms() {
 
 export function useAboutPageCms() {
   const [initial, setInitial] = useState({
+    about: {
+      aboutTitle: "Your Partner in Tech Storytelling",
+      description:
+        "Kwerky Media is the result of more than a decade of tech storytelling—and a childlike excitement that’s stayed with us since we wrote our very first tech story.",
+    },
     founders: DEFAULT_FOUNDERS,
     notes: DEFAULT_ABOUT_NOTES,
     videos: DEFAULT_VIDEOS,
@@ -580,14 +600,18 @@ export function useAboutPageCms() {
     };
   }, []);
 
-  const [foundersRaw] = useLiveQuery(initial.founders, FOUNDERS_QUERY);
+  const [aboutRaw] = useLiveQuery(initial.about, ABOUT_PAGE_QUERY);
   const [videosRaw] = useLiveQuery(initial.videos, VIDEO_QUERY);
 
   return useMemo(() => ({
-    founders: (foundersRaw?.length ? foundersRaw : DEFAULT_FOUNDERS).map((founder, index) =>
+    about: {
+      aboutTitle: aboutRaw?.aboutTitle || initial.about.aboutTitle,
+      description: aboutRaw?.description || initial.about.description,
+    },
+    founders: (aboutRaw?.founders?.length ? aboutRaw.founders : DEFAULT_FOUNDERS).map((founder, index) =>
       normalizeFounder(founder, DEFAULT_FOUNDERS[index] || DEFAULT_FOUNDERS[0]),
     ),
-    notes: (foundersRaw?.length ? foundersRaw : DEFAULT_ABOUT_NOTES).map((founder, index) => ({
+    notes: (aboutRaw?.founders?.length ? aboutRaw.founders : DEFAULT_ABOUT_NOTES).map((founder, index) => ({
       name: founder?.name || DEFAULT_ABOUT_NOTES[index]?.name || "",
       role: founder?.role || DEFAULT_ABOUT_NOTES[index]?.role || "Co-Founder",
       image: toImageUrl(founder?.image, DEFAULT_ABOUT_NOTES[index]?.image || ""),
@@ -596,7 +620,7 @@ export function useAboutPageCms() {
     videos: (videosRaw?.length ? videosRaw : DEFAULT_VIDEOS.slice(0, 2)).map((video, index) =>
       normalizeVideo(video, DEFAULT_VIDEOS[index] || DEFAULT_VIDEOS[0]),
     ),
-  }), [foundersRaw, videosRaw]);
+  }), [aboutRaw, initial.about, videosRaw]);
 }
 
 export function useVideosPageCms() {
@@ -639,11 +663,9 @@ export function useBlogPostCms(slug) {
   const [postRaw] = useLiveQuery(initial, `*[_type == "blog" && slug.current == $slug][0]{
       title,
       "slug": slug.current,
-      excerpt,
-      author,
-      publishedAt,
-      readTime,
-      image,
+      shortDescription,
+      publishDate,
+      coverImage,
       content
     }`, { slug });
 

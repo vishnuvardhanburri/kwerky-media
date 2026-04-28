@@ -2,15 +2,66 @@ export const servicesPage = {
   name: "servicesPage",
   title: "Services Page",
   type: "document",
-  fields: [
-    { name: "heroTitle", title: "Hero Title", type: "string" },
-    { name: "heroSub", title: "Hero Sub", type: "text" },
-    { name: "reasons", title: "Reasons", type: "array", of: [{ type: "string" }] },
-    { name: "contentTitle", title: "Content Title", type: "string" },
-    { name: "contentSub", title: "Content Sub", type: "text" },
-    { name: "videoTitle", title: "Video Title", type: "string" },
-    { name: "contactTitle", title: "Contact Title", type: "string" },
-    { name: "videoUrl", title: "Video URL", type: "url" },
+  groups: [
+    { name: "intro", title: "Intro" },
+    { name: "services", title: "Services" },
   ],
+  fields: [
+    {
+      name: "pageTitle",
+      title: "Page Title",
+      type: "string",
+      description: "Title shown at the top of the services page.",
+      group: "intro",
+      validation: (Rule) => Rule.required(),
+    },
+    {
+      name: "introDescription",
+      title: "Intro Description",
+      type: "text",
+      description: "Short introduction under the page title.",
+      rows: 4,
+      group: "intro",
+    },
+    {
+      name: "services",
+      title: "Services",
+      type: "array",
+      description: "Each item represents one service shown on the page.",
+      group: "services",
+      of: [
+        {
+          type: "object",
+          fields: [
+            {
+              name: "serviceName",
+              title: "Service Name",
+              type: "string",
+              description: "Name of the service.",
+              validation: (Rule) => Rule.required(),
+            },
+            {
+              name: "description",
+              title: "Description",
+              type: "text",
+              description: "Short explanation of the service.",
+              rows: 4,
+            },
+          ],
+          preview: {
+            select: {
+              title: "serviceName",
+              subtitle: "description",
+            },
+          },
+        },
+      ],
+    },
+  ],
+  preview: {
+    select: {
+      title: "pageTitle",
+      subtitle: "introDescription",
+    },
+  },
 };
-

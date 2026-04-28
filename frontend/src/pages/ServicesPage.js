@@ -117,11 +117,12 @@ const ServicesPage = () => {
           <div className="grid gap-6">
             {services.map((service, index) => (
               <Card3D key={service.title} delay={index * 0.06} testId={`service-detail-${index}`}>
-                <div className="rounded-[1.75rem] border border-white/10 bg-[#050b16] p-7 shadow-[0_18px_60px_rgba(0,0,0,0.35)] md:p-9">
-                  {SERVICE_ANCHORS[index]?.map((anchor) => (
-                    <span key={anchor} id={anchor} className="sr-only">
-                      {anchor}
-                    </span>
+                <div
+                  id={SERVICE_ANCHORS[index]?.[0] || undefined}
+                  className="rounded-[1.75rem] border border-white/10 bg-[#050b16] p-7 shadow-[0_18px_60px_rgba(0,0,0,0.35)] md:p-9 scroll-mt-28"
+                >
+                  {SERVICE_ANCHORS[index]?.slice(1).map((anchor) => (
+                    <span key={anchor} id={anchor} className="relative -top-24 block h-0 w-0" aria-hidden="true" />
                   ))}
                   <div className="flex flex-col gap-7 md:flex-row md:items-start md:gap-10">
                     <div className="flex-shrink-0">

@@ -25,61 +25,48 @@ SANITY_PREVIEW_ORIGIN=http://localhost:3000
 
 ### Homepage
 Use `Homepage` to update:
-- Hero title
-- Hero subtext
-- CTA text
-- Value title
-- Value subtext
-
-### Services
-Use `Service` to update the service cards on the homepage and services page:
-- Title
-- Description
-- Image
-- Bullet points
-- Featured toggle
-- Order
+- Main heading
+- Tagline
+- Button text
+- Hero image or GIF
+- Value section title
+- Value section description
+- Services preview cards
+- Testimonials
+- Final CTA text
 
 ### Services Page
 Use `Services Page` to update:
-- Why Choose section heading
-- Intro text
-- Reasons
-- Content Solutions heading
-- Video title
-- Contact heading
-- Embedded video URL
+- Page title
+- Intro description
+- Service list shown on the page
 
 ### Blogs
 Use `Blog` to update:
 - Blog title
 - Slug
-- Excerpt
-- Author
+- Short description
 - Publish date
-- Read time
-- Banner image
+- Cover image
 - Full article content
 
 ### Videos
 Use `Video` to update:
 - Video title
-- YouTube URL
+- Video URL
 
-### Testimonials
-Use `Testimonial` to update:
-- Company name
-- Quote
-- Rating
+### About Page
+Use `About Page` to update:
+- About title
+- Description
+- Founder cards
+
+### Contact Information
+Use `Contact Information` to update:
+- Phone number
+- Email address
 - Location
-
-### Founders
-Use `Founder` to update:
-- Name
-- Role
-- Bio
-- Photo
-- LinkedIn URL
+- Social links
 
 ## Preview flow
 

@@ -41,6 +41,18 @@ const SOCIAL_LINKS = [
   { label: "Twitter", href: "https://x.com/kwerkymedia", icon: Twitter, testId: "nav-twitter" },
 ];
 
+const scrollToHash = (hash) => {
+  const target = hash?.replace("#", "");
+  if (!target) return;
+
+  window.requestAnimationFrame(() => {
+    const element = document.getElementById(target);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  });
+};
+
 const CursorAura = () => {
   const auraRef = useRef(null);
 
@@ -103,6 +115,16 @@ const Navigation = () => {
   const { openContactInfo } = useSiteActions();
   const activeItem = NAV_LINKS.find((link) => link.path === location.pathname)?.label ?? "Home";
 
+  const handleServiceNavigation = (hash) => {
+    if (location.pathname === "/services") {
+      navigate({ pathname: "/services", hash }, { replace: false });
+      scrollToHash(hash);
+      return;
+    }
+
+    navigate(`/services${hash}`);
+  };
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll);
@@ -157,7 +179,7 @@ const Navigation = () => {
                 key={link.path}
                 to={link.path}
                 className={`text-sm font-medium transition-colors ${
-                  activeItem === link.label ? "text-white" : "text-white/68 hover:text-blue-300"
+                  activeItem === link.label ? "text-white" : "text-white/78 hover:text-[#ffb347]"
                 }`}
               >
                 {link.label}
@@ -169,7 +191,7 @@ const Navigation = () => {
                 <button
                   type="button"
                   className={`inline-flex items-center gap-1 text-sm font-medium transition-colors ${
-                    location.pathname === "/services" ? "text-white" : "text-white/68 hover:text-blue-300"
+                    location.pathname === "/services" ? "text-white" : "text-white/78 hover:text-[#ffb347]"
                   }`}
                 >
                   Services
@@ -180,10 +202,10 @@ const Navigation = () => {
                 {SERVICE_LINKS.map((service) => (
                   <DropdownMenuItem
                     key={service.label}
-                    asChild
                     className="cursor-pointer text-sm text-white/75 focus:bg-white/5 focus:text-blue-300"
+                    onSelect={() => handleServiceNavigation(service.hash)}
                   >
-                    <Link to={`/services${service.hash}`}>{service.label}</Link>
+                    {service.label}
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
@@ -194,7 +216,7 @@ const Navigation = () => {
                 key={link.path}
                 to={link.path}
                 className={`text-sm font-medium transition-colors ${
-                  activeItem === link.label ? "text-white" : "text-white/68 hover:text-blue-300"
+                  activeItem === link.label ? "text-white" : "text-white/78 hover:text-[#ffb347]"
                 }`}
               >
                 {link.label}
@@ -212,7 +234,7 @@ const Navigation = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={item.label}
-                  className="text-white/58 transition-colors hover:text-blue-300"
+                  className="text-white/60 transition-colors hover:text-[#ffb347]"
                   data-testid={item.testId}
                 >
                   <Icon className="h-4.5 w-4.5" />
@@ -271,7 +293,12 @@ const Navigation = () => {
                     <Link
                       key={service.label}
                       to={`/services${service.hash}`}
-                      className="text-sm text-white/62 transition-colors hover:text-blue-300"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        setMobileOpen(false);
+                        handleServiceNavigation(service.hash);
+                      }}
+                      className="text-sm text-white/70 transition-colors hover:text-[#ffb347]"
                     >
                       {service.label}
                     </Link>
@@ -302,7 +329,7 @@ const Navigation = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={item.label}
-                      className="text-white/60 transition-colors hover:text-blue-300"
+                      className="text-white/60 transition-colors hover:text-[#ffb347]"
                     >
                       <Icon className="h-5 w-5" />
                     </a>

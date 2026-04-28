@@ -5,6 +5,7 @@ import { useAboutPageCms } from "@/lib/cms";
 
 const AboutPage = () => {
   const cms = useAboutPageCms();
+  const about = cms?.about || {};
   const founders = cms?.founders || [];
   const notes = cms?.notes || [];
   const videos = cms?.videos || [];
@@ -22,11 +23,19 @@ const AboutPage = () => {
                 About Us
               </p>
               <h1 className="torch-text text-5xl font-bold leading-[0.95] md:text-7xl">
-                <span className="block text-white">Your Partner in</span>
-                <span className="block text-blue-300">Tech Storytelling</span>
+                {String(about.aboutTitle || "Your Partner in Tech Storytelling")
+                  .split("Tech")
+                  .length > 1 ? (
+                  <>
+                    <span className="block text-white">{String(about.aboutTitle || "Your Partner in Tech Storytelling").split("Tech")[0].trim()}</span>
+                    <span className="block text-blue-300">{`Tech${String(about.aboutTitle || "Your Partner in Tech Storytelling").split("Tech").slice(1).join("Tech")}`}</span>
+                  </>
+                ) : (
+                  <span className="block text-white">{about.aboutTitle || "Your Partner in Tech Storytelling"}</span>
+                )}
               </h1>
               <p className="max-w-2xl text-lg leading-relaxed text-white/75">
-                Kwerky Media is the result of more than a decade of tech storytelling—and a childlike excitement that&apos;s stayed with us since we wrote our very first tech story.
+                {about.description || "Kwerky Media is the result of more than a decade of tech storytelling—and a childlike excitement that&apos;s stayed with us since we wrote our very first tech story."}
               </p>
             </div>
           </RevealOnScroll>

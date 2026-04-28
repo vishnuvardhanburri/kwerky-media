@@ -1,4 +1,4 @@
-import { createClient as createPreviewClient } from "@sanity/preview-kit/client";
+import { createClient } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
 
 const projectId = process.env.REACT_APP_SANITY_PROJECT_ID || process.env.VITE_SANITY_PROJECT_ID;
@@ -9,7 +9,7 @@ const previewEnabled = typeof window !== "undefined" && window.location.search.i
 const configured = Boolean(projectId);
 
 const baseClient = configured
-  ? createPreviewClient({
+  ? createClient({
       projectId,
       dataset,
       apiVersion,
@@ -29,6 +29,7 @@ const previewClient = configured && token
 const builder = baseClient ? imageUrlBuilder(baseClient) : null;
 
 export const sanityClient = previewEnabled && previewClient ? previewClient : baseClient;
+export const client = sanityClient;
 export const sanityToken = token;
 export const isPreviewMode = previewEnabled && Boolean(token);
 
@@ -60,6 +61,31 @@ export async function sanityFetch(query, params = {}, fallback = null) {
     }
     return fallback;
   }
+}
+
+export const homepageQuery = `*[_type == "homepage"][0]{
+  "mainHeading": mainHeading,
+  "tagline": tagline,
+  "buttonText": buttonText,
+  heroImage{asset->{url}},
+  "valueTitle": valueTitle,
+  "valueSub": valueSub,
+  services[]{
+    title,
+    description,
+    image{asset->{url}}
+  },
+  testimonials[]{
+    company,
+    quote,
+    rating
+  },
+  ctaHeading,
+  ctaSubtext
+}`;
+
+export async function getHomepage() {
+  return client ? client.fetch(homepageQuery) : null;
 }
 
 export function splitHeadline(text) {

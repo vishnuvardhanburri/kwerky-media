@@ -53,9 +53,11 @@ const HomePage = () => {
           <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:pt-8">
             <div className="max-w-4xl">
             <RevealOnScroll>
-              <div className="mb-6 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.52em]">
+              <div className="mb-6 inline-flex items-center gap-2 text-xs font-semibold tracking-[0.22em]">
                 <span className="text-blue-300">Kwerky</span>
                 <span className="text-[#ffb347]">Media</span>
+                <span className="text-white/70">:</span>
+                <span className="text-white/78 uppercase tracking-[0.34em]">Content and growth partner for tech companies</span>
               </div>
             </RevealOnScroll>
 
@@ -142,6 +144,8 @@ const HomePage = () => {
         eyebrow="Value"
         title={valueTitle}
         description={home.valueSub || "We go beyond the norm. We are Kwerky."}
+        body={`${home.heroSub || "Kwerky Media is a dynamic content and growth partner for tech companies."} Power resides where people believe it does — no more, no less.`}
+        images={services.map((service) => service.image).filter(Boolean)}
         className="section-midnight"
         id="value-section"
       />
