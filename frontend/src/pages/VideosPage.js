@@ -2,23 +2,12 @@ import { motion } from "framer-motion";
 import BackgroundLayers from "@/components/shared/BackgroundLayers";
 import { RevealOnScroll } from "@/components/shared/Animations";
 import Footer from "@/components/shared/Footer";
-
-const VIDEOS = [
-  {
-    title: "Kwerky in Action",
-    src: "https://www.youtube.com/embed/ZJuVlEQ2AIM",
-  },
-  {
-    title: "Our Services",
-    src: "https://www.youtube.com/embed/q6suj10uq_0",
-  },
-  {
-    title: "About Kwerky Media",
-    src: "https://www.youtube.com/embed/nXaoAh2DVpo",
-  },
-];
+import { useVideosPageCms } from "@/lib/cms";
 
 const VideosPage = () => {
+  const cms = useVideosPageCms();
+  const videos = cms?.videos || [];
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -50,14 +39,14 @@ const VideosPage = () => {
 
           <RevealOnScroll delay={0.24}>
             <div className="mt-12 grid gap-6 lg:grid-cols-3 md:grid-cols-2">
-              {VIDEOS.map((video, index) => (
+              {videos.map((video, index) => (
                 <div
                   key={video.title}
                   className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#050b16] shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
                 >
                   <div className="aspect-video">
                     <iframe
-                      src={video.src}
+                      src={video.url}
                       title={video.title}
                       loading="lazy"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
